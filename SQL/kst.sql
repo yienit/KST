@@ -22,10 +22,9 @@ IsDeleted INT DEFAULT 0  				-- 是否已删除 (0：未删除  1：已删除)
 CREATE TABLE AgencyAdmin(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 AgencyID INT,							-- 机构主键ID
-ChineseName VARCHAR(20),				-- 姓名
-UserName VARCHAR(30),					-- 用户名(默认为电话)
-Password VARCHAR(32),					-- 密码(默认为电话)
-Phone VARCHAR(20),						-- 电话号码
+ChineseName VARCHAR(50),				-- 姓名
+Phone VARCHAR(50),						-- 电话号码
+Password VARCHAR(50),					-- 密码(默认为电话)
 Email VARCHAR(50),						-- 邮箱
 Level INT,								-- 账号级别 (0: 题库管理员  1：机构管理员)
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
@@ -58,8 +57,8 @@ CONSTRAINT fk_agencyconfig_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) ON
 -- 系统预设定课程信息表
 CREATE TABLE SysCourse(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
-Name VARCHAR(20),			    		-- 课程名称
-Code VARCHAR(20) UNIQUE,				-- 课程代码
+Name VARCHAR(50),			    		-- 课程名称
+Code VARCHAR(50) UNIQUE,				-- 课程代码
 Duration INT,							-- 考试时长 (单位:分钟)
 Description VARCHAR(200),				-- 课程描述
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
@@ -71,7 +70,7 @@ CREATE TABLE SysChapter(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 CourseID INT,							-- 课程主键ID
 ChapterIndex INT,						-- 章节序号
-Name VARCHAR(30),						-- 章节名称
+Name VARCHAR(50),						-- 章节名称
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_syschapter_syscourse FOREIGN KEY (CourseID) REFERENCES SysCourse(ID) ON DELETE CASCADE
@@ -81,8 +80,8 @@ CONSTRAINT fk_syschapter_syscourse FOREIGN KEY (CourseID) REFERENCES SysCourse(I
 CREATE TABLE Course(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 AgencyID INT,							-- 机构主键ID
-Name VARCHAR(20),			    		-- 课程名称
-Code  VARCHAR(20),						-- 课程代码
+Name VARCHAR(50),			    		-- 课程名称
+Code  VARCHAR(50),						-- 课程代码
 Duration INT,							-- 考试时长 (单位:分钟)
 Description VARCHAR(200),				-- 课程描述
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
@@ -94,7 +93,7 @@ CREATE TABLE Chapter(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 CourseID INT,							-- 课程主键ID
 ChapterIndex INT,						-- 章节序号
-Name VARCHAR(30),						-- 章节名称
+Name VARCHAR(50),						-- 章节名称
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_chapter_course FOREIGN KEY (CourseID) REFERENCES Course(ID) ON DELETE CASCADE
@@ -131,7 +130,7 @@ Answer CHAR(1),							-- 答案
 Annotation VARCHAR(500),				-- 注解
 Difficulty INT,							-- 试题难易度 (1-5：评级)
 
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_singleitem_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) ON DELETE CASCADE,
@@ -151,11 +150,11 @@ A VARCHAR(500),							-- 选项A
 B VARCHAR(500),							-- 选项B
 C VARCHAR(500),							-- 选项C
 D VARCHAR(500),							-- 选项D
-Answer CHAR(20),						-- 答案 (以中文顿号隔开,如 A、B 或 B、C、D)
+Answer CHAR(50),						-- 答案 (以中文顿号隔开,如 A、B 或 B、C、D)
 Annotation VARCHAR(500),				-- 注解
 Difficulty INT,							-- 试题难易度 (1-5：评级)
 
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_multipleitem_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) ON DELETE CASCADE,
@@ -175,7 +174,7 @@ Answer INT,								-- 答案 (0: 错误  1: 正确)
 Annotation VARCHAR(500),				-- 注解
 Difficulty INT,							-- 试题难易度 (1-5：评级)
 
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_judgeitem_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) ON DELETE CASCADE,
@@ -193,7 +192,7 @@ Title VARCHAR(1000),					-- 标题文字
 Image MEDIUMBLOB,						-- 题目图片(可空)
 Difficulty INT,							-- 试题难易度 (1-5：评级)
 
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_uncertainitem_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) ON DELETE CASCADE,
@@ -215,7 +214,7 @@ D VARCHAR(500),							-- 选项D
 Answer CHAR(20),						-- 答案 (以中文顿号隔开,如 A、B 或 B、C、D)
 Annotation VARCHAR(500),				-- 注解
 
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_uncertainitemsubchoice_uncertainitem FOREIGN KEY (UncertainItemID)REFERENCES UncertainItem(ID) ON DELETE CASCADE
@@ -232,7 +231,7 @@ Title VARCHAR(1000),					-- 标题文字
 Image MEDIUMBLOB,						-- 题目图片(可空)
 Difficulty INT,							-- 试题难易度 (1-5：评级)
 
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_fenluitem_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) ON DELETE CASCADE,
@@ -264,7 +263,7 @@ Image2 MEDIUMBLOB,						-- 图片2(可空)
 Image2SubText VARCHAR(1000),			-- 图片2下方文字(可空)
 Difficulty INT,							-- 试题难易度 (1-5：评级)
 
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_numberblankitem_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) ON DELETE CASCADE,
@@ -294,7 +293,7 @@ PaperType INT,							-- 试卷类型 (0：模拟试卷  1：历届试卷  2：VIP试卷)
 Name VARCHAR(100),						-- 试卷名称
 TotalScore FLOAT,						-- 考试总分
 Duration INT,							-- 考试时长 (单位:分钟)
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_paper_course FOREIGN KEY (CourseID)REFERENCES Course(ID) ON DELETE CASCADE,
@@ -316,7 +315,7 @@ D VARCHAR(500),							-- 选项D
 Answer CHAR(1),							-- 答案
 Annotation VARCHAR(500),				-- 注解
 
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_papersingle_paper FOREIGN KEY (ParperID)REFERENCES Paper(ID) ON DELETE CASCADE
@@ -334,10 +333,10 @@ A VARCHAR(500),							-- 选项A
 B VARCHAR(500),							-- 选项B
 C VARCHAR(500),							-- 选项C
 D VARCHAR(500),							-- 选项D
-Answer CHAR(20),						-- 答案 (以中文顿号隔开,如 A、B 或 B、C、D)
+Answer CHAR(50),						-- 答案 (以中文顿号隔开,如 A、B 或 B、C、D)
 Annotation VARCHAR(500),				-- 注解
 
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_papermultiple_paper FOREIGN KEY (ParperID)REFERENCES Paper(ID) ON DELETE CASCADE
@@ -354,7 +353,7 @@ Image MEDIUMBLOB,						-- 题目图片(可空)
 Answer INT,								-- 答案 (0: 错误  1: 正确)
 Annotation VARCHAR(500),				-- 注解
 
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_paperjudge_paper FOREIGN KEY (ParperID)REFERENCES Paper(ID) ON DELETE CASCADE
@@ -367,10 +366,9 @@ CREATE TABLE User(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 AgencyID INT,							-- 机构主键ID
 
-ChineseName VARCHAR(20),				-- 姓名
-UserName VARCHAR(30),					-- 用户名(默认为电话)
+ChineseName VARCHAR(50),				-- 姓名
+Phone VARCHAR(50),						-- 电话号码
 Password VARCHAR(50),					-- 密码(默认为电话)
-Phone VARCHAR(20),						-- 电话号码
 Email VARCHAR(50),						-- 邮箱
 Avatar BLOB,							-- 头像图片数据
 State INT DEFAULT 0,					-- 账号状态 (0：正常  1：禁用)
@@ -380,7 +378,7 @@ PcDevcieCode VARCHAR(100),				-- PC设备码
 AndroidDeviceCode VARCHAR(100),			-- Android设备码
 IosDeviceCode VARCHAR(100),				-- IOS设备码
 
-AddPerson VARCHAR(20),					-- 添加人
+AddPerson VARCHAR(50),					-- 添加人
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_user_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) ON DELETE CASCADE
@@ -476,7 +474,7 @@ CONSTRAINT fk_myscore_user FOREIGN KEY (UserID)REFERENCES User(ID) ON DELETE CAS
 -- 短信验证码发送记录
 CREATE TABLE CaptchaRecord(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
-IP VARCHAR(15),							-- 用户IP地址
+IP VARCHAR(50),							-- 用户IP地址
 CodeType INT,							-- 验证码类型 (0：注册账号验证码  1：找回密码验证码)
 Phone VARCHAR(50),						-- 接收验证码的手机
 Code VARCHAR(8),						-- 验证码
@@ -489,10 +487,10 @@ IsDeleted INT DEFAULT 0  				-- 是否已删除 (0：未删除  1：已删除)
 CREATE TABLE ClientLoginRecord(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 UserID INT,								-- 用户主键ID
-IP VARCHAR(15),							-- 登录IP
+IP VARCHAR(50),							-- 登录IP
 TerminalType INT,						-- 终端类型  (0：PC  1：Android   2: IOS   3: Web)
-PlatformVersion VARCHAR(30),			-- 终端所在平台版本，如 Windows7、 Android 4.2.2、 IOS 8.1  、 IE10
-AppVersion VARCHAR(10),					-- App版本
+PlatformVersion VARCHAR(50),			-- 终端所在平台版本，如 Windows7、 Android 4.2.2、 IOS 8.1  、 IE10
+AppVersion VARCHAR(50),					-- App版本
 LoginTime DATETIME,						-- 登录时间
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0  				-- 是否已删除 (0：未删除  1：已删除)
@@ -517,7 +515,7 @@ IsDeleted INT DEFAULT 0  				-- 是否已删除 (0：未删除  1：已删除)
 CREATE TABLE Feedback(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 Content VARCHAR(500),					-- 反馈内容
-Contact VARCHAR(30),					-- 联系方式
+Contact VARCHAR(50),					-- 联系方式
 TerminalType INT,						-- 反馈终端途径 (0：PC  1：Android  2：IOS  3：Web)
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0  				-- 是否已删除 (0：未删除  1：已删除)
