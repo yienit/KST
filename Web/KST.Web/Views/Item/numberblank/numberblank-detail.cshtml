@@ -1,0 +1,103 @@
+﻿@using KST.Util
+@using KST.Model
+@using KST.DTO
+@using KST.Service
+
+@{
+    string isVipItemString = string.Empty;
+    string chapterName = string.Empty;
+    string titile = string.Empty;
+    string image1Base64 = string.Empty;
+    string image1SubText = string.Empty;
+    string image2Base64 = string.Empty;
+    string image2SubText = string.Empty;
+    int difficulty = 0;
+    List<NumberBlankAnswer> answers = null;
+    string addPerson = string.Empty;
+    string addTime = string.Empty;
+    
+    int id = Convert.ToInt32( ApiQueryUtil.QueryArgByGet("id"));
+
+    ServiceInvokeDTO<NumberBlankItemDTO> result = ServiceFactory.Instance.ItemDataService.GetNumberBlankByID(id);
+    if(result!= null && result.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+    {
+        NumberBlankItemDTO numberBlankDTO = result.Data;
+        if (numberBlankDTO != null)
+        {
+            isVipItemString = numberBlankDTO.IsVipItem == 0 ? "普通题库" : "VIP题库";
+            chapterName = numberBlankDTO.ChapterName == null ? string.Empty : numberBlankDTO.ChapterName;
+            titile = numberBlankDTO.Title == null ? string.Empty : numberBlankDTO.Title;
+            image1Base64 = numberBlankDTO.Image1 == null ? string.Empty : Convert.ToBase64String(numberBlankDTO.Image1);
+            image1SubText = numberBlankDTO.Image1SubText == null ? string.Empty : numberBlankDTO.Image1SubText;
+            image2Base64 = numberBlankDTO.Image2 == null ? string.Empty : Convert.ToBase64String(numberBlankDTO.Image2);
+            image2SubText = numberBlankDTO.Image2SubText == null ? string.Empty : numberBlankDTO.Image2SubText;
+            difficulty = numberBlankDTO.Difficulty;
+
+            answers = numberBlankDTO.Answers;
+
+            addPerson = numberBlankDTO.AddPerson == null ? string.Empty : numberBlankDTO.AddPerson;
+            addTime = numberBlankDTO.AddTime.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+    }
+}
+
+<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">详情</span>
+</div>
+<div class="modal-body itemcontent">
+    <table class="inputs-table" >
+	    <tbody>
+		    <tr><td class="text">题库类型：</td><td class="input">@isVipItemString</td></tr>
+            <tr><td class="text">所属章节：</td><td class="input">@chapterName</td></tr>
+		    <tr><td class="text">标题：</td><td class="input">@titile</td></tr>
+
+            @if (image1Base64.Length > 0)
+            { <tr><td class="text">图片1：</td><td class="input"><img src= "data:image/png;base64,@image1Base64" class="itemimg"/></td></tr>   }
+            else
+            { <tr><td class="text">图片1：</td><td class="input">无</td></tr> }
+
+            <tr><td class="text">图片1下方文字：</td><td class="input">@image1SubText</td></tr>
+
+            @if (image2Base64.Length > 0)
+            { <tr><td class="text">图片2：</td><td class="input"><img src= "data:image/png;base64,@image2Base64" class="itemimg"/></td></tr>   }
+            else
+            { <tr><td class="text">图片2：</td><td class="input">无</td></tr> }
+
+            <tr><td class="text">图片2下方文字：</td><td class="input">@image2SubText</td></tr>
+           
+            <tr><td class="text">难易度：</td>
+                <td class="input">
+                    <input type="number" id="difficulty_detail" value="@difficulty" min="0" max="5" step="1" data-size="xs" data-show-clear="false" data-show-caption="false" data-readonly="true"/>
+                    <script type="text/javascript">$('#difficulty_detail').rating();</script> 
+                </td>
+            </tr>
+
+            <tr><td class="text">答案列表：</td><td class="input">
+                @if (answers != null)
+                {
+                    for (int i = 0; i < answers.Count; i++)
+                    {
+                        int index = i + 1;
+                        <div class="answer-line">
+                            <span>答案</span><span class="answer-index">@index</span>名称： <input type="text" class="answer-name blueinput" value="@answers[i].AnswerName"/><span class="emptyspan10"></span>
+                            <span>答案：</span><input type="text" class="answer-text blueinput" value="@answers[i].Answer"/><span class="emptyspan10"></span>
+                            <span>注解：</span><input type="text" class="answer-annotation blueinput" value="@answers[i].Annotation"/><span class="emptyspan10"></span>
+                        </div>
+                    }
+                }
+            </td></tr>
+
+            <tr><td class="text">添加人：</td><td class="input">@addPerson</td></tr>
+            <tr><td class="text">添加时间：</td><td class="input">@addTime</td></tr>
+            
+	    </tbody>
+    </table>
+</div>
+<div class="modal-footer"></div>
+
+
+
+
+
+

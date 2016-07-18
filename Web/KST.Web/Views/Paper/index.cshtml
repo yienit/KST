@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html >
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>考试通</title>
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/font-awesome/css/font-awesome.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap/css/bootstrap.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/style.css")" />
+</head>
+<body>
+@Html.Partial("_header-partial", KST.Web.HeaderTabMenu.PaperManagement)
+<div class="content">
+
+	<div class="content_left">@Html.Partial("_left-menu-paper-partial")</div>
+	<div class="content_right">
+	  <div class="right_container">
+	  
+		<!-- .row -->	  
+		<div class="row" style="margin-top:10px; ">
+			<div class="col-lg-4" style="padding: 0px 30px;">
+			  <div class="viewdetailbox">
+				 <div class="title">模拟试卷</div>
+				 <div class="text">美团云与美团自身线上业务使用同一套底层平台和主机网络资源，您的线上业务质量将与美团一致。</div>
+				 <p><a class="view_btn " href="#">查看详情 &raquo;</a></p>
+			  </div>
+			</div><!-- /.col-lg-4 -->
+			<div class="col-lg-4" style="padding: 0px 30px;">
+			  <div class="viewdetailbox">
+				<div class="title">VIP试卷</div>
+				<div class="text">根据业务不同，能够支持各种类型和配置的运行时环境，用户可以自主选择资源配置，满足弹性计算的需求。</div>
+				<p><a class="view_btn" href="#">查看详情 &raquo;</a></p>
+			  </div>
+			</div><!-- /.col-lg-4 -->
+			<div class="col-lg-4" style="padding: 0px 30px;">
+			  <div class="viewdetailbox">
+				<div class="title">历年试卷</div>
+				<div class="text">快速响应，高质量售后，全国免费备案。我们将由工程师为您提供优质的技术服务，第一时间为您解决问题。</div>
+				<p><a class="view_btn" href="#">查看详情 &raquo;</a></p>
+			  </div>
+			</div><!-- /.col-lg-4 -->
+		</div>
+		<!-- /.row -->
+
+	  </div>
+    </div>
+</div>
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap/js/bootstrap.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-table/bootstrap-table.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.placeholder.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/header.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/md5.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/util.js")"></script>
+</body>
+</html>

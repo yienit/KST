@@ -1,0 +1,195 @@
+﻿@using KST.Util
+@using KST.Model
+@using KST.DTO
+@using KST.Service
+@{
+    // 章节列表
+    List<Chapter> chapters = null;
+    Course currentCourse = Session[KST.Web.Constant.SESSION_KEY_COURSE] as Course;
+    if (currentCourse != null)
+    {
+        ServiceInvokeDTO<List<Chapter>> chaptersResult = ServiceFactory.Instance.ItemDataService.GetAgencyChapters(currentCourse.ID);
+        if (chaptersResult != null && chaptersResult.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+        {
+            chapters = chaptersResult.Data;
+        }
+    }
+    
+    // 详情
+    int isVipItem = 0;
+    int chapterID = 0;
+    string titile = string.Empty;
+    string imageBase64 = string.Empty;
+    int difficulty = 0;
+    List<FenLuAnswer> answers = null;;
+
+    int id = Convert.ToInt32(ApiQueryUtil.QueryArgByGet("id"));
+
+    ServiceInvokeDTO<FenLuItemDTO> result = ServiceFactory.Instance.ItemDataService.GetFenLuByID(id);
+    if (result != null && result.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+    {
+        FenLuItemDTO fenluDTO = result.Data;
+        if (fenluDTO != null)
+        {
+            isVipItem = fenluDTO.IsVipItem;
+            chapterID = fenluDTO.ChapterID;
+            titile = fenluDTO.Title == null ? string.Empty : fenluDTO.Title;
+            imageBase64 = fenluDTO.Image == null ? string.Empty : Convert.ToBase64String(fenluDTO.Image);
+            difficulty = fenluDTO.Difficulty;
+            answers = fenluDTO.Answers;
+        }
+    }
+}
+
+<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">修改</span>
+    <span class="red inlineblock aligncenter width600" id="tip_update"></span>
+</div>
+<div class="modal-body itemcontent">
+
+    <input type="hidden" id="id_update" value="@id"/>
+
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70"><span class="redstar">*</span>题库类型:</span></span>
+            <span class="form-control">
+
+            @if (isVipItem == 0)
+            { <label class="inputlable"><input type="radio" name="is_vip_item_update" value="0" checked="checked"/>&nbsp;普通题库</label> }
+            else
+            { <label class="inputlable"><input type="radio" name="is_vip_item_update" value="0" />&nbsp;普通题库</label>}
+
+            <span class="emptyspan30"></span>
+
+            @if (isVipItem == 1)
+            { <label class="inputlable"><input type="radio" name="is_vip_item_update" value="1" checked="checked"/>&nbsp;VIP题库</label> }
+            else
+            { <label class="inputlable"><input type="radio" name="is_vip_item_update" value="1" />&nbsp;VIP题库</label>}
+                
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70"><span class="redstar">*</span>所属章节:</span></span>
+            <select class="form-control" id="chapter_id_update">
+            @{
+                if (chapters != null)
+                {
+                    for (int i = 0; i < chapters.Count; i++)
+                    {
+                        if(chapters[i].ID == chapterID)
+                        { <option value ="@chapters[i].ID" selected="selected">@string.Format("第{0}章: {1}", i + 1, chapters[i].Name)</option> }
+                        else
+                        { <option value ="@chapters[i].ID">@string.Format("第{0}章: {1}", i + 1, chapters[i].Name)</option> }
+                    }
+                }
+            }
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70"><span class="redstar">*</span>题库标题:</span></span>
+            <textarea class="form-control" id="title_update" rows="4" >@titile</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="foretip width70"><a href="#" id="image_tip_update" rel="popover" data-content="图片将会在标题下方显示" data-original-title="提示"><i class="fa fa-info-circle greenico"></i></a>&nbsp;题库图片:</span>
+                <script type="text/javascript">
+                    $("#image_tip_update").popover({
+                        placement: 'right',
+                        trigger: 'hover'
+                    });
+                </script>
+            </span>
+            <input id="image_update" type="file" name="image"/>
+            @{
+                if (imageBase64.Length > 0)
+                {
+                    <script type="text/javascript">
+                        $("#image_update").fileinput({
+                            showUpload: false,
+                            allowedFileExtensions: ['jpg', 'png', 'gif'],
+                            maxFileSize: 2048,
+                            maxFileCount: 1,
+                            language: 'zh',
+                            initialPreview: ["<img src='data:image/png;base64,@imageBase64' class='file-preview-image'>"]
+                        });
+                    </script>
+                }
+                else
+                {
+                    <script type="text/javascript">
+                        $("#image_update").fileinput({
+                            showUpload: false,
+                            allowedFileExtensions: ['jpg', 'png', 'gif'],
+                            maxFileSize: 2048,
+                            maxFileCount: 1,
+                            language: 'zh'
+                        });
+                    </script>
+                }
+            }   
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width70"><span class="redstar">*</span>难易度:</span></span>
+            <span class="form-control">
+                <input type="number" id="difficulty_update" value="@difficulty" min="0" max="5" step="1" data-size="xs" data-show-clear="false" data-show-caption="false" />
+                <script type="text/javascript">$('#difficulty_update').rating();</script>
+            </span>
+        </div>
+    </div>
+
+     <div class="form-group">
+       <table class="inputs-table">
+        <tr>
+            <td rowspan="2" class="fenlu-forehead"><span class="redstar">*</span>答案列表:</td>
+            <td class="fenlu-tip">说明：一个答案对应分录题的一个答案,并按照添加的顺序排列</td></tr>
+        <tr>
+            <td class="fenlu-answers">
+
+            @if (answers != null)
+            {
+                for (int i = 0; i < answers.Count; i++)
+                {
+                    int index = i +1;
+                    
+                    if (i == 0)
+                    {
+                        <div class="answer-line">
+                           <span>答案</span><span class="answer-index">@index</span>：
+                           <textarea cols="30" rows ="4" class="answer-text blueinput">@answers[i].Answer</textarea><span class="emptyspan10"></span>
+                           <span>注解：</span><input type="text" class="answer-annotation blueinput" value="@answers[i].Annotation"/><span class="emptyspan10"></span>
+                           <span><a href="#" onclick="javascript:insertAnswerLineInUpdateWindow();" title="添加答案" class="answer-add"><i class="fa fa-plus add-ico"></i></a></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="answer-line">
+                           <span>答案</span><span class="answer-index">@index</span>：
+                           <textarea cols="30" rows ="4" class="answer-text blueinput">@answers[i].Answer</textarea><span class="emptyspan10"></span>
+                           <span>注解：</span><input type="text" class="answer-annotation blueinput" value="@answers[i].Annotation"/><span class="emptyspan10"></span>
+                           <span><a href="#" onclick="javascript:insertAnswerLineInUpdateWindow();" title="添加答案" class="answer-add"><i class="fa fa-plus add-ico"></i></a></span><span class="emptyspan10"></span>
+                           <span><a href="#" onclick="javascript:deleteAnswerLineInUpdateWindow(@index);" title="删除答案" class="answer-delete"><i class="fa fa-minus delete-ico"></i></a></span>
+                        </div>
+                    }
+                }
+            }
+            
+            </td>
+        </tr>
+       </table>
+    </div>
+
+    <div id="add_btn" class="btn btn-block btn-green" onclick="startUpdate()">修改</div>
+
+</div>
+<div class="modal-footer"></div>
+
+

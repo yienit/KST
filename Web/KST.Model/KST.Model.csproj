@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9F326BBD-7B89-4EC4-9E67-6022DE4ABCCD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KST.Model</RootNamespace>
+    <AssemblyName>KST.Model</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\library\FluentValidation\NET35\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\Json.net\Net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model\ItemData\FenLuAnswer.cs" />
+    <Compile Include="Model\ItemData\FenLuItem.cs" />
+    <Compile Include="Model\ItemData\NumberBlankAnswer.cs" />
+    <Compile Include="Model\ItemData\NumberBlankItem.cs" />
+    <Compile Include="Model\ItemData\UncertainItem.cs" />
+    <Compile Include="Model\ItemData\UncertainSubChoice.cs" />
+    <Compile Include="Model\RecordData\AdminDoRecord.cs" />
+    <Compile Include="Model\AgencyData\AgencyConfig.cs" />
+    <Compile Include="Model\RecordData\CaptchaRecord.cs" />
+    <Compile Include="Model\AgencyData\Agency.cs" />
+    <Compile Include="Model\ItemData\Chapter.cs" />
+    <Compile Include="Model\ItemData\Course.cs" />
+    <Compile Include="Model\CommonData\Feedback.cs" />
+    <Compile Include="Model\UserDate\MyComment.cs" />
+    <Compile Include="Model\UserDate\MyPostErrorItem.cs" />
+    <Compile Include="Model\ItemData\JudgeItem.cs" />
+    <Compile Include="Model\PaperData\PaperJudge.cs" />
+    <Compile Include="Model\PaperData\PaperMultiple.cs" />
+    <Compile Include="Model\PaperData\PaperSingle.cs" />
+    <Compile Include="Model\ItemData\SysChapter.cs" />
+    <Compile Include="Model\ItemData\SysCourse.cs" />
+    <Compile Include="Model\RecordData\UserLoginRecord.cs" />
+    <Compile Include="Model\ItemData\MultipleItem.cs" />
+    <Compile Include="Model\UserDate\MyError.cs" />
+    <Compile Include="Model\UserDate\MyFavorite.cs" />
+    <Compile Include="Model\UserDate\MyScore.cs" />
+    <Compile Include="Model\AgencyData\AgencyAdmin.cs" />
+    <Compile Include="Model\PaperData\Paper.cs" />
+    <Compile Include="Model\ItemData\SingleItem.cs" />
+    <Compile Include="Model\UserDate\User.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Type\AdminLevel.cs" />
+    <Compile Include="Type\AgencyState.cs" />
+    <Compile Include="Type\CaptchaCodeType.cs" />
+    <Compile Include="Type\ItemType.cs" />
+    <Compile Include="Type\PaperType.cs" />
+    <Compile Include="Type\TerminalType.cs" />
+    <Compile Include="Type\UserState.cs" />
+    <Compile Include="Validator\AgencyValidator.cs" />
+    <Compile Include="Validator\ErrorMessage.cs" />
+    <Compile Include="Validator\FeedbackValidator.cs" />
+    <Compile Include="Validator\UserValidator.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

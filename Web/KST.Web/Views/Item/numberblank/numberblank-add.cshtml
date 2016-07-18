@@ -1,0 +1,149 @@
+﻿@using KST.Util
+@using KST.Model
+@using KST.DTO
+@using KST.Service
+
+@{
+    List<Chapter> chapters = null;
+
+    Course currentCourse = Session[KST.Web.Constant.SESSION_KEY_COURSE] as Course;
+    if (currentCourse != null)
+    {
+        ServiceInvokeDTO<List<Chapter>> result = ServiceFactory.Instance.ItemDataService.GetAgencyChapters(currentCourse.ID);
+        if (result != null && result.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+        {
+            chapters = result.Data;
+        }
+    }
+}
+
+<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">添加</span>
+    <span class="red inlineblock aligncenter width800" id="tip_add"></span>
+</div>
+<div class="modal-body itemcontent">
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width90"><span class="redstar">*</span>题库类型:</span></span>
+            <span class="form-control">
+                <label class="inputlable"><input type="radio" name="is_vip_item_add" value="0" checked="checked"/>&nbsp;普通题库</label> 
+                <span class="emptyspan30"></span>
+                <label class="inputlable"><input type="radio" name="is_vip_item_add" value="1" />&nbsp;VIP题库</label>
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width90"><span class="redstar">*</span>所属章节:</span></span>
+            <select class="form-control" id="chapter_id_add">
+            @{
+                if (chapters != null)
+                {
+                    for (int i = 0; i < chapters.Count; i++)
+                    {
+                         <option value ="@chapters[i].ID">@string.Format("第{0}章: {1}",i + 1, chapters[i].Name) </option>
+                    }
+                }
+            }
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width90"><span class="redstar">*</span>题库标题:</span></span>
+            <textarea class="form-control" id="title_add" rows="10" ></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="foretip width90"><a href="#" id="image1_tip_add" rel="popover" data-content="图片1将会在标题下方显示" data-original-title="提示"><i class="fa fa-info-circle greenico"></i></a>&nbsp;图片1:</span>
+                <script type="text/javascript">
+                    $("#image1_tip_add").popover({
+                        placement: 'right',
+                        trigger: 'hover'
+                    });
+                </script>
+            </span>
+            <input id="image1_add" type="file" name="image1"/>
+            <script type="text/javascript">
+                $("#image1_add").fileinput({
+                    showUpload: false,
+                    allowedFileExtensions: ['jpg', 'png', 'gif'],
+                    maxFileSize: 2048,
+                    maxFileCount: 1,
+                    language: 'zh'
+                });
+            </script>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width90">图片1下方文字:</span></span>
+            <textarea class="form-control" id="image1_subtext_add" rows="10" ></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="foretip width90"><a href="#" id="image2_tip_add" rel="popover" data-content="图片2将会在图片1下方文字之后显示" data-original-title="提示"><i class="fa fa-info-circle greenico"></i></a>&nbsp;图片2:</span>
+                <script type="text/javascript">
+                    $("#image2_tip_add").popover({
+                        placement: 'right',
+                        trigger: 'hover'
+                    });
+                </script>
+            </span>
+            <input id="image2_add" type="file" name="image2"/>
+            <script type="text/javascript">
+                $("#image2_add").fileinput({
+                    showUpload: false,
+                    allowedFileExtensions: ['jpg', 'png', 'gif'],
+                    maxFileSize: 2048,
+                    maxFileCount: 1,
+                    language: 'zh'
+                });
+            </script>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width90">图片2下方文字:</span></span>
+            <textarea class="form-control" id="image2_subtext_add" rows="10" ></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width90"><span class="redstar">*</span>难易度:</span></span>
+            <span class="form-control">
+                <input type="number" id="difficulty_add" value="0" min="0" max="5" step="1" data-size="xs" data-show-clear="false" data-show-caption="false" />
+                <script type="text/javascript">$('#difficulty_add').rating();</script>
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group">
+       <table class="inputs-table">
+        <tr>
+            <td rowspan="2" class="numberblank-forehead"><span class="redstar">*</span>答案列表:</td>
+            <td class="numberblank-tip">说明：一个答案对应数字填空题的一个答案,并按照添加的顺序排列</td></tr>
+        <tr>
+            <td class="numberblank-answers">
+                <div class="answer-line">
+                   <span>答案</span><span class="answer-index">1</span>名称： <input type="text" class="answer-name blueinput" /><span class="emptyspan10"></span>
+                   <span>答案：</span><input type="text" class="answer-text blueinput" /><span class="emptyspan10"></span>
+                   <span>注解：</span><input type="text" class="answer-annotation blueinput" /><span class="emptyspan10"></span>
+                   <span><a href="#" onclick="javascript:insertAnswerLineInAddWindow();" title="添加答案" class="answer-add"><i class="fa fa-plus add-ico"></i></a></span>
+                </div>
+            </td>
+        </tr>
+       </table>
+    </div>
+
+    <div id="add_btn" class="btn btn-block btn-green" onclick="startAdd()">添加</div>
+
+</div>
+<div class="modal-footer"></div>
+
+

@@ -1,0 +1,588 @@
+﻿@using KST.Web;
+
+@{
+    Layout = null;
+    HttpCookie cookie = Request.Cookies[Constant.COOKIE_NAME];
+    string userName = cookie == null ? string.Empty : cookie[Constant.COOKIE_KEY_USER_NAME];
+    string message = ViewData[Constant.LOG_TIP_VIEW_AND_TEMP_KEY] == null ? string.Empty : ViewData[Constant.LOG_TIP_VIEW_AND_TEMP_KEY].ToString();
+}
+
+<!DOCTYPE html>
+<html class="no-js">
+<head>
+   <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>我要考试通</title>
+    <meta name="keywords" content="我要考试通" />
+    <meta name="description" content="我要考试通是一款会计类在线考试APP" />
+    <link rel="stylesheet" href="@Url.Content("~/static/css/animate.min.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/static/css/font-awesome/css/font-awesome.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/static/css/index.css") " />
+</head>
+<body>
+	
+<!-- header -->
+<div class="page_header p-t-10 p-b-10">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-2">
+                <a href="/home/index"><img src="@Url.Content("~/static/images/index/logo.png")" alt="" /></a>
+            </div>
+            <div class="col-xs-8">
+                <ul class="list-inline list-unstyled m-0 nav_bar">
+                    <li><a href="/home/index">首页</a></li>
+					<li><a href="/home/download">产品</a></li>
+					<li><a href="/home/document">文档</a></li>
+                    <li><a href="/home/about">关于</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-2 text-right">
+                <ul class="list-unstyled list-inline m-0 reg_area">
+                    <li><a href="/home/login">登录</a></li>
+                    <li><a href="/home/reg">注册</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /header -->
+		
+<!-- login & reg -->
+<div class="login_area">
+    <div class="container p-y-lg">
+        <div class="col-xs-4 col-xs-offset-8" style="padding-top:70px;">
+				
+			<!-- login -->
+            <div class="card bg-white login">
+                <div class="card-header clearfix">
+                    <h3 class="l m-0 n fz-18 h30">登录</h3>
+                    <span class="r h30 switch_btn"><a href="#;">注册 <i class="fa fa-arrow-circle-o-right"></i></a></span>
+                </div>
+                <div class="card-block">
+                    <form id="login_form" action="/Home/LoginEx" method="POST">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon" ><i class="fa fa-user"></i></span>
+                                <input type="text" id="login_user_name" name="user_name" value="@userName" maxlength="50" class="form-control" placeholder="手机/邮箱/用户名"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                <input type="password" id="login_pwd" name="pwd" maxlength="50" class="form-control" placeholder="密码" />
+								<input type="hidden" id="login_pwd_hidden" name="pwd_hidden" value="" />
+                            </div>
+                        </div>
+						<div class="clearfix m-b-10">
+							<span id="login_tip" class="login-reg-tip">@message</span>
+                            <span class="r"><a href="" class="fz-12" data-toggle="modal" data-target="#getPwdModal" data-backdrop="static">忘记密码</a></span>
+                        </div>
+                        <div id="login_btn" class="btn btn-block btn-primary">登录</div>
+                    </form>
+                </div>
+            </div>
+			<!-- /login -->
+					
+			<!-- reg -->
+            <div class="card bg-white reg active">
+                <div class="card-header clearfix">
+                    <h3 class="l m-0 n fz-18 h30">注册</h3>
+                    <span class="r h30 switch_btn"><a href="#;">登录 <i class="fa fa-arrow-circle-o-right"></i></a></span>
+                </div>
+                <div class="card-block">
+                    <form action="" id="reg_form">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon" ><span class="fixwidth20 font18"><i class="fa fa-mobile" ></i></span></span>
+                                <input type="text" id="reg_phone" name="phone" maxlength="15" class="form-control" placeholder="手机号" />
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon" ><span class="fixwidth20 font16"><i class="fa fa-key"></i></span></span>
+                                <input type="text" id="reg_captcha" name="captcha" maxlength="6" class="form-control" placeholder="验证码" />
+                                <a id="reg_get_captcha_btn" href="javascript:getRegCaptcha()" class="input-group-addon" >获取验证码</a>
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fixwidth20 font16"><i class="fa fa-bank"></i></span></span>
+                                <input type="text" id="reg_agency_name" name="agency_name" maxlength="40" class="form-control" placeholder="公司机构名称(4-40位字符)" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fixwidth20 font18"><i class="fa fa-user"></i></span></span>
+                                <input type="text" id="reg_chinese_name" name="chinese_name" maxlength="20" class="form-control" placeholder="昵称(1-20位字符)" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fixwidth20 font18"><i class="fa fa-lock"></i></span></span>
+                                <input type="password" id="reg_pwd" name="pwd" maxlength="25" class="form-control" placeholder="密码(6-25位字符)" />
+                            </div>
+                        </div>
+                        <div class="clearfix m-b-10">
+                            <span id="reg_tip" class="login-reg-tip"></span>
+                        </div>
+                        <div id="reg_btn" class="btn btn-block btn-primary">注册</div>
+                    </form>
+                </div>
+            </div>
+			<!-- reg -->
+					
+        </div>
+    </div>
+</div>
+<!-- /login & reg -->
+		
+<!-- footer -->
+<div class="page_footer bg-black">
+    <div class="container bdb_gd p-t-20 p-b-20">
+        <div class="row">
+            <div class="col-xs-3">
+                <a href="/home/index"><img src="@Url.Content("~/static/images/index/foot-logo.png")" alt="" /></a>
+            </div>
+            <div class="col-xs-9">
+                <ul class="list-inline list-unstyled m-0 footer_nav fz-14 text-right">
+                    <li>
+                        <a href="/home/download">客户端下载</a> <span>|</span>
+                    </li>
+                    <li>
+                        <a href="/home/reg">免费注册</a> <span>|</span>
+                    </li>
+                    <li>
+                        <a href="/home/about">关于我们</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="text-center fz-12 p-t-5 p-b-5">
+        <span class="c-g9">© 2015-2016&nbsp;51kaoshitong.com&nbsp;版权所有&nbsp;&nbsp;&nbsp;&nbsp;ICP证：赣ICP备14009662号-3</span>
+    </div>
+</div>
+<!-- /footer -->
+
+<!-- /getpwd modal -->
+<div id="getPwdModal" class="modal fade">
+    <div class="modal-dialog width400">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                <span class="modal-title">找回密码</span>
+            </div>
+            <div class="modal-body">
+                <form action="" id="getpwd_form">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" ><span class="fixwidth20 font18"><i class="fa fa-mobile" ></i></span></span>
+                            <input type="text" id="getpwd_phone" name="phone" maxlength="15" class="form-control" placeholder="手机号" />
+                        </div>
+                    </div>
+				    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon" ><span class="fixwidth20 font16"><i class="fa fa-key"></i></span></span>
+                            <input type="text" id="getpwd_captcha" name="captcha" maxlength="6" class="form-control" placeholder="验证码" />
+                            <a id="getpwd_get_captcha_btn" href="javascript:getGetPwdCaptcha()" class="input-group-addon" >获取验证码</a>
+                        </div>
+                    </div>
+				    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fixwidth20 font18"><i class="fa fa-lock"></i></span></span>
+                            <input type="password" id="getpwd_newpwd" name="newpwd" maxlength="25" class="form-control" placeholder="新密码(6-25位字符)" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="fixwidth20 font18"><i class="fa fa-lock"></i></span></span>
+                            <input type="password" id="getpwd_newpwd_confirm" name="newpwd_confirm" maxlength="25" class="form-control" placeholder="确认新密码" />
+                        </div>
+                    </div>
+                    <div class="clearfix m-b-10"><span id="getpwd_tip" class="login-reg-tip"></span></div>
+                    <div id="getpwd_btn" class="btn btn-block btn-primary">重置密码</div>
+                </form>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+<!-- /modal -->
+		
+<!-- Older IE warning message -->
+<!--[if lt IE 10]>
+<div class="ie-warning">
+    <h1 class="c-white">警告!!</h1>
+    <p>您正在使用低版本的浏览器来浏览本网站内容，点击以下图标可升级您的浏览器。不便之处还望理解!</p>
+    <div class="iew-container">
+        <ul class="iew-download">
+            <li>
+                <a href="http://www.google.com/chrome/">
+                    <img src="@Url.Content("~/static/images/index/browsers/chrome.png")" alt="">
+                    <div>Chrome</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.mozilla.org/en-US/firefox/new/">
+                    <img src="@Url.Content("~/static/images/index/browsers/firefox.png")" alt="">
+                    <div>Firefox</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://www.opera.com">
+                    <img src="@Url.Content("~/static/images/index/browsers/opera.png")" alt="">
+                    <div>Opera</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.apple.com/safari/">
+                    <img src="@Url.Content("~/static/images/index/browsers/safari.png")" alt="">
+                    <div>Safari</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                    <img src="@Url.Content("~/static/images/index/browsers/ie.png")" alt="">
+                    <div>IE (New)</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <p></p>
+</div>
+<![endif]-->
+    
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap/js/bootstrap.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.placeholder.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.formatter.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/md5.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/util.js")"></script>
+<script type="text/javascript">
+
+    var TOTAL_TIME = 120;
+
+    // 注册Timer
+    var hasRunTime = 0;
+    var intervalID;
+
+    // 找回密码Timer
+    var hasRunTimePwd = 0;
+    var intervalIDPwd;
+
+    $(document).ready(function () {
+
+        // 初始化placeholder
+        $('input,textarea').placeholder();
+
+        // 注册事件
+        $('.switch_btn').click(function () { $('.card').toggleClass('active'); $('.login-reg-tip').text(''); });
+        $('#login_btn').click(function () { login(); });
+        $('#login_pwd').keydown(function (e) { enterHandler(e); });
+        $('#reg_btn').click(function () { reg(); });
+        $('#reg_phone').formatter({ 'pattern': '{{999}}-{{9999}}-{{9999}}' });
+        $('#getpwd_btn').click(function () { getPwd(); });
+        $('#getpwd_phone').formatter({ 'pattern': '{{999}}-{{9999}}-{{9999}}' });
+    })
+
+    /* 登录 */
+    function login() {
+        $('#login_tip').text('');
+
+        var userName = $.trim($('#login_user_name').val());
+        if (!userName) {
+            $('#login_tip').text('请输入用户名');
+            return;
+        }
+
+        var password = $.trim($('#login_pwd').val());
+        if (!password) {
+
+            $('#login_tip').text('请输入密码');
+            return;
+        }
+
+        $('#login_pwd_hidden').val($.md5(password));
+        $('#login_pwd').val('');
+
+        $('#login_btn').text('正在登录');  
+
+        $('#login_form').submit();
+    }
+
+
+    /* 登录密码框输入Enter事件 */
+    function enterHandler(event) {
+        var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+        if (keyCode == 13) {
+            login();
+        }
+    }
+
+    /* 注册 */
+    function reg() {
+        $('#reg_tip').text('');
+
+        var phoneFormat = $.trim($('#reg_phone').val());
+        if (!phoneFormat) {
+            $('#reg_tip').css('color', 'red');
+            $('#reg_tip').text('请输入手机号');
+            return;
+        }
+
+        var phone = phoneFormat.replace(/-/g, "");
+        if (!isMobile(phone)) {
+            $('#reg_tip').css('color', 'red');
+            $('#reg_tip').text('请输入正确的电话号码');
+            return;
+        }
+
+        var captcha = $.trim($('#reg_captcha').val());
+        if (!captcha) {
+            $('#reg_tip').css('color', 'red');
+            $('#reg_tip').text('请输入验证码');
+            return;
+        }
+
+        var agencyName = $.trim($('#reg_agency_name').val());
+        if (!agencyName) {
+            $('#reg_tip').css('color', 'red');
+            $('#reg_tip').text('请输入公司名称');
+            return;
+        }
+        if (agencyName.length < 4) {
+            $('#reg_tip').css('color', 'red');
+            $('#reg_tip').text('公司名称至少为4个字符');
+            return;
+        }
+
+        var chineseName = $.trim($('#reg_chinese_name').val());
+        if (!chineseName) {
+            $('#reg_tip').css('color', 'red');
+            $('#reg_tip').text('请输入昵称');
+            return;
+        }
+
+        var password = $.trim($('#reg_pwd').val());
+        if (!password) {
+            $('#reg_tip').css('color', 'red');
+            $('#reg_tip').text('请输入密码');
+            return;
+        }
+        if (password.length < 6) {
+            $('#reg_tip').css('color', 'red');
+            $('#reg_tip').text('密码至少为6个字符');
+            return;
+        }
+
+        $('#reg_pwd').val('');
+
+        $.ajax({
+            type: "POST",
+            url: "/home/regex?random=" + Math.random(),
+            data: { phone: phone, captcha: captcha, agency_name: agencyName, chinese_name: chineseName, pwd: $.md5(password) },
+            success: function (json) {
+                if (json.code == 1) {
+                    $('#reg_tip').css('color', '#15c288');
+                    $('#reg_tip').text('注册成功,您可以使用手机号和密码登录系统');
+                }
+                else {
+                    $('#reg_tip').css('color', 'red');
+                    $('#reg_tip').text('注册失败: ' + json.msg);
+                }
+            },
+            error: function (xhr, testStatus, error) {
+                alert("发送ajax请求失败： " + error);
+            }
+        });
+    }
+
+    /* 获取注册验证码 */
+    function getRegCaptcha() {
+
+        $('#reg_tip').text('');
+
+        var phoneFormat = $.trim($('#reg_phone').val());
+        if (!phoneFormat) {
+            $('#reg_tip').css('color', 'red');
+            $('#reg_tip').text('请输入手机号');
+            return;
+        }
+
+        var phone = phoneFormat.replace(/-/g, "");
+        if (!isMobile(phone)) {
+            $('#reg_tip').css('color', 'red');
+            $('#reg_tip').text('请输入正确的电话号码');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/GetCaptcha?random=" + Math.random(),
+            data: { code_type: 0, phone: phone },
+            success: function (json) {
+                if (json.code == 1) {
+                    $('#reg_get_captcha_btn').css('cursor', 'default');
+                    $('#reg_get_captcha_btn').css("color", '#afafaf');
+                    $('#reg_get_captcha_btn').attr('href', 'javascript:void(0)');
+
+                    intervalID = setInterval('getRegCaptchaTimerHandler()', 1000);
+                }
+                else {
+                    $('#reg_tip').css('color', 'red');
+                    $('#reg_tip').text('获取验证码失败: ' + json.msg);
+                }
+            },
+            error: function (xhr, testStatus, error) {
+                alert('开始发送ajax请求失败： ' + error);
+            }
+        });
+    }
+
+    /* 获取注册验证码周期函数 */
+    function getRegCaptchaTimerHandler() {
+
+        $('#reg_get_captcha_btn').text('{0}秒后重新获取'.format(TOTAL_TIME - hasRunTime))
+        hasRunTime++;
+
+        if (hasRunTime == TOTAL_TIME) {
+            clearInterval(intervalID);
+
+            hasRunTime = 0;
+            $('#reg_get_captcha_btn').text('获取验证码');
+            $('#reg_get_captcha_btn').removeAttr('style');
+            $('#reg_get_captcha_btn').css('cursor", "pointer');
+            $('#reg_get_captcha_btn').attr('href', 'javascript:getRegCaptcha()');
+        }
+    }
+
+    /* 找回密码 */
+    function getPwd() {
+        $('#getpwd_tip').text('');
+
+        var phoneFormat = $.trim($('#getpwd_phone').val());
+        if (!phoneFormat) {
+            $('#getpwd_tip').css('color', 'red');
+            $('#getpwd_tip').text('请输入手机号');
+            return;
+        }
+
+        var phone = phoneFormat.replace(/-/g, "");
+        if (!isMobile(phone)) {
+            $('#getpwd_tip').css('color', 'red');
+            $('#getpwd_tip').text('请输入正确的电话号码');
+            return;
+        }
+
+        var captcha = $.trim($('#getpwd_captcha').val());
+        if (!captcha) {
+            $('#getpwd_tip').css('color', 'red');
+            $('#getpwd_tip').text('请输入验证码');
+            return;
+        }
+
+        var password = $.trim($('#getpwd_newpwd').val());
+        if (!password) {
+            $('#getpwd_tip').css('color', 'red');
+            $('#getpwd_tip').text('请输入新密码');
+            return;
+        }
+        if (password.length < 6) {
+            $('#getpwd_tip').css('color', 'red');
+            $('#getpwd_tip').text('密码至少为6个字符');
+            return;
+        }
+
+        var pwdConfirm = $.trim($('#getpwd_newpwd_confirm').val());
+        if (pwdConfirm != password) {
+            $('#getpwd_tip').css('color', 'red');
+            $('#getpwd_tip').text('两次输入的密码不一致');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/SetNewPwd?random=" + Math.random(),
+            data: { phone: phone, captcha: captcha, pwd: $.md5(password) },
+            success: function (json) {
+                if (json.code == 1) {
+                    $('#getpwd_newpwd').val('');
+                    $('#getpwd_newpwd_confirm').val('');
+
+                    $('#getpwd_tip').css('color', '#15c288');
+                    $('#getpwd_tip').text('重置密码成功,您可以新密码登录系统');
+                }
+                else {
+                    $('#getpwd_tip').css('color', 'red');
+                    $('#getpwd_tip').text('重置密码失败: ' + json.msg);
+                }
+            },
+            error: function (xhr, testStatus, error) {
+                alert("发送ajax请求失败： " + error);
+            }
+        });
+    }
+
+    /* 获取找回密码验证码 */
+    function getGetPwdCaptcha() {
+
+        $('#getpwd_tip').text('');
+
+        var phoneFormat = $.trim($('#getpwd_phone').val());
+        if (!phoneFormat) {
+            $('#getpwd_tip').css('color', 'red');
+            $('#getpwd_tip').text('请输入手机号');
+            return;
+        }
+
+        var phone = phoneFormat.replace(/-/g, "");
+        if (!isMobile(phone)) {
+            $('#getpwd_tip').css('color', 'red');
+            $('#getpwd_tip').text('请输入正确的电话号码');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/home/getcaptcha?random=" + Math.random(),
+            data: { code_type: 1, phone: phone },
+            success: function (json) {
+                if (json.code == 1) {
+                    $('#getpwd_get_captcha_btn').css('cursor', 'default');
+                    $('#getpwd_get_captcha_btn').css("color", '#afafaf');
+                    $('#getpwd_get_captcha_btn').attr('href', 'javascript:void(0)');
+
+                    intervalIDPwd = setInterval('getGetPwdCaptchaTimerHandler()', 1000);
+                }
+                else {
+                    $('#getpwd_tip').css('color', 'red');
+                    $('#getpwd_tip').text('获取验证码失败: ' + json.msg);
+                }
+            },
+            error: function (xhr, testStatus, error) {
+                alert('开始发送ajax请求失败： ' + error);
+            }
+        });
+    }
+
+    /* 获取找回密码验证码周期函数 */
+    function getGetPwdCaptchaTimerHandler() {
+
+        $('#getpwd_get_captcha_btn').text('{0}秒后重新获取'.format(TOTAL_TIME - hasRunTimePwd))
+        hasRunTimePwd++;
+
+        if (hasRunTimePwd == TOTAL_TIME) {
+            clearInterval(intervalIDPwd);
+
+            hasRunTimePwd = 0;
+            $('#getpwd_get_captcha_btn').text('获取验证码');
+            $('#getpwd_get_captcha_btn').removeAttr('style');
+            $('#getpwd_get_captcha_btn').css('cursor", "pointer');
+            $('#getpwd_get_captcha_btn').attr('href', 'javascript:getGetPwdCaptcha()');
+        }
+    }
+
+</script>
+	
+</body>
+</html>

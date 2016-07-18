@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Skin>
+  <SkinID>spring</SkinID>
+  <Name>春天</Name>
+  <FrameBkg>frame_bkg.jpg</FrameBkg>
+  <SkinView>skin_view.jpg</SkinView>
+  <IconTextColor>#666666</IconTextColor>
+</Skin>

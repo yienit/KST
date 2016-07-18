@@ -1,0 +1,26 @@
+﻿<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">添加</span>
+</div>
+<div class="modal-body">
+    <span class="red block resulttip" id="tip_add"></span>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width50">姓名:</span></span>
+            <input type="text" class="form-control" id="chinese_name_add" maxlength="20"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width50">电话:</span></span>
+            <input type="text" class="form-control" id="phone_add" maxlength="15"  onkeypress="inputNumberOnly(this)"/>
+        </div>
+    </div>
+    
+
+    <div id="add_btn" class="btn btn-block btn-green" onclick="startAdd()">添加</div>
+
+</div>
+<div class="modal-footer"><span class="red block alignleft">提示：账号和密码默认为电话号码</span></div>
+
+

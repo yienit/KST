@@ -1,0 +1,185 @@
+﻿@using KST.Util
+@using KST.Model
+@using KST.DTO
+@using KST.Service
+@{
+    // 章节列表
+    List<Chapter> chapters = null;
+    Course currentCourse = Session[KST.Web.Constant.SESSION_KEY_COURSE] as Course;
+    if (currentCourse != null)
+    {
+        ServiceInvokeDTO<List<Chapter>> chaptersResult = ServiceFactory.Instance.ItemDataService.GetAgencyChapters(currentCourse.ID);
+        if (chaptersResult != null && chaptersResult.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+        {
+            chapters = chaptersResult.Data;
+        }
+    }
+    
+    // 详情
+    int isVipItem = 0;
+    int chapterID = 0;
+    string titile = string.Empty;
+    string imageBase64 = string.Empty;
+    int answer = -1;
+    string annotation = string.Empty;
+    int difficulty = 0;
+
+    int id = Convert.ToInt32(ApiQueryUtil.QueryArgByGet("id"));
+
+    ServiceInvokeDTO<JudgeItemDTO> result = ServiceFactory.Instance.ItemDataService.GetJudgeByID(id);
+    if (result != null && result.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+    {
+        JudgeItemDTO judgeDTO = result.Data;
+        if (judgeDTO != null)
+        {
+            isVipItem = judgeDTO.IsVipItem;
+            chapterID = judgeDTO.ChapterID;
+            titile = judgeDTO.Title == null ? string.Empty : judgeDTO.Title;
+            imageBase64 = judgeDTO.Image == null ? string.Empty : Convert.ToBase64String(judgeDTO.Image);
+            answer = judgeDTO.Answer;
+            annotation = judgeDTO.Annotation == null ? string.Empty : judgeDTO.Annotation;
+            difficulty = judgeDTO.Difficulty;
+        }
+    }
+}
+
+
+<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">修改</span>
+    <span class="red inlineblock aligncenter width600" id="tip_update"></span>
+</div>
+<div class="modal-body itemcontent">
+
+    <input type="hidden" id="id_update" value="@id"/>
+
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70"><span class="redstar">*</span>题库类型:</span></span>
+            <span class="form-control">
+
+            @if (isVipItem == 0)
+            { <label class="inputlable"><input type="radio" name="is_vip_item_update" value="0" checked="checked"/>&nbsp;普通题库</label> }
+            else
+            { <label class="inputlable"><input type="radio" name="is_vip_item_update" value="0" />&nbsp;普通题库</label>}
+
+            <span class="emptyspan30"></span>
+
+            @if (isVipItem == 1)
+            { <label class="inputlable"><input type="radio" name="is_vip_item_update" value="1" checked="checked"/>&nbsp;VIP题库</label> }
+            else
+            { <label class="inputlable"><input type="radio" name="is_vip_item_update" value="1" />&nbsp;VIP题库</label>}
+                
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70"><span class="redstar">*</span>所属章节:</span></span>
+            <select class="form-control" id="chapter_id_update">
+            @{
+                if (chapters != null)
+                {
+                    for (int i = 0; i < chapters.Count; i++)
+                    {
+                        if(chapters[i].ID == chapterID)
+                        { <option value ="@chapters[i].ID" selected="selected">@string.Format("第{0}章: {1}", i + 1, chapters[i].Name)</option> }
+                        else
+                        { <option value ="@chapters[i].ID">@string.Format("第{0}章: {1}", i + 1, chapters[i].Name)</option> }
+                    }
+                }
+            }
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70"><span class="redstar">*</span>题库标题:</span></span>
+            <textarea class="form-control" id="title_update" rows="4" >@titile</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="foretip width70"><a href="#" id="image_tip_update" rel="popover" data-content="图片将会在标题下方显示" data-original-title="提示"><i class="fa fa-info-circle greenico"></i></a>&nbsp;题库图片:</span>
+                <script type="text/javascript">
+                    $("#image_tip_update").popover({
+                        placement: 'right',
+                        trigger: 'hover'
+                    });
+                </script>
+            </span>
+            <input id="image_update" type="file" name="image"/>
+            @{
+                if (imageBase64.Length > 0)
+                {
+                    <script type="text/javascript">
+                        $("#image_update").fileinput({
+                            showUpload: false,
+                            allowedFileExtensions: ['jpg', 'png', 'gif'],
+                            maxFileSize: 2048,
+                            maxFileCount: 1,
+                            language: 'zh',
+                            initialPreview: ["<img src='data:image/png;base64,@imageBase64' class='file-preview-image'>"]
+                        });
+                    </script>
+                }
+                else
+                {
+                    <script type="text/javascript">
+                        $("#image_update").fileinput({
+                            showUpload: false,
+                            allowedFileExtensions: ['jpg', 'png', 'gif'],
+                            maxFileSize: 2048,
+                            maxFileCount: 1,
+                            language: 'zh'
+                        });
+                    </script>
+                }
+            }   
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width70"><span class="redstar">*</span>正确答案:</span></span>
+             <span class="form-control">
+
+                @if (answer == 0)
+                { <label class="inputlable"><input type="radio" name="answer_update" value="0" checked="checked"/>&nbsp;错误</label> }
+                else
+                { <label class="inputlable"><input type="radio" name="answer_update" value="0"/>&nbsp;错误</label> }
+
+                <span class="emptyspan30"></span>
+
+                @if (answer== 1)
+                { <label class="inputlable"><input type="radio" name="answer_update" value="1" checked="checked"/>&nbsp;正确</label> }
+                else
+                { <label class="inputlable"><input type="radio" name="answer_update" value="1"/>&nbsp;正确</label> }
+
+                <span class="emptyspan30"></span>
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width70">答案解析:</span></span>
+            <input type="text" class="form-control" id="annotation_update" value="@annotation"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width70"><span class="redstar">*</span>难易度:</span></span>
+            <span class="form-control">
+                <input type="number" id="difficulty_update" value="@difficulty" min="0" max="5" step="1" data-size="xs" data-show-clear="false" data-show-caption="false" />
+                <script type="text/javascript">$('#difficulty_update').rating();</script>
+            </span>
+        </div>
+    </div>
+
+    <div id="add_btn" class="btn btn-block btn-green" onclick="startUpdate()">修改</div>
+
+</div>
+<div class="modal-footer"></div>
+
+

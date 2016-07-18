@@ -1,0 +1,264 @@
+﻿@using KST.Web
+@using KST.DTO
+@{
+   
+    AgencyAdminDTO currentAdmin = Session[KST.Web.Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+    int agencyID = currentAdmin == null ? 0 : currentAdmin.Agency.ID;
+}
+
+<!DOCTYPE html>
+<html >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>考试通</title>
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/font-awesome/css/font-awesome.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap/css/bootstrap.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/style.css")" />
+</head>
+<body>
+@Html.Partial("_header-partial", KST.Web.HeaderTabMenu.AgencyHome)
+
+<!-- update agency contact modal -->
+<div id="update_agency_contact_modal" class="modal fade">
+    <div class="modal-dialog width500">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                <span class="modal-title">修改联系方式</span>
+            </div>
+            <div class="modal-body">
+                <span class="red block padding_b5" id="config_contact_update_tip"></span>
+                <div class="input-group">
+                    <span class="input-group-addon">联系方式：</span>
+                    <input type="text" class="form-control" id="config_contact_input" maxlength="50" />
+                    <span class="input-group-addon handcursor" onclick="javascript:startUpdateContactConfig();">
+                        <span class="font18"><i class="fa fa-pencil"></i></span>&nbsp;&nbsp;修改
+                    </span>
+                </div>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
+<!-- update agency notice modal -->
+<div id="update_agency_notice_modal" class="modal fade">
+    <div class="modal-dialog width600">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                <span class="modal-title">修改通知公告</span>
+            </div>
+            <div class="modal-body">
+                <span class="red block padding_b5" id="config_notice_update_tip"></span>
+                <div class="input-group">
+                    <span class="input-group-addon">通知公告：</span>
+                    <input type="text" class="form-control" id="config_notice_input" maxlength="150"/>
+                    <span class="input-group-addon handcursor" onclick="javascript:startUpdateNoticeConfig();">
+                        <span class="font18"><i class="fa fa-pencil"></i></span>&nbsp;&nbsp;修改
+                    </span>
+                </div>
+            </div>
+            <div class="modal-footer"></div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+
+	<div class="content_left">@Html.Partial("_left-menu-agency-partial")</div>
+	<div class="content_right">
+	  <div class="right_container">
+
+        <!-- alert -->
+        <div class="alert alert-success alert-dismissable hide" id="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <span>修改成功</span>
+        </div>
+
+        <!-- detail table -->
+		<table class="inputs-table" >
+			<tbody>
+				<tr><td class="text" rowspan="3" style="font-weight:bold; text-align:center;">基本信息</td><td class="text">机构名称：</td><td class="input"><span id="agency_name" class="padding_lr5"></span></td></tr>
+				<tr><td class="text">机构状态：</td><td class="input"><span id="agency_state" class="padding_lr5"></span></td></tr>
+                <tr><td class="text">注册时间：</td><td class="input"><span id="reg_time" class="padding_lr5"></span></td></tr>
+                <tr><td class="text" rowspan="3" style="font-weight:bold; text-align:center;">系统设置</td><td class="text"><i class="fa fa-info-circle greenico" data-toggle="popover" data-placement="top" data-trigger="hover" title="提示" data-content="开启设备锁后学生账号将会与设备绑定，如需切换设备登录需要解绑"></i>&nbsp;&nbsp;设备锁：</td><td class="input"><span id="config_device_lock" class="padding_lr5"></span><a href="javascript:void(0);" class="bluelink" id="set_device_lock_link"></a></td></tr>
+				<tr><td class="text"><i class="fa fa-info-circle greenico" data-toggle="popover" data-placement="top" data-trigger="hover" title="提示" data-content="公告通知将会在客户端APP上显示"></i>&nbsp;&nbsp;公告通知：</td><td class="input"><span id="config_notice" class="padding_lr5"></span><a href="javascript:showUpdateNoticeConfigModal();" class="bluelink">修改</a></td></tr>
+                <tr><td class="text"><i class="fa fa-info-circle greenico" data-toggle="popover" data-placement="top" data-trigger="hover" title="提示" data-content="联系方式将会在客户端APP上显示"></i>&nbsp;&nbsp;联系方式：</td><td class="input"><span id="config_contact" class="padding_lr5"></span><a href="javascript:showUpdateContactConfigModal();" class="bluelink">修改</a></td></tr>
+			</tbody>
+		 </table>
+
+	  </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap/js/bootstrap.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.placeholder.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/header.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/md5.js")"></script>
+
+<script type="text/javascript" >
+
+$(document).ready(function () {
+
+    // 初始化培训机构信息
+    getAgencyDetailWithAjax();
+})
+
+/* 修改机构通知公告 */
+function startUpdateNoticeConfig() {
+    $('#config_notice_update_tip').text('');
+
+    var newNotice = $('#config_notice_input').val();  
+
+    $.ajax({
+        type: "POST",
+        url: "/Agency/UpdateAgencyNoticeConfig?random=" + Math.random(),
+        data: {agency_id: @agencyID, notice: newNotice},
+        success: function (json) {
+            if (json.code == 1) {
+                // 刷新
+                $('#update_agency_notice_modal').modal('hide');
+                $('#config_notice').text(newNotice)
+            }
+            else {
+                $('#config_notice_update_tip').text('更新失败: ' + json.msg);
+                $('#config_notice_update_tip').show();
+            }
+        },
+        error: function (xhr, testStatus, error) {
+            alert('开始发送ajax请求失败： ' + error);
+        }
+    });
+}
+
+/* 显示修改机构通知公告窗体 */
+function showUpdateNoticeConfigModal() {
+    $('#config_notice_update_tip').text('');
+    $('#config_notice_input').val($('#config_notice').text());  
+     
+    $('#update_agency_notice_modal').modal('show');
+}
+
+/* 修改机构联系方式 */
+function startUpdateContactConfig() {
+    $('#config_contact_update_tip').text('');
+
+    var newContact = $('#config_contact_input').val();  
+
+    $.ajax({
+        type: "POST",
+        url: "/Agency/UpdateAgencyContactConfig?random=" + Math.random(),
+        data: {agency_id: @agencyID, contact: newContact},
+        success: function (json) {
+            if (json.code == 1) {
+                // 刷新
+                $('#update_agency_contact_modal').modal('hide');
+                $('#config_contact').text(newContact)
+            }
+            else {
+                $('#config_contact_update_tip').text('更新失败: ' + json.msg);
+                $('#config_contact_update_tip').show();
+            }
+        },
+        error: function (xhr, testStatus, error) {
+            alert('开始发送ajax请求失败： ' + error);
+        }
+    });
+}
+
+/* 显示修改机构联系方式窗体 */
+function showUpdateContactConfigModal() {
+    $('#config_contact_update_tip').text('');
+    $('#config_contact_input').val($('#config_contact').text());  
+     
+    $('#update_agency_contact_modal').modal('show');
+}
+
+/* 设置是否开启设备锁设置 */
+function setIsLockDeviceConfig(flag) {
+
+    $.ajax({
+        type: "POST",
+        url: "/Agency/SetIsLockDeviceConfig?random=" + Math.random(),
+        data: {agency_id: @agencyID, is_lock_device: flag},
+        success: function (json) {
+            if (json.code == 1) {
+                
+                // 刷新
+                if(flag == 1){
+                    $('#config_device_lock').text('已开启');
+                    $('#set_device_lock_link').text('关闭');
+                    $('#set_device_lock_link').attr('href','javascript:setIsLockDeviceConfig(0);');
+                }else{
+                    $('#config_device_lock').text('未启用');
+                    $('#set_device_lock_link').text('开启');
+                    $('#set_device_lock_link').attr('href','javascript:setIsLockDeviceConfig(1);');
+                }
+            }
+            else {
+                $('#alert').removeClass('alert-success').addClass('alert-danger');
+                $('#alert').removeClass('hide').addClass('show');
+                $('#alert span').text('设置设备锁参数失败: ' + json.msg);
+            }
+        },
+        error: function (xhr, testStatus, error) {
+            alert('开始发送ajax请求失败： ' + error);
+        }
+    });
+}
+
+/* 初始化培训机构信息 */
+function initAgencyDetailWithJson(data) {
+    if (data.name){
+        $('#agency_name').text(data.name);
+    }
+    var stateString = data.state == 0 ? "正常" : "禁用";
+    $('#agency_state').text(stateString);
+    $('#reg_time').text(data.add_time);
+
+    if(data.agency_config.is_lock_device == 1){
+        $('#config_device_lock').text('已开启');
+        $('#set_device_lock_link').text('关闭');
+        $('#set_device_lock_link').attr('href','javascript:setIsLockDeviceConfig(0);');
+    }else{
+        $('#config_device_lock').text('未启用');
+        $('#set_device_lock_link').text('开启');
+        $('#set_device_lock_link').attr('href','javascript:setIsLockDeviceConfig(1);');
+    }
+    if (data.agency_config.notice){
+        $('#config_notice').text(data.agency_config.notice);
+    }
+    if (data.agency_config.contact){
+        $('#config_contact').text(data.agency_config.contact);
+    }
+}
+
+/* ajax获取培训机构信息 */
+function getAgencyDetailWithAjax() {
+
+    $.ajax({
+        type: "GET",
+        url: "/Agency/GetAgencyDetail?random=" + Math.random(),
+        data: { agency_id: @agencyID},
+        success: function (json) {
+            if (json.code == 1) {
+                initAgencyDetailWithJson(json.data);
+            }
+            else {
+                $('#alert').removeClass('alert-success').addClass('alert-danger');
+                $('#alert').removeClass('hide').addClass('show');
+                $('#alert span').text('获取培训机构详情失败: ' + json.msg);
+            }
+        },
+        error: function (xhr, testStatus, error) {
+            alert('开始发送ajax请求失败： ' + error);
+        }
+    });
+}
+
+</script>
+
+</body>
+</html>

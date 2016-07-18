@@ -1,0 +1,47 @@
+﻿@using KST.Util
+@using KST.Model
+@using KST.DTO
+@using KST.Service
+
+@{
+    string chineseName = string.Empty;
+    string phone = string.Empty;
+    string levelString = string.Empty;
+    string addTime = string.Empty;
+    int adminID = Convert.ToInt32( ApiQueryUtil.QueryArgByGet("id"));
+    
+    ServiceInvokeDTO<AgencyAdmin> result= ServiceFactory.Instance.AgencyDataService.GetAdminByID(adminID);
+    if(result!= null && result.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+    {
+        AgencyAdmin admin = result.Data;
+        if(admin != null)
+        {
+            chineseName =  admin.ChineseName == null ? string.Empty : admin.ChineseName;
+            phone = admin.Phone == null ? string.Empty : admin.Phone;
+            levelString = admin.Level.GetDescription();
+            addTime = admin.AddTime.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+    }
+}
+
+<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">详情</span>
+</div>
+<div class="modal-body">
+    <table class="inputs-table" >
+	    <tbody>
+		    <tr><td class="text">姓名：</td><td class="input">@chineseName</td></tr>
+            <tr><td class="text">电话：</td><td class="input">@phone</td></tr>
+		    <tr><td class="text">账号类型：</td><td class="input">@levelString</td></tr>
+            <tr><td class="text">添加时间：</td><td class="input">@addTime</td></tr>
+	    </tbody>
+    </table>
+</div>
+<div class="modal-footer"></div>
+
+
+
+
+
+

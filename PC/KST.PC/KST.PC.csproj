@@ -1,0 +1,359 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7DA29F63-1C7C-441D-915A-A077B6E85FE2}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KST</RootNamespace>
+    <AssemblyName>kst</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ico_48.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\TH119-2015.10.28\Web\dll\Log4net\NET35\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\Config.cs" />
+    <Compile Include="Common\Constant.cs" />
+    <Compile Include="Common\SkinUtil.cs" />
+    <Compile Include="Common\UIInvokeUtil.cs" />
+    <Compile Include="Common\Win32.cs" />
+    <Compile Include="Common\XmlUtil.cs" />
+    <Compile Include="ControlEx\ControlState.cs" />
+    <Compile Include="ControlEx\SkinItemButton\SkinItemButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\MyHomeWorkPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\MyHomeWorkPanel.Designer.cs">
+      <DependentUpon>MyHomeWorkPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\MyWrongWorkPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\MyWrongWorkPanel.Designer.cs">
+      <DependentUpon>MyWrongWorkPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\MyFavoriteWorkPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\MyFavoriteWorkPanel.Designer.cs">
+      <DependentUpon>MyFavoriteWorkPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\MoreToolsWorkPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\MoreToolsWorkPanel.Designer.cs">
+      <DependentUpon>MoreToolsWorkPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\PreviousPapersWorkPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\PreviousPapersWorkPanel.Designer.cs">
+      <DependentUpon>PreviousPapersWorkPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\ExamSimulationWorkPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\ExamSimulationWorkPanel.Designer.cs">
+      <DependentUpon>ExamSimulationWorkPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\VipPapersWorkPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\VipPapersWorkPanel.Designer.cs">
+      <DependentUpon>VipPapersWorkPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\PracticeWorkPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\PracticeWorkPanel.Designer.cs">
+      <DependentUpon>PracticeWorkPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlEx\WorkPanel\WorkPanelBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\FormAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormAbout.Designer.cs">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Common\FormInstanceManager.cs" />
+    <Compile Include="Forms\FormSkin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSkin.Designer.cs">
+      <DependentUpon>FormSkin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Forms\FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Types\Skin.cs" />
+    <Compile Include="Types\WorkPanel.cs" />
+    <EmbeddedResource Include="ControlEx\WorkPanel\MyHomeWorkPanel.resx">
+      <DependentUpon>MyHomeWorkPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlEx\WorkPanel\MyWrongWorkPanel.resx">
+      <DependentUpon>MyWrongWorkPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlEx\WorkPanel\MyFavoriteWorkPanel.resx">
+      <DependentUpon>MyFavoriteWorkPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlEx\WorkPanel\MoreToolsWorkPanel.resx">
+      <DependentUpon>MoreToolsWorkPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlEx\WorkPanel\PreviousPapersWorkPanel.resx">
+      <DependentUpon>PreviousPapersWorkPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlEx\WorkPanel\ExamSimulationWorkPanel.resx">
+      <DependentUpon>ExamSimulationWorkPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlEx\WorkPanel\VipPapersWorkPanel.resx">
+      <DependentUpon>VipPapersWorkPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlEx\WorkPanel\PracticeWorkPanel.resx">
+      <DependentUpon>PracticeWorkPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlEx\WorkPanel\WorkPanelBase.resx">
+      <DependentUpon>WorkPanelBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormAbout.resx">
+      <DependentUpon>FormAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSkin.resx">
+      <DependentUpon>FormSkin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Forms\FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NuiLib\NuiLib.csproj">
+      <Project>{71D9320D-A2A4-4E0C-8346-EABCE81424B3}</Project>
+      <Name>NuiLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Service\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ico_48.ico" />
+    <None Include="Resources\ico_vip_papers.png" />
+    <None Include="Resources\ico_previous_papers.png" />
+    <None Include="Resources\ico_practice.png" />
+    <None Include="Resources\ico_my_wrong.png" />
+    <None Include="Resources\ico_my_home.png" />
+    <None Include="Resources\ico_my_favorite.png" />
+    <None Include="Resources\ico_more_tools.png" />
+    <None Include="Resources\ico_exam_simulation.png" />
+    <None Include="Resources\about_logo.png" />
+    <None Include="Resources\btn_border_green.png" />
+    <None Include="Resources\btn_full_green.png" />
+    <None Include="Resources\btn_gradient_green.png" />
+    <None Include="Resources\btn_green.png" />
+    <None Include="Resources\btn_orange.png" />
+    <None Include="Resources\btn_start_examine.png" />
+    <None Include="Resources\search.png" />
+    <None Include="Resources\statistics .png" />
+    <None Include="Resources\skin_item_bkg_normal.png" />
+    <None Include="Resources\skin_item_bkg_hover.png" />
+    <None Include="Resources\skin_form_bkg.png" />
+    <None Include="Resources\skin_item_select.png" />
+    <None Include="Resources\frame_bkg.jpg" />
+    <Content Include="Config\config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\log4net.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\waiting.gif" />
+    <Content Include="Config\themes\cinema\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\cinema\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\cinema\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\classic\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\classic\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\classic\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\coffee\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\coffee\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\coffee\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\coolsummer\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\coolsummer\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\coolsummer\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\default\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\default\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\default\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\di\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\di\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\di\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\grass\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\grass\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\grass\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\greenworld\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\greenworld\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\greenworld\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\mailafeng\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\mailafeng\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\spring\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\spring\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\spring\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\leisuretime\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\leisuretime\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\leisuretime\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\pyramid\frame_bkg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\pyramid\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\pyramid\skin_view.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\themes\mailafeng\skin.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\slogan.png" />
+    <None Include="Resources\png_logo_128.png" />
+    <None Include="Resources\main_menu_about_us.png" />
+    <None Include="Resources\main_menu_exchange.png" />
+    <None Include="Resources\main_menu_home.png" />
+    <None Include="Resources\main_menu_message.png" />
+    <None Include="Resources\main_menu_setting.png" />
+    <None Include="Resources\main_menu_sign_out.png" />
+    <None Include="Resources\main_menu_update.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

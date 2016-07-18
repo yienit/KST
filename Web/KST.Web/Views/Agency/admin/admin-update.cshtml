@@ -1,0 +1,54 @@
+﻿@using KST.Util
+@using KST.Model
+@using KST.DTO
+@using KST.Service
+
+@{
+    string chineseName = string.Empty;
+    string phone = string.Empty;
+
+    int adminID = 0;
+    if(!string.IsNullOrEmpty(ApiQueryUtil.QueryArgByGet("id")))
+    {
+        adminID = Convert.ToInt32( ApiQueryUtil.QueryArgByGet("id"));
+    }
+    
+    ServiceInvokeDTO<AgencyAdmin> result= ServiceFactory.Instance.AgencyDataService.GetAdminByID(adminID);
+    if(result!= null && result.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+    {
+        AgencyAdmin admin = result.Data;
+        if(admin != null)
+        {
+            chineseName =  admin.ChineseName == null ? string.Empty : admin.ChineseName;
+            phone = admin.Phone == null ? string.Empty : admin.Phone;
+        }
+    }
+}
+
+<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">修改</span>
+</div>
+<div class="modal-body">
+    <input type="hidden" id="id_update" value="@adminID"/>
+    <span class="red block resulttip" id="tip_update"></span>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width50">姓名:</span></span>
+            <input type="text" class="form-control" id="chinese_name_update" value="@chineseName" maxlength="20"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width50">电话:</span></span>
+            <input type="text" class="form-control" id="phone_update" value="@phone" maxlength="15"  onkeypress="inputNumberOnly(this)"/>
+        </div>
+    </div>
+    
+
+    <div id="add_btn" class="btn btn-block btn-green" onclick="startUpdate()">修改</div>
+
+</div>
+<div class="modal-footer"></div>
+
+

@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{71D9320D-A2A4-4E0C-8346-EABCE81424B3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NuiLib</RootNamespace>
+    <AssemblyName>NuiLib</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NuiBlueControl\NuiBlueButton\NuiBlueButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NuiBlueControl\NuiBlueCheckBox\NuiBlueCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NuiBlueControl\NuiBlueColorTable.cs" />
+    <Compile Include="NuiBlueControl\NuiBlueControlState.cs" />
+    <Compile Include="NuiBlueControl\NuiBlueGlassButton\NuiBlueGlassButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NuiBlueControl\NuiBlueMessageBox\NuiBlueMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NuiBlueControl\NuiBlueMessageBox\NuiBlueMessageBoxButtons.cs" />
+    <Compile Include="NuiBlueControl\NuiBlueMessageBox\NuiBlueMessageBoxIcon.cs" />
+    <Compile Include="NuiBlueControl\NuiBlueMouseOperate.cs" />
+    <Compile Include="NuiBlueControl\NuiBlueRadioButton\NuiBlueRadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NuiBlueControl\NuiBlueTextBox\NuiBlueTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NuiControl\NuiCheckBox\NuiCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NuiControl\NuiContextMenuStrip\NuiContextMenuStripRender.cs" />
+    <Compile Include="NuiControl\NuiForm\NuiFormShadow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NuiControl\NuiForm\NuiFormShadow.designer.cs">
+      <DependentUpon>NuiFormShadow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NuiControl\NuiForm\SysButton.cs" />
+    <Compile Include="NuiControl\NuiForm\SysButtonName.cs" />
+    <Compile Include="NuiControl\NuiForm\SysButtonState.cs" />
+    <Compile Include="NuiControl\NuiHeaderPanel\NuiHeaderButton.cs" />
+    <Compile Include="NuiControl\NuiHeaderPanel\NuiHeaderButtonState.cs" />
+    <Compile Include="NuiControl\NuiHeaderPanel\NuiHeaderButtonEventArgs.cs" />
+    <Compile Include="NuiControl\NuiHeaderPanel\NuiHeaderPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NuiControl\NuiHeaderPanel\NuiHeaderButtonEventHandler.cs" />
+    <Compile Include="NuiControl\NuiImageButton\NuiImageButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="NuiControl\NuiImageButton\NuiImageButtonState.cs" />
+    <Compile Include="Core\Render.cs" />
+    <Compile Include="NuiControl\NuiForm\NuiFormBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NuiControl\NuiForm\NuiFormBase.Designer.cs">
+      <DependentUpon>NuiFormBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NuiControl\NuiRadioButton\NuiRadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Type\ShadowSytle.cs" />
+    <Compile Include="Util\MethodHelper.cs" />
+    <Compile Include="Util\Win32.cs" />
+    <EmbeddedResource Include="NuiBlueControl\NuiBlueMessageBox\NuiBlueMessageBox.resx">
+      <DependentUpon>NuiBlueMessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NuiControl\NuiForm\NuiFormBase.resx">
+      <DependentUpon>NuiFormBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NuiControl\NuiForm\NuiFormShadow.resx">
+      <DependentUpon>NuiFormShadow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\window_shadow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sysbtn_restore.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sysbtn_close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sysbtn_max.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sysbtn_menu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sysbtn_min.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sysbtn_skin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\header_btn_focus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\header_btn_enter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_radiobox_dot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_btn_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_btn_focus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_btn_highlight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_btn_normal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_checkbox_check.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_glassbtn_down.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_glassbtn_hot.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_msgbox_error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_msgbox_info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_msgbox_ok.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_msgbox_question.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blue_msgbox_warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\radio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checkbox.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

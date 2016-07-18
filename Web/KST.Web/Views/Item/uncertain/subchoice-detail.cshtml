@@ -1,0 +1,72 @@
+﻿@using KST.Util
+@using KST.Model
+@using KST.DTO
+@using KST.Service
+
+@{
+    string titile = string.Empty;
+    string imageBase64 = string.Empty;
+    string a = string.Empty;
+    string b = string.Empty;
+    string c = string.Empty;
+    string d = string.Empty;
+    string answer = string.Empty;
+    string annotation = string.Empty;
+    string addPerson = string.Empty;
+    string addTime = string.Empty;
+    
+    int id = Convert.ToInt32( ApiQueryUtil.QueryArgByGet("id"));
+
+    ServiceInvokeDTO<UncertainSubChoice> result = ServiceFactory.Instance.ItemDataService.GetUncertainSubChoiceByID(id);
+    if(result!= null && result.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+    {
+        UncertainSubChoice subchoice = result.Data;
+        if (subchoice != null)
+        {
+            titile = subchoice.Title == null ? string.Empty : subchoice.Title;
+            imageBase64 = subchoice.Image == null ? string.Empty : Convert.ToBase64String(subchoice.Image);
+            a = subchoice.A == null ? string.Empty : subchoice.A;
+            b = subchoice.B == null ? string.Empty : subchoice.B;
+            c = subchoice.C == null ? string.Empty : subchoice.C;
+            d = subchoice.D == null ? string.Empty : subchoice.D;
+
+            answer = subchoice.Answer == null ? string.Empty : subchoice.Answer;
+            annotation = subchoice.Annotation == null ? string.Empty : subchoice.Annotation;
+            addPerson = subchoice.AddPerson == null ? string.Empty : subchoice.AddPerson;
+            addTime = subchoice.AddTime.ToString("yyyy-MM-dd HH:mm:ss");
+        }
+    }
+}
+
+<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">详情</span>
+</div>
+<div class="modal-body itemcontent">
+    <table class="inputs-table" >
+	    <tbody>
+		    <tr><td class="text">标题：</td><td class="input">@titile</td></tr>
+
+            @if (imageBase64.Length > 0)
+            { <tr><td class="text">图片：</td><td class="input"><img src= "data:image/png;base64,@imageBase64" class="itemimg"/></td></tr>   }
+            else
+            { <tr><td class="text">图片：</td><td class="input">无</td></tr> }
+           
+            <tr><td class="text">选项A：</td><td class="input">@a</td></tr>
+            <tr><td class="text">选项B：</td><td class="input">@b</td></tr>
+            <tr><td class="text">选项C：</td><td class="input">@c</td></tr>
+            <tr><td class="text">选项D：</td><td class="input">@d</td></tr>
+            <tr><td class="text">答案：</td><td class="input">@answer</td></tr>
+            <tr><td class="text">答案解析：</td><td class="input">@annotation</td></tr>
+            <tr><td class="text">添加人：</td><td class="input">@addPerson</td></tr>
+            <tr><td class="text">添加时间：</td><td class="input">@addTime</td></tr>
+	    </tbody>
+    </table>
+</div>
+<div class="modal-footer"></div>
+
+
+
+
+
+

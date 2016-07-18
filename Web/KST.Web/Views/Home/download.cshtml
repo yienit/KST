@@ -1,0 +1,136 @@
+﻿<!doctype html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>我要考试通</title>
+	<meta name="keywords" content="我要考试通" />
+	<meta name="description" content="我要考试通是一款会计类在线考试APP" />
+    <link rel="stylesheet" href="@Url.Content("~/static/css/index.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/static/css/font-awesome/css/font-awesome.min.css")" />
+</head>
+<body>
+
+<!-- header -->
+<div class="page_header p-t-10 p-b-10">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-2">
+                <a href="/home/index"><img src="@Url.Content("~/static/images/index/logo.png")" alt="" /></a>
+            </div>
+            <div class="col-xs-8">
+                <ul class="list-inline list-unstyled m-0 nav_bar">
+                    <li><a href="/home/index">首页</a></li>
+					<li><a href="/home/download">产品</a></li>
+					<li><a href="/home/document">文档</a></li>
+                    <li><a href="/home/about">关于</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-2 text-right">
+                <ul class="list-unstyled list-inline m-0 reg_area">
+                    <li><a href="/home/login">登录</a></li>
+                    <li><a href="/home/reg">注册</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /header -->
+		
+<div id="particles">
+  <div id="intro">
+    <h1>考试通,让考试如此简单</h1>
+    <p>下载客户端开启学习之旅</p>
+    <a href="#" class="btn"><i class="fa fa-desktop" style="margin-right:12px;"></i>电脑版</a>
+	<a href="#" class="btn" style="margin-left:25px"><i class="fa fa-android" style="margin-right:12px;"></i>安卓版</a>
+	<a href="#" class="btn" style="margin-left:25px"><i class="fa fa-apple" style="margin-right:12px;"></i>苹果版</a>
+  </div>
+</div>
+
+<!-- footer -->
+<div class="page_footer bg-black">
+    <div class="container bdb_gd p-t-20 p-b-20">
+        <div class="row">
+            <div class="col-xs-3">
+                <a href="/home/index"><img src="@Url.Content("~/static/images/index/foot-logo.png")" alt="" /></a>
+            </div>
+            <div class="col-xs-9">
+                <ul class="list-inline list-unstyled m-0 footer_nav fz-14 text-right">
+                    <li>
+                        <a href="/home/download">客户端下载</a> <span>|</span>
+                    </li>
+                    <li>
+                        <a href="/home/reg">免费注册</a> <span>|</span>
+                    </li>
+                    <li>
+                        <a href="/home/about">关于我们</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="text-center fz-12 p-t-5 p-b-5">
+        <span class="c-g9">© 2015-2016&nbsp;51kaoshitong.com&nbsp;版权所有&nbsp;&nbsp;&nbsp;&nbsp;ICP证：赣ICP备14009662号-3</span>
+    </div>
+</div>
+<!-- /footer -->
+		
+<!-- Older IE warning message -->
+<!--[if lt IE 10]>
+<div class="ie-warning">
+    <h1 class="c-white">警告!!</h1>
+    <p>您正在使用低版本的浏览器来浏览本网站内容，点击以下图标可升级您的浏览器。不便之处还望理解!</p>
+    <div class="iew-container">
+        <ul class="iew-download">
+            <li>
+                <a href="http://www.google.com/chrome/">
+                    <img src="@Url.Content("~/static/images/index/browsers/chrome.png")" alt="">
+                    <div>Chrome</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.mozilla.org/en-US/firefox/new/">
+                    <img src="@Url.Content("~/static/images/index/browsers/firefox.png")" alt="">
+                    <div>Firefox</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://www.opera.com">
+                    <img src="@Url.Content("~/static/images/index/browsers/opera.png")" alt="">
+                    <div>Opera</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.apple.com/safari/">
+                    <img src="@Url.Content("~/static/images/index/browsers/safari.png")" alt="">
+                    <div>Safari</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                    <img src="@Url.Content("~/static/images/index/browsers/ie.png")" alt="">
+                    <div>IE (New)</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <p></p>
+</div>
+<![endif]-->
+
+</body>
+
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.particleground.min.js")"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#particles').particleground({
+            dotColor: '#5cbdaa',
+            lineColor: '#5cbdaa'
+        });
+        $('.intro').css({
+            '	margin-top': -($('.intro').height() / 2)
+        });
+    });
+</script>
+</html>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Skin>
+	<SkinID>cinema</SkinID>
+  <Name>海上电影院</Name>
+  <FrameBkg>frame_bkg.jpg</FrameBkg>
+	<SkinView>skin_view.jpg</SkinView>
+	<IconTextColor>#ffffff</IconTextColor>
+</Skin>

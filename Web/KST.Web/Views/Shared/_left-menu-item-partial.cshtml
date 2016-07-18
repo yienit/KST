@@ -1,0 +1,63 @@
+﻿@using KST.Web
+@using KST.Core
+@using KST.Model
+@{
+   
+    Course currentCourse = Session[KST.Web.Constant.SESSION_KEY_COURSE] as Course;
+    string courseCode = currentCourse == null ? string.Empty : currentCourse.Code;
+}
+
+<div class="ce_navlist_container">
+	<ul>  
+        <li class="ce_navlist">
+			<span><a href="/item/chapterlist" title="" ><i class="fa fa-cog"></i>&nbsp;章节设置</a></span>
+		</li>  
+        
+        @{
+            switch (courseCode.ToLower())
+            {
+                case CourseCode.KJ_KJJC:    // 会计基础
+                {
+                    <li class="ce_navlist"><span><a href="/item/singlelist" title="" ><i class="fa fa-dot-circle-o"></i>&nbsp;单选题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/multiplelist" title="" ><i class="fa fa-check-square"></i>&nbsp;多选题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/judgelist" title="" ><i class="fa fa-check"></i>&nbsp;判断题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/kjjcindex" title="" ><i class="fa fa-pencil-square-o"></i>&nbsp;分析题</a></span></li>
+                } break;
+
+                case CourseCode.KJ_CJFG:    // 财经法规与职业道德
+                {
+                    <li class="ce_navlist"><span><a href="/item/singlelist" title="" ><i class="fa fa-dot-circle-o"></i>&nbsp;单选题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/multiplelist" title="" ><i class="fa fa-check-square"></i>&nbsp;多选题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/judgelist" title="" ><i class="fa fa-check"></i>&nbsp;判断题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/uncertainlist" title="" ><i class="fa fa-pencil-square-o"></i>&nbsp;分析题</a></span></li>
+                } break;
+
+                case CourseCode.KJ_DSH:    // 会计电算化
+                {
+                    <li class="ce_navlist"><span><a href="/item/singlelist" title="" ><i class="fa fa-dot-circle-o"></i>&nbsp;单选题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/multiplelist" title="" ><i class="fa fa-check-square"></i>&nbsp;多选题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/judgelist" title="" ><i class="fa fa-check"></i>&nbsp;判断题</a></span></li>
+                } break;
+
+
+                case CourseCode.KJ_JJFJC:    // 经济法基础
+                {
+                    <li class="ce_navlist"><span><a href="/item/singlelist" title="" ><i class="fa fa-dot-circle-o"></i>&nbsp;单选题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/multiplelist" title="" ><i class="fa fa-check-square"></i>&nbsp;多选题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/judgelist" title="" ><i class="fa fa-check"></i>&nbsp;判断题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/uncertainlist" title="" ><i class="fa fa-question-circle"></i>&nbsp;不定项选择</a></span></li>
+                } break;
+
+                case CourseCode.KJ_CJKJSW:    // 初级会计实务
+                {
+                    <li class="ce_navlist"><span><a href="/item/singlelist" title="" ><i class="fa fa-dot-circle-o"></i>&nbsp;单选题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/multiplelist" title="" ><i class="fa fa-check-square"></i>&nbsp;多选题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/judgelist" title="" ><i class="fa fa-check"></i>&nbsp;判断题</a></span></li>
+                    <li class="ce_navlist"><span><a href="/item/uncertainlist" title="" ><i class="fa fa-question-circle"></i>&nbsp;不定项选择</a></span></li>
+                } break;
+
+                default: break;
+            }
+        } 
+    </ul>
+</div>

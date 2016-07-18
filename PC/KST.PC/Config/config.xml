@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+  <Basic>
+    <SkinID>cinema</SkinID>
+    <MaxLogFileCount>30</MaxLogFileCount>
+  </Basic>
+</Config>

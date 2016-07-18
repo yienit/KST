@@ -1,0 +1,74 @@
+﻿@using KST.Util
+@using KST.Model
+@using KST.DTO
+@using KST.Service
+
+@{
+    List<Chapter> chapters = null;
+
+    Course currentCourse = Session[KST.Web.Constant.SESSION_KEY_COURSE] as Course;
+    if (currentCourse != null)
+    {
+        ServiceInvokeDTO<List<Chapter>> result = ServiceFactory.Instance.ItemDataService.GetAgencyChapters(currentCourse.ID);
+        if (result != null && result.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+        {
+            chapters = result.Data;
+        }
+    }
+}
+
+<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">查询</span>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70">题库类型:</span></span>
+            <span class="form-control">
+                <label class="inputlable"><input type="radio" name="is_vip_item_query" value="-1" checked="checked"/>&nbsp;全部类型</label> 
+                <span class="emptyspan30"></span>
+                <label class="inputlable"><input type="radio" name="is_vip_item_query" value="0" />&nbsp;普通题库</label>
+                <span class="emptyspan30"></span>
+                <label class="inputlable"><input type="radio" name="is_vip_item_query" value="1" />&nbsp;VIP题库</label>
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70">所属章节:</span></span>
+            <select class="form-control" id="chapter_id_query">
+            @{
+                <option value ="-1">所有章节</option>
+                
+                if (chapters != null)
+                {
+                    for (int i = 0; i < chapters.Count; i++)
+                    {
+                         <option value ="@chapters[i].ID">@string.Format("第{0}章: {1}", i + 1, chapters[i].Name) </option>
+                    }
+                }
+            }
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70">标题:</span></span>
+            <input type="text" class="form-control" id="title_query"/>
+        </div>
+    </div>
+
+     <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70">添加人:</span></span>
+            <input type="text" class="form-control" id="add_person_query"/>
+        </div>
+    </div>
+
+    <div id="query_btn" class="btn btn-block btn-green" onclick="startQuery()">查询</div>
+
+</div>
+<div class="modal-footer"></div>
+
+

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+	说明：该文件为拨号器云端配置文件，非系统维护人员请勿修改该文件内容。
+-->
+<Config>
+
+  <Basic>
+
+    <!-- 数据库连接字符串 -->
+    <DBConnection>Server=localhost;Port=3306;Database=bhq;Uid=root;Pwd=abc123_;</DBConnection>
+
+    <!--<DBConnection>Server=127.0.0.1;Port=57858;Database=bhq;Uid=product;Pwd=e9N2#0W_it93s02ft</DBConnection>  -->
+
+    <!-- 日志文件保存天数 -->
+    <MaxLogFileCount>30</MaxLogFileCount>
+
+  </Basic>
+
+  <Security>
+
+    <!-- API接口调用参数签名密钥 -->
+    <ApiSignSecretKey>#%*1now_bhq_sign*%#</ApiSignSecretKey>
+
+    <!-- 验证码过期时间(单位：秒) -->
+    <CaptchaExpireTime>300</CaptchaExpireTime>
+   
+  </Security>
+
+  <Sms>
+
+    <!-- 云片网络短信平台Api Key -->
+    <SmsApiKey>16ada94b1e779c4613fac187682c5346</SmsApiKey>
+
+    <Template>
+
+      <!-- 注册账号时短信验证码模板 -->
+      <RegTemplate>【小胖猴】您正在注册小胖猴拨号器账号，验证码为{0}，请输入验证码完成注册。</RegTemplate>
+
+      <!-- 找回密码时短信验证码模板 -->
+      <GetPasswordTemplate>【小胖猴】您正在找回密码，验证码为{0}，请输入验证码找回密码。</GetPasswordTemplate>
+
+      <!-- 手机动态登录时短信验证码模板 -->
+      <LoginTemplate>【小胖猴】您正在使用手机验证码登录小胖猴拨号器，验证码为{0}，请输入验证码完成登录。</LoginTemplate>
+
+    </Template>
+
+  </Sms>
+
+  <AppVersion>
+
+    <!-- PC客户端最新版本、下载链接及更新日志 -->
+    <PC>
+      <Version></Version>
+      <DownloadUrl></DownloadUrl>
+      <ChangeLog></ChangeLog>
+    </PC>
+
+    <!-- Android客户端最新版本、下载链接及更新日志 -->
+    <Android>
+      <Version></Version>
+      <DownloadUrl></DownloadUrl>
+      <ChangeLog></ChangeLog>
+    </Android>
+
+    <!-- IOS客户端最新版本、下载链接及更新日志 -->
+    <IOS>
+      <Version></Version>
+      <DownloadUrl></DownloadUrl>
+      <ChangeLog></ChangeLog>
+    </IOS>
+    
+  </AppVersion>
+
+</Config>

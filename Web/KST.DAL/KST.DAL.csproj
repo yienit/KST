@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9DEB56CB-18CA-401A-9AB9-0526DEB05762}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KST.DAL</RootNamespace>
+    <AssemblyName>KST.DAL</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper">
+      <HintPath>..\library\Dapper\NET35\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\MySQL Connector Net 6.9.7\Assemblies\v2.0\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConnectionManager.cs" />
+    <Compile Include="DALFactory.cs" />
+    <Compile Include="DAL\ItemData\FenLuItemDAL.cs" />
+    <Compile Include="DAL\ItemData\NumberBlankItemDAL.cs" />
+    <Compile Include="DAL\ItemData\UncertainItemDAL.cs" />
+    <Compile Include="DAL\ItemData\UncertainSubChoiceDAL.cs" />
+    <Compile Include="DAL\RecordData\AdminDoRecordDAL.cs" />
+    <Compile Include="DAL\AgencyData\AgencyAdminDAL.cs" />
+    <Compile Include="DAL\AgencyData\AgencyConfigDAL.cs" />
+    <Compile Include="DAL\AgencyData\AgencyCreatorDAL.cs" />
+    <Compile Include="DAL\AgencyData\AgencyDAL.cs" />
+    <Compile Include="DAL\RecordData\CaptchaRecordDAL.cs" />
+    <Compile Include="DAL\ItemData\ChapterDAL.cs" />
+    <Compile Include="DAL\ItemData\CourseDAL.cs" />
+    <Compile Include="DAL\RecordData\FeedbackDAL.cs" />
+    <Compile Include="DAL\UserData\MyCommentDAL.cs" />
+    <Compile Include="DAL\UserData\MyPostErrorItemDAL.cs" />
+    <Compile Include="DAL\ItemData\JudgeItemDAL.cs" />
+    <Compile Include="DAL\ItemData\MultipleItemDAL.cs" />
+    <Compile Include="DAL\UserData\MyErrorDAL.cs" />
+    <Compile Include="DAL\UserData\MyFavoriteDAL.cs" />
+    <Compile Include="DAL\UserData\MyScoreDAL.cs" />
+    <Compile Include="DAL\PaperData\PaperDAL.cs" />
+    <Compile Include="DAL\PaperData\PaperJudgeDAL.cs" />
+    <Compile Include="DAL\PaperData\PaperMultipleDAL.cs" />
+    <Compile Include="DAL\PaperData\PaperSingleDAL.cs" />
+    <Compile Include="DAL\ItemData\SingleItemDAL.cs" />
+    <Compile Include="DAL\SystemData\SysChapterDAL.cs" />
+    <Compile Include="DAL\SystemData\SysCourseDAL.cs" />
+    <Compile Include="DAL\UserData\UserDAL.cs" />
+    <Compile Include="DAL\RecordData\ClientLoginRecordDAL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KST.DTO\KST.DTO.csproj">
+      <Project>{6C23A03E-4369-471D-8568-70B42A4C4F62}</Project>
+      <Name>KST.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KST.Model\KST.Model.csproj">
+      <Project>{9F326BBD-7B89-4EC4-9E67-6022DE4ABCCD}</Project>
+      <Name>KST.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

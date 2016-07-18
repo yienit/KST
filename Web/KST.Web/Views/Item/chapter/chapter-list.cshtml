@@ -1,0 +1,396 @@
+﻿<!DOCTYPE html>
+<html >
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>考试通</title>
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/font-awesome/css/font-awesome.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap/css/bootstrap.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap-table/bootstrap-table.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap-star-rating/star-rating.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap-fileinput/css/fileinput.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/uploadify/uploadify.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/style.css")" />
+</head>
+<body>
+@Html.Partial("_header-partial",KST.Web.HeaderTabMenu.ItemManagement)
+
+<!-- add modal -->
+<div id="add_modal" class="modal fade" data-backdrop="static">
+    <div class="modal-dialog width700">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<!-- update modal -->
+<div id="update_modal" class="modal fade">
+    <div class="modal-dialog width700">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<!-- detail modal -->
+<div id="detail_modal" class="modal fade">
+    <div class="modal-dialog width700">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<!-- delete confirm modal -->
+<div id="delete_confirm_modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                <span class="modal-title">提示</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="id_delete" value="0"/>
+                <p>删除该章节后，所属本章节的题库同时也会删除，确定要删除吗?</p> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="startDelete()">&nbsp;&nbsp;删除&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-info" data-dismiss="modal">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- batch delete confirm modal -->
+<div id="batch_delete_confirm_modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                <span class="modal-title">提示</span>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除选中的记录吗?</p> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="startDeleteInBatch()">&nbsp;&nbsp;删除&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-info" data-dismiss="modal">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- alert modal -->
+<div id="alert_modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                <span class="modal-title">提示</span>
+            </div>
+            <div class="modal-body"><p></p></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+
+	<div class="content_left">@Html.Partial("_left-menu-item-partial")</div>
+	<div class="content_right">
+	  <div class="right_container_list">
+		 <div class="row" >
+			<div class="col-lg-12">
+
+            <div class="table-name"><i class="fa fa-th gray"></i>&nbsp;题库管理·章节设置</div>
+
+            <div class="btn-toolbar" role="toolbar" id="toolbar">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" style="outline:none;" onclick="refreshTable()"><i class="fa fa-refresh toolico"></i><span class="tooltext">刷新</span></button>
+                    <button type="button" class="btn btn-default" style="outline:none;" onclick="showAddModal();"><i class="fa fa-plus toolico"></i><span class="tooltext">添加</span></button>
+                    <button type="button" class="btn btn-default" style="outline:none;" onclick="showBatchDeleteConfirmModal();" title="批量删除"><i class="fa fa-remove toolico"></i><span class="tooltext">删除</span></button>
+                </div>
+            </div>
+
+            <table id="table"
+                data-toggle="table"
+                data-url="/Item/GetAllChapter"
+                data-pagination="false"
+                data-cache="false"
+                data-toolbar="#toolbar"
+                data-row-style="rowStyle"
+                data-striped="true">
+            <thead>
+            <tr>
+                <th data-field="state" data-checkbox="true" data-align="center" data-valign="middle"></th>
+                <th data-field="name" data-align="center" data-valign="middle">章节名称</th>
+                <th data-field="operate" data-align="center" data-valign="middle" data-formatter="operateFormatter">操作</th>
+            </tr>
+            </thead>
+            </table>
+		 
+			</div>
+		</div>
+	  </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap/js/bootstrap.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-table/bootstrap-table.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.placeholder.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-star-rating/star-rating.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-fileinput/js/fileinput.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-fileinput/js/fileinput_locale_zh.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/uploadify/jquery.uploadify.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/header.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/md5.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/util.js")"></script>
+
+<script type="text/javascript">
+
+    /* 设置表格数据行样式 */
+    function rowStyle(row, index) {
+        return { classes: 'rowheight' };
+    }
+
+    /* 操作Formatter*/
+    function operateFormatter(value, row) {
+        var html = '<i class="fa fa-info-circle operateico"></i><a href="javascript:showDetailModal({0});" class="tablelink">详情</a>'.format(row.id) +
+                '<span class="blankspan"></span><i class="fa fa-pencil operateico"></i><a href="javascript:showUpdateModal({0});" class="tablelink">修改</a>'.format(row.id) +
+                '<span class="blankspan"></span><i class="fa fa-arrow-up operateico"></i><a href="javascript:startUpChapter({0});" class="tablelink" title="调整章节顺序">上调</a>'.format(row.id) +
+                '<span class="blankspan"></span><i class="fa fa-arrow-down operateico"></i><a href="javascript:startDownChapter({0});" class="tablelink" title="调整章节顺序">下调</a>'.format(row.id) +
+                '<span class="blankspan"></span><i class="fa fa-remove operateico_delete"></i><a href="javascript:showDeleteConfirmModal({0});" class="tablelink">删除</a>'.format(row.id);
+        return html;
+    }
+
+    /* 显示添加窗体 */
+    function showAddModal() {
+        $('body').on('hidden.bs.modal', '.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        $("#add_modal").modal({
+            remote: "/Item/ChapterAddTemplate"
+        });
+
+        $('#add_modal').modal('show');
+    }
+
+    /* 显示修改窗体 */
+    function showUpdateModal(id) {
+        $('body').on('hidden.bs.modal', '.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        $("#update_modal").modal({
+            remote: "/Item/ChapterUpdateTemplate?id=" + id
+        });
+        $('#update_modal').modal('show');
+    }
+
+    /* 显示详情窗体 */
+    function showDetailModal(id) {
+        $('body').on('hidden.bs.modal', '.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        $("#detail_modal").modal({
+            remote: "/Item/ChapterDetailTemplate?id=" + id
+        });
+        $('#detail_modal').modal('show');
+    }
+
+    /* 显示删除确认窗体 */
+    function showDeleteConfirmModal(id) {
+        $('#id_delete').val(id);
+        $('#delete_confirm_modal').modal('show');
+    }
+
+    /* 显示批量删除确认窗体 */
+    function showBatchDeleteConfirmModal() {
+        var selections = $('#table').bootstrapTable('getSelections');
+        if (selections && selections.length > 0) {
+            var idList = $.map(selections, function (row) { return row.id; });
+            $('#batch_delete_confirm_modal .modal-body p').text('确定要删除选中的记录吗?');
+            $('#batch_delete_confirm_modal').modal('show');
+        }
+        else {
+            showAlertModal('没有记录被选中');
+        }
+    }
+
+    /* 显示操作提示窗体 */
+    function showAlertModal(msg) {
+        $('#alert_modal .modal-body p').text(msg);
+        $('#alert_modal').modal('show');
+    }
+
+    /* 刷新表格 */
+    function refreshTable() {
+        $('#table').bootstrapTable('refresh');
+    }
+
+    /* 开始添加 */
+    function startAdd() {
+        $('#tip_add').text('');
+
+        var name = $.trim($('#name_add').val());
+        if (!name) {
+            $('#tip_add').text('请输入章节名称');
+            $('#name_add').focus();
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/Item/AddChapter?random=" + Math.random(),
+            data: { name: name },
+            success: function (json) {
+                if (json.code == 1) {
+                    $('#add_modal').modal('hide');
+                    refreshTable();
+                }
+                else {
+                    $('#tip_add').text('添加失败: ' + json.msg);
+                }
+            },
+            error: function (xhr, testStatus, error) {
+                alert('开始发送ajax请求失败： ' + error);
+            }
+        });
+    }
+
+    /* 开始更新 */
+    function startUpdate() {
+        $('#tip_update').text('');
+
+        var name = $.trim($('#name_update').val());
+        if (!name) {
+            $('#tip_update').text('请输入章节名称');
+            $('#name_update').focus();
+            return;
+        }
+
+        var id = $('#id_update').val()
+
+        $.ajax({
+            type: "POST",
+            url: "/Item/UpdateChapter?random=" + Math.random(),
+            data: { id: id, name: name },
+            success: function (json) {
+                if (json.code == 1) {
+                    $('#update_modal').modal('hide');
+                    refreshTable();
+                }
+                else {
+                    $('#tip_update').text('更新失败: ' + json.msg);
+                }
+            },
+            error: function (xhr, testStatus, error) {
+                alert('开始发送ajax请求失败： ' + error);
+            }
+        });
+    }
+
+    /* 开始上调章节序号 */
+    function startUpChapter(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Item/UpChapter?random=" + Math.random(),
+            data: { id: id },
+            success: function (json) {
+                if (json.code == 1) {
+                    refreshTable();
+                }
+                else {
+                    showAlertModal('上调章节序号失败: ' + json.msg);
+                }
+            },
+            error: function (xhr, testStatus, error) {
+                alert('开始发送ajax请求失败： ' + error);
+            }
+        });
+    }
+
+    /* 开始下调章节序号 */
+    function startDownChapter(id) {
+        $.ajax({
+            type: "POST",
+            url: "/Item/DownChapter?random=" + Math.random(),
+            data: { id: id },
+            success: function (json) {
+                if (json.code == 1) {
+                    refreshTable();
+                }
+                else {
+                    showAlertModal('下调章节序号失败: ' + json.msg);
+                }
+            },
+            error: function (xhr, testStatus, error) {
+                alert('开始发送ajax请求失败： ' + error);
+            }
+        });
+    }
+
+    /* 开始删除 */
+    function startDelete() {
+
+        // 隐藏删除确认窗体
+        $('#delete_confirm_modal').modal('hide');
+
+        var id = $('#id_delete').val();
+        $.ajax({
+            type: "POST",
+            url: "/Item/DeleteChapter?random=" + Math.random(),
+            data: { id: id },
+            success: function (json) {
+                if (json.code == 1) {
+                    refreshTable();
+                }
+                else {
+                    showAlertModal('删除失败: ' + json.msg);
+                }
+            },
+            error: function (xhr, testStatus, error) {
+                alert('开始发送ajax请求失败： ' + error);
+            }
+        });
+    }
+
+    /* 开始批量删除 */
+    function startDeleteInBatch() {
+
+        var selections = $('#table').bootstrapTable('getSelections');
+        if (selections && selections.length > 0) {
+
+            var idList = $.map(selections, function (row) { return row.id; });
+
+            // 隐藏确认窗体并提示等待
+            $('#batch_delete_confirm_modal').modal('hide');
+            showAlertModal('正在删除,请耐心等待......');
+
+            $.ajax({
+                type: "POST",
+                url: "/Item/DeleteChapterInBatch?random=" + Math.random(),
+                data: { id_list: JSON.stringify(idList) },
+                success: function (json) {
+                    if (json.code == 1) {
+                        showAlertModal('删除成功');
+                        refreshTable();
+                    }
+                    else {
+                        showAlertModal('删除失败: ' + json.msg);
+                    }
+                },
+                error: function (xhr, testStatus, error) {
+                    alert('开始发送ajax请求失败： ' + error);
+                }
+            });
+        }
+        else {
+            showAlertModal("没有记录被选中");
+        }
+    }
+
+</script>
+
+</body>
+</html>

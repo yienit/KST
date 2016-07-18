@@ -1,0 +1,191 @@
+﻿@model  KST.Web.HeaderTabMenu
+@using KST.Model
+@using KST.Web
+@using KST.Service
+@using KST.DTO
+@using KST.Util
+
+@{
+    const string ERROR_MSG = "系统异常";
+    Course currentCourse = Session[KST.Web.Constant.SESSION_KEY_COURSE] as Course;
+    string courseName = currentCourse == null ? ERROR_MSG : currentCourse.Name;
+    string duration = currentCourse == null ? ERROR_MSG : currentCourse.Duration.ToString();
+    string description = currentCourse == null ? ERROR_MSG : currentCourse.Description;
+
+    AgencyAdminDTO currentAdmin = Session[KST.Web.Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+    string chineseName = currentAdmin == null ? ERROR_MSG : currentAdmin.ChineseName;
+    string levelString = currentAdmin == null ? ERROR_MSG : currentAdmin.Level.GetDescription();
+    string phone = currentAdmin == null ? ERROR_MSG : currentAdmin.Phone;
+    string email = currentAdmin == null ? ERROR_MSG : currentAdmin.Email;
+    string agencyName = currentAdmin == null ? ERROR_MSG : currentAdmin.Agency.Name;
+
+    string levelTipString = ERROR_MSG;
+    List<Course> courses  = null;
+    if(currentAdmin != null)
+    {
+        switch (currentAdmin.Level)
+        {
+            case AdminLevel.AgencyItemAdmin: levelTipString = "题库录入员拥有录入培训机构题库的权限"; break;
+            case AdminLevel.AgencyCreatorAdmin:levelTipString = "培训机构创建者,拥有最高权限";break;
+            default: break;
+        }
+        
+        courses = ServiceFactory.Instance.ItemDataService.GetAgencyCourses(currentAdmin.Agency.ID).Data;
+    }
+}
+
+<div class="header">
+
+    <div class="header_wrap">
+    	<div class="Header_gong">
+        	<span><img src="@Url.Content("~/static/images/header_laba.png")" alt="header_laba.png" title="" /></span>
+            <span>考试通安卓APP2.0版本已经全面升级&nbsp;<a href="#" title=""  >立即下载</a></span>
+        </div>
+        <div class="Header_right">
+        	<ul>
+                <li class="Header_list"><i class="fa fa-home" style="font-size:16px;padding-top:3px;padding-right:5px;"></i><a href="#" data-toggle="modal" data-backdrop="static" data-target="#account_info_modal" title="">@chineseName</a></li>
+				<li class="Header_list"><i class="fa fa-lock" style="font-size:14px;padding-top:3px;padding-right:5px;"></i><a href="#" data-toggle="modal" data-target="#course_detail_modal" title="" >@courseName</a></li>
+				<li class="Header_list"><i class="fa fa-exchange" style="font-size:14px;padding-top:3px;padding-right:5px;"></i><a href="#" data-toggle="modal" data-target="#exchange_course_modal" title=""  >切换科目</a></li>
+                <li class="Header_list"><i class="fa fa-power-off" style="font-size:14px;padding-right:5px;"></i><a href="/home/logout" title=""  >安全退出</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="account_info_modal" class="modal fade">
+        <div class="modal-dialog widt500">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                    <span class="modal-title">账号信息</span>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-about-content-warp">
+                       <table class="inputs-table" >
+			                <tbody>
+				                <tr><td class="text">姓名：</td><td class="input">@chineseName</td></tr>
+				                <tr><td class="text">账号类型：</td><td class="input">@levelString&nbsp;&nbsp;<i class="fa fa-info-circle greenico" data-toggle="popover" data-placement="top" data-trigger="hover" title="提示" data-content="@levelTipString"></i></td></tr>
+                                <tr><td class="text">电话：</td><td class="input">@phone</td></tr>
+                                <tr>
+                                    <td class="text">密码：</td>
+                                    <td class="input">
+                                    <a id="update_pwd_link" href="javascript:showUpdatePwdWrapper();" class="bluelink">修改密码</a>
+                                    <div id="update_pwd_wrapper" class="opt_wrapper">
+                                        <div><input type="password" id="old_pwd" class="pwd_input" placeholder="请输入原密码"/></div>
+                                        <div><input type="password" id="new_pwd" class="pwd_input" placeholder="请输入新密码"/></div>
+                                        <div><input type="password" id="new_pwd_again" class="pwd_input" placeholder="请再次输入新密码"/></div>
+                                        <span class="red" id="update_pwd_tip"></span>
+                                        <div>
+                                            <button type="button" class="btn btn-success update_pwd_btn" onclick="updatePwd(@currentAdmin.ID);">修改</button>
+                                            <button type="button" class="btn btn-success cancel_pwd_btn" onclick="hideUpdatePwdWrapper();">取消</button>
+                                        </div>
+                                    </div>
+                                    </td>
+                                </tr>
+                                <tr><td class="text">所属机构：</td><td class="input">@agencyName</td></tr>
+			                </tbody>
+		                </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-green" data-dismiss="modal">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="course_detail_modal" class="modal fade">
+        <div class="modal-dialog width350">
+            <div class="modal-content">
+                <div class="modal-header"> <span class="modal-title">当前课程信息</span></div>
+                <div class="modal-body">
+                    <div class="modal-about-content-warp">
+                        <p class="course_detail_line"><strong>课程名称</strong>：&nbsp;@courseName</p>
+                        <p class="course_detail_line"><strong>考试时长</strong>：&nbsp;@duration&nbsp;分钟</p>
+                        <p class="course_detail_line"><strong>课程描述</strong>：&nbsp;@description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="exchange_course_modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                    <span class="modal-title">切换当前课程科目</span>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-about-content-warp">
+                    @{
+                        if (currentCourse != null)
+                        {
+                            foreach (var course in courses)
+                            {
+                                string className = course.ID == currentCourse.ID ? "btn btn-warning" : "btn btn-success";
+                                if (course.ID == currentCourse.ID)
+                                {
+                                    className = "btn btn-warning";
+                                }
+                                <span class="course_block"><a class="@className" href="javascript:exchangeCourse(@course.ID)">@course.Name</a></span>
+                            }
+                        }
+                      }
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+    </div>
+	
+    <div class="logo_wrap">
+    	<div class="logo_main"><a href="#" title=""  ><img src="@Url.Content("~/static/images/dashboard_logo.png")" alt="logo.png"/></a></div>
+        <div class="nav_main">
+        	<div class="nav_left">
+            	<div class="nav_list">
+                    <ul>
+                        @if(currentAdmin.Level == AdminLevel.AgencyCreatorAdmin)
+                        {
+                            if (Model == KST.Web.HeaderTabMenu.AgencyHome)
+                            {
+                                <li class="nav_hover"><a href="/agency/index">机构主页</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="/agency/index">机构主页</a></li>
+                            }
+                        }
+
+                        @if (Model == KST.Web.HeaderTabMenu.ItemManagement)
+                        {
+                            <li class="nav_hover"><a href="/item/index">题库管理</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="/item/index">题库管理</a></li>
+                        }
+
+                        @if (Model == KST.Web.HeaderTabMenu.PaperManagement)
+                        {
+                            <li class="nav_hover"><a href="/paper/index">试卷管理</a></li>
+                        }
+                        else
+                        {
+                           <li><a href="/paper/index">试卷管理</a></li>
+                        }
+
+                        @if (Model == KST.Web.HeaderTabMenu.StatisticsManagement)
+                        {
+                            <li class="nav_hover"><a href="/statistics/index">统计分析</a></li>
+                        }
+                        else
+                        {
+                           <li><a href="/statistics/index">统计分析</a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>

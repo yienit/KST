@@ -1,0 +1,78 @@
+﻿<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">题库导入</span>
+</div>
+<div class="modal-body">
+    
+    <input type="hidden" id="excel_file_name" value=""/>
+    <table class="inputs-table" >
+		<tbody>
+			<tr>
+                <td class="text">上传文件：</td>
+                <td class="input padding10_20"><input type="file" class="width250 blueborder" id="file_upload"/><div id="upload_queue" ></div></td>
+
+                <script type="text/javascript">
+
+                    /* 初始化文件上传控件 */
+                    $("#file_upload").uploadify({
+                        'swf': '/static/js/uploadify/uploadify.swf',
+                        'uploader': '/Item/UploadJudgeExcelFile',
+                        'fileTypeExts': '*.xls;*.xlsx;',
+                        'fileTypeDesc': '请选择题库文件',
+                        'auto': true,
+                        'multi': false,
+                        'fileSizeLimit': '10240KB',
+                        'queueID': 'upload_queue',
+                        'height': 32,
+                        'width': 120,
+                        'buttonText': '选择文件',
+                        'onUploadSuccess': function (file, data, response) {
+                            var result = JSON.parse(data);
+                            if (result.code == 1) {
+                                $('#tip_import').text('文件上传成功，点击"开始导入"按钮开始导入题库');
+                                $('#excel_file_name').val(result.data);
+                            }
+                            else {
+                                alert("上传文件失败：" + result.msg);
+                            }
+                        },
+                        'onUploadError': function (file, errorCode, errorMsg, errorString) {
+                            alert("上传文件失败，失败文件：" + file.toString());
+                        },
+                        'onFallback': function () {
+                            alert("您未安装FLASH控件，无法上传题库数据！请安装FLASH控件后再试。");
+                        }
+                    });
+
+                </script>
+            </tr>
+            <tr>
+                <td class="text">进度提示：</td>
+                <td class="input padding10_20" style="text-align:center;"><span id="tip_import" class="red">请选择题库Excel文件</span></td>
+            </tr>
+            <tr>
+                <td class="text">操作：</td>
+                <td class="input padding10_20" style="text-align:center;"><div id="import_btn" class="btn btn-block btn-green" onclick="startImport()">开始导入</div></td>
+            </tr>
+            <tr>
+                <td class="text">模板下载：</td><td class="input padding10_20"><a href="/Item/DownloadJudgeTemplateFile" class="bluelink" >点击下载</a></td>
+            </tr>
+            <tr>
+                <td class="text">模板说明：</td>
+                <td class="input padding10_20">
+                  <ul class="template-reamrk" style="padding-left:20px;">
+                    <li class="red">模板文件中带 * 号的字段必填;</li>
+                    <li class="red">题库类型必须为 VIP题库 或 普通题库;</li>
+                    <li class="red">章节名称必须为系统内已存在,且章节名称一致;</li>
+                    <li class="red">答案只能为错误或正确;</li>
+                    <li class="red">试题难易度必须为数字1到数字5(包含)的范围内;</li>
+                  </ul>
+                </td>
+            </tr>
+		</tbody>
+	</table>
+
+</div>
+<div class="modal-footer"></div>
+
+

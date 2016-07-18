@@ -1,0 +1,234 @@
+﻿<!DOCTYPE html>
+<html class="no-js"> 
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>我要考试通</title>
+    <meta name="keywords" content="我要考试通" />
+    <meta name="description" content="我要考试通是一款会计类在线考试APP" />
+    <link rel="stylesheet" href="@Url.Content("~/static/css/index.css")" />
+	<link rel="stylesheet" href="@Url.Content("~/static/css/font-awesome/css/font-awesome.min.css")" />
+</head>
+<body>
+	
+<!-- header -->
+<div class="page_header p-t-10 p-b-10">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-2">
+                <a href="/home/index"><img src="@Url.Content("~/static/images/index/logo.png")" alt="" /></a>
+            </div>
+            <div class="col-xs-8">
+                <ul class="list-inline list-unstyled m-0 nav_bar">
+                    <li><a href="/home/index">首页</a></li>
+					<li><a href="/home/download">产品</a></li>
+					<li><a href="/home/document">文档</a></li>
+                    <li><a href="/home/about">关于</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-2 text-right">
+                <ul class="list-unstyled list-inline m-0 reg_area">
+                    <li><a href="/home/login">登录</a></li>
+                    <li><a href="/home/reg">注册</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /header -->
+		
+<!-- carousel -->
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+            <a href=""><img src="@Url.Content("~/static/images/index/carousel_1.jpg")" class="w-100" alt="" /></a>
+        </div>
+        <div class="carousel-item">
+            <a href=""><img src="@Url.Content("~/static/images/index/carousel_2.jpg")" class="w-100" alt=""/></a>
+        </div>
+        <div class="carousel-item">
+            <a href=""><img src="@Url.Content("~/static/images/index/carousel_3.jpg")" class="w-100" alt=""/></a>
+        </div>
+    </div>
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+        <i class="fa fa-chevron-left fz-30"></i>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+        <i class="fa fa-chevron-right fz-30"></i>
+        <span class="sr-only">Next</span>
+    </a>
+</div> 
+<!-- /carousel -->
+		
+<!-- feature & function container -->
+<div class="container marketing" style="padding-top:50px;">
+
+    <!-- feature -->
+    <div class="row text-align-center">
+    <div class="col-lg-4 padding-l-r-30">
+	    <img class="img-circle" src="@Url.Content("~/static/images/index/feature-dytk.png")" alt="Generic placeholder image" width="128" height="128">
+	    <div class="feature-title">多样题库</div>
+	    <div class="feature-text">结合多样化题库方便培训结构能够满足不同级别用户的需求，系统题库、普通题库和VIP题库有效的结合来实现题库多样化的控制。</div>
+    </div><!-- /.col-lg-4 -->
+    <div class="col-lg-4 padding-l-r-30">
+	    <img class="img-circle" src="@Url.Content("~/static/images/index/feature_zsmn.png")" alt="Generic placeholder image" width="128" height="128">
+	    <div class="feature-title">真实模拟</div>
+	    <div class="feature-text">智能化算法抽取权重较高的题库组成模拟试卷，从而模拟出真实考试场景，迅速提升学员的考试能力及应试技巧，大大提高通过率。</div>
+    </div><!-- /.col-lg-4 -->
+    <div class="col-lg-4 padding-l-r-30">
+	    <img class="img-circle" src="@Url.Content("~/static/images/index/feature_sjtj.png")" alt="Generic placeholder image" width="128" height="128">
+	    <div class="feature-title">数据统计</div> 
+	    <div class="feature-text">根据学生考试记录成绩来找出薄弱环节，从而加强巩固练习。同时培训机构能够方便快捷的查看每位学员的考试统计信息，及时了解学员的学习情况。</div>
+    </div><!-- /.col-lg-4 -->
+    </div>
+    <!-- /feature -->
+
+	<!-- function -->
+	<hr class="featurette-divider" />
+
+	<div class="row featurette">
+	    <div class="col-md-7">
+		    <div class="featurette-heading function-title" >试题练习</div>
+		    <p class="lead function-text">为学员的日常学习提供服务，包含章节练习、随机练习、强化练习三大部分。</p>
+	    </div>
+	    <div class="col-md-5">
+		    <img class="featurette-image img-responsive center-block" src="@Url.Content("~/static/images/index/function_paper.jpg")" alt="Generic placeholder image" />
+	    </div>
+	</div>
+
+	<hr class="featurette-divider" />
+
+	<div class="row featurette">
+	    <div class="col-md-7 col-md-push-5">
+		    <div class="featurette-heading function-title">模拟考试</div>
+		    <p class="lead function-text">智能化算法抽取权重较高的题库组成模拟试卷，从而模拟出真实考试场景，迅速提升学员的考试能力及应试技巧，大大提高通过率。。</p>
+	    </div>
+	    <div class="col-md-5 col-md-pull-7">
+		    <img class="featurette-image img-responsive center-block" src="@Url.Content("~/static/images/index/function_clock.jpg")" alt="Generic placeholder image" />
+	    </div>
+	</div>
+
+	<hr class="featurette-divider" />
+
+	<div class="row featurette">
+	    <div class="col-md-7">
+	    <div class="featurette-heading function-title">VIP题库</div>
+		    <p class="lead function-text">将觉得比较重要的题库添加至VIP题库中，通过设置学员VIP权限来控制每位学员查看VIP题库的情况。</p>
+	    </div>
+	    <div class="col-md-5">
+		    <img class="featurette-image img-responsive center-block" src="@Url.Content("~/static/images/index/function_person.jpg")" alt="Generic placeholder image" />
+	    </div>
+	</div>
+		  
+	<hr class="featurette-divider" />
+		  
+	<div class="row featurette">
+	    <div class="col-md-7 col-md-push-5">
+		    <div class="featurette-heading function-title">历年真题</div>
+		    <p class="lead function-text">支持添加历届题库至系统中，便于学员能及时的了解到考试题型和考试重点内容。</p>
+	    </div>
+	    <div class="col-md-5 col-md-pull-7">
+		    <img class="featurette-image img-responsive center-block" src="@Url.Content("~/static/images/index/function_chat.jpg")" alt="Generic placeholder image" />
+	    </div>
+	</div>
+		  
+	<hr class="featurette-divider" />
+		  
+	<div class="row featurette">
+	    <div class="col-md-7">
+	    <div class="featurette-heading function-title">云端同步</div>
+		    <p class="lead function-text">自动同步学生所有终端的数据至云端，包括学员的错题题库和收藏题库及考试成绩，在保证数据安全的同时，又便利培训机构统计分析易错题型和收藏题型。</p>
+	    </div>
+	    <div class="col-md-5">
+		    <img class="featurette-image img-responsive center-block" src="@Url.Content("~/static/images/index/function_cloud.jpg")" alt="Generic placeholder image" />
+	    </div>
+	</div>
+
+	<hr class="featurette-divider" />
+	<!-- /function -->
+
+</div>
+<!-- /feature & function container -->
+	
+<!-- footer -->
+<div class="page_footer bg-black">
+    <div class="container bdb_gd p-t-20 p-b-20">
+        <div class="row">
+            <div class="col-xs-3">
+                <a href="/home/index"><img src="@Url.Content("~/static/images/index/foot-logo.png")" alt="" /></a>
+            </div>
+            <div class="col-xs-9">
+                <ul class="list-inline list-unstyled m-0 footer_nav fz-14 text-right">
+                    <li>
+                        <a href="/home/download">客户端下载</a> <span>|</span>
+                    </li>
+                    <li>
+                        <a href="/home/reg">免费注册</a> <span>|</span>
+                    </li>
+                    <li>
+                        <a href="/home/about">关于我们</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="text-center fz-12 p-t-5 p-b-5">
+        <span class="c-g9">© 2015-2016&nbsp;51kaoshitong.com&nbsp;版权所有&nbsp;&nbsp;&nbsp;&nbsp;ICP证：赣ICP备14009662号-3</span>
+    </div>
+</div>
+<!-- /footer -->
+		
+<!-- Older IE warning message -->
+<!--[if lt IE 10]>
+<div class="ie-warning">
+    <h1 class="c-white">警告!!</h1>
+    <p>您正在使用低版本的浏览器来浏览本网站内容，点击以下图标可升级您的浏览器。不便之处还望理解!</p>
+    <div class="iew-container">
+        <ul class="iew-download">
+            <li>
+                <a href="http://www.google.com/chrome/">
+                    <img src="@Url.Content("~/static/images/index/browsers/chrome.png")" alt="">
+                    <div>Chrome</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.mozilla.org/en-US/firefox/new/">
+                    <img src="@Url.Content("~/static/images/index/browsers/firefox.png")" alt="">
+                    <div>Firefox</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://www.opera.com">
+                    <img src="@Url.Content("~/static/images/index/browsers/opera.png")" alt="">
+                    <div>Opera</div>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.apple.com/safari/">
+                    <img src="@Url.Content("~/static/images/index/browsers/safari.png")" alt="">
+                    <div>Safari</div>
+                </a>
+            </li>
+            <li>
+                <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">
+                    <img src="@Url.Content("~/static/images/index/browsers/ie.png")" alt="">
+                    <div>IE (New)</div>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <p></p>
+</div>
+<![endif]-->
+    
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-index/js/bootstrap.min.js")"></script>
+		
+</body>
+</html>

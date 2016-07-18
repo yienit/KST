@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>考试通</title>
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/font-awesome/css/font-awesome.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap/css/bootstrap.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/style.css")" />
+</head>
+<body>
+@Html.Partial("_header-partial", KST.Web.HeaderTabMenu.ItemManagement)
+<div class="content">
+
+	<div class="content_left">@Html.Partial("_left-menu-item-partial")</div>
+	<div class="content_right">
+	  <div class="right_container">
+	  
+		<!-- .row -->	  
+		<div class="row" style="margin-top:10px; ">
+			<div class="col-lg-4" style="padding: 0px 40px;">
+			  <div class="viewdetailbox">
+				 <div class="title">不定项选择题</div>
+				 <p><a class="view_btn margintop20" href="/item/uncertainlist">管理题库 &raquo;</a></p>
+			  </div>
+			</div><!-- /.col-lg-4 -->
+			<div class="col-lg-4" style="padding: 0px 40px;">
+			  <div class="viewdetailbox">
+				<div class="title">分录题</div>
+				<p><a class="view_btn margintop20" href="/item/fenlulist">管理题库 &raquo;</a></p>
+			  </div>
+			</div><!-- /.col-lg-4 -->
+			<div class="col-lg-4" style="padding: 0px 40px;">
+			  <div class="viewdetailbox">
+				<div class="title">数字填空题</div>
+				<p><a class="view_btn margintop20" href="/item/numberblanklist">管理题库 &raquo;</a></p>
+			  </div>
+			</div><!-- /.col-lg-4 -->
+		</div>
+		<!-- /.row -->
+
+	  </div>
+    </div>
+</div>
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap/js/bootstrap.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-table/bootstrap-table.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.placeholder.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/header.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/md5.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/util.js")"></script>
+
+</body>
+</html>

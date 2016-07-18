@@ -1,0 +1,615 @@
+﻿<!DOCTYPE html>
+<html >
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>考试通</title>
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/font-awesome/css/font-awesome.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap/css/bootstrap.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap-table/bootstrap-table.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap-star-rating/star-rating.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap-fileinput/css/fileinput.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/uploadify/uploadify.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/style.css")" />
+</head>
+<body>
+@Html.Partial("_header-partial",KST.Web.HeaderTabMenu.ItemManagement)
+
+<!-- add modal -->
+<div id="add_modal" class="modal fade" data-backdrop="static">
+    <div class="modal-dialog width940">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<!-- update modal -->
+<div id="update_modal" class="modal fade">
+    <div class="modal-dialog width940">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<!-- detail modal -->
+<div id="detail_modal" class="modal fade">
+    <div class="modal-dialog width940">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<!-- query modal -->
+<div id="query_modal" class="modal fade">
+    <div class="modal-dialog width700">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<!-- delete confirm modal -->
+<div id="delete_confirm_modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                <span class="modal-title">提示</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="id_delete" value="0"/>
+                <p>确定要删除该条记录吗?</p> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="startDelete()">&nbsp;&nbsp;删除&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-info" data-dismiss="modal">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- batch delete confirm modal -->
+<div id="batch_delete_confirm_modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                <span class="modal-title">提示</span>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除选中的记录吗?</p> 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="startDeleteInBatch()">&nbsp;&nbsp;删除&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn btn-info" data-dismiss="modal">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- alert modal -->
+<div id="alert_modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                <span class="modal-title">提示</span>
+            </div>
+            <div class="modal-body"><p></p></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+
+	<div class="content_left">@Html.Partial("_left-menu-item-partial")</div>
+	<div class="content_right">
+	  <div class="right_container_list">
+		 <div class="row" >
+			<div class="col-lg-12">
+
+            <div class="table-name"><i class="fa fa-th gray"></i>&nbsp;题库管理·数字填空题</div>
+
+            <div class="btn-toolbar" role="toolbar" id="toolbar">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" style="outline:none;" onclick="refreshTable()"><i class="fa fa-refresh toolico"></i><span class="tooltext">刷新</span></button>
+                    <button type="button" class="btn btn-default" style="outline:none;" onclick="showQueryModal();"><i class="fa fa-search toolico"></i><span class="tooltext">查询</span></button>
+                    <button type="button" class="btn btn-default" style="outline:none;" onclick="showAddModal();"><i class="fa fa-plus toolico"></i><span class="tooltext">添加</span></button>
+                    <button type="button" class="btn btn-default" style="outline:none;" onclick="showBatchDeleteConfirmModal();" title="批量删除"><i class="fa fa-remove toolico"></i><span class="tooltext">删除</span></button>
+                </div>
+            </div>
+
+            <table id="table"
+                data-toggle="table"
+                data-url="/Item/QueryNumberBlank?chapter_id=-1&is_vip_item=-1&title=&difficulty=-1&add_person="
+                data-height="536"
+                data-side-pagination="server"
+                data-pagination="true"
+                data-cache="false"
+                data-toolbar="#toolbar"
+                data-row-style="rowStyle"
+                data-striped="true"
+                data-page-list="[10, 20, 50, 100, 200, 500]">
+            <thead>
+            <tr>
+                <th data-field="state" data-checkbox="true" data-align="center" data-valign="middle"></th>
+                <th data-field="title" data-align="center" data-valign="middle" data-formatter="titleFormatter">标题</th>
+                <th data-field="chapter_name" data-align="center" data-valign="middle">所属章节</th>
+                <th data-field="is_vip_item" data-align="center" data-valign="middle" data-formatter="isVipItemFormatter">题库类型</th>
+                <th data-field="operate" data-align="center" data-valign="middle" data-formatter="operateFormatter">操作</th>
+            </tr>
+            </thead>
+            </table>
+		 
+			</div>
+		</div>
+	  </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap/js/bootstrap.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-table/bootstrap-table.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.placeholder.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-star-rating/star-rating.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-fileinput/js/fileinput.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-fileinput/js/fileinput_locale_zh.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/uploadify/jquery.uploadify.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/header.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/md5.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/util.js")"></script>
+
+<script type="text/javascript">
+
+/* 设置表格数据行样式 */
+function rowStyle(row, index) {
+    return { classes: 'rowheight' };
+}
+
+/* 标题Formatter*/
+function titleFormatter(value, row) {
+    return '<span class="width280 textoverflow">{0}</span>'.format(value);
+}
+
+/* 题库类型Formatter*/
+function isVipItemFormatter(value, row) {
+    if (value === 1) {
+        return '<span class="width80 inlineblock">{0}</span>'.format('VIP题库');
+    }
+    return '<span class="width80 inlineblock">{0}</span>'.format('普通题库');
+}
+
+/* 操作Formatter*/
+function operateFormatter(value, row) {
+    var html = '<i class="fa fa-info-circle operateico"></i><a href="javascript:showDetailModal({0});" class="tablelink">详情</a>'.format(row.id) +
+               '<span class="blankspan"></span><i class="fa fa-pencil operateico"></i><a href="javascript:showUpdateModal({0});" class="tablelink">修改</a>'.format(row.id) +
+               '<span class="blankspan"></span><i class="fa fa-remove operateico_delete"></i><a href="javascript:showDeleteConfirmModal({0});" class="tablelink">删除</a>'.format(row.id);
+    return html;
+}
+
+/* 显示添加窗体 */
+function showAddModal() {
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+    });
+
+    $("#add_modal").modal({
+        remote: "/Item/NumberBlankAddTemplate"
+    });
+
+    $('#add_modal').modal('show');
+}
+
+/* 显示修改窗体 */
+function showUpdateModal(id) {
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+    });
+
+    $("#update_modal").modal({
+        remote: "/Item/NumberBlankUpdateTemplate?id=" + id
+    });
+    $('#update_modal').modal('show');
+}
+
+/* 显示详情窗体 */
+function showDetailModal(id) {
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+    });
+
+    $("#detail_modal").modal({
+        remote: "/Item/NumberBlankDetailTemplate?id=" + id
+    });
+    $('#detail_modal').modal('show');
+}
+
+/* 显示查询窗体 */
+function showQueryModal() {
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+    });
+
+    $("#query_modal").modal({
+        remote: "/Item/NumberBlankQueryTemplate"
+    });
+    $('#query_modal').modal('show');
+}
+
+/* 显示删除确认窗体 */
+function showDeleteConfirmModal(id) {
+    $('#id_delete').val(id);
+    $('#delete_confirm_modal').modal('show');
+}
+
+/* 显示批量删除确认窗体 */
+function showBatchDeleteConfirmModal() {
+    var selections = $('#table').bootstrapTable('getSelections');
+    if (selections && selections.length > 0) {
+        var idList = $.map(selections, function (row) { return row.id; });
+        $('#batch_delete_confirm_modal .modal-body p').text('确定要删除选中的记录吗?');
+        $('#batch_delete_confirm_modal').modal('show');
+    }
+    else {
+        showAlertModal('没有记录被选中');
+    }
+}
+
+/* 显示操作提示窗体 */
+function showAlertModal(msg) {
+    $('#alert_modal .modal-body p').text(msg);
+    $('#alert_modal').modal('show');
+}
+
+/* 刷新表格 */
+function refreshTable() {
+    $('#table').bootstrapTable('refresh');
+}
+
+/* 添加答案(添加窗体) */
+function insertAnswerLineInAddWindow() {
+
+    var html = '<div class="answer-line">' +
+                   '<span>答案</span><span class="answer-index">{0}</span>名称： <input type="text" class="answer-name blueinput" /><span class="emptyspan10"></span>' +
+                   '<span>答案： </span><input type="text" class="answer-text blueinput" /><span class="emptyspan10"></span>' +
+                   '<span>注解： </span><input type="text" class="answer-annotation blueinput" /><span class="emptyspan10"></span>' +
+                   '<span><a href="#" onclick="javascript:insertAnswerLineInAddWindow();" title="添加答案" class="answer-add"><i class="fa fa-plus add-ico"></i></a></span><span class="emptyspan10"></span>' +
+                   '<span><a href="#" onclick="javascript:deleteAnswerLineInAddWindow({1});" title="删除答案" class="answer-delete"><i class="fa fa-minus delete-ico"></i></a></span>' +
+               '</div>';
+
+    var index = $('#add_modal div.answer-line').length + 1;
+    $('#add_modal div.answer-line:last').after(html.format(index, index));
+}
+
+/* 删除答案(添加窗体) */
+function deleteAnswerLineInAddWindow(index) {
+
+    // 删除当前答案节点
+    var xpath = '#add_modal div.answer-line:eq({0})'.format(index - 1);
+    $(xpath).remove();
+
+    // 更新答案序号
+    var answers = $('#add_modal span.answer-index');
+    for (var i = 0; i < answers.length; i++) {
+        $('#add_modal span.answer-index:eq({0})'.format(i)).text(i + 1);
+    }
+
+    // 更新删除索引参数
+    var deleteBtns = $('#add_modal a.answer-delete');
+    for (var i = 0; i < deleteBtns.length; i++) {
+        $('#add_modal a.answer-delete:eq({0})'.format(i)).attr('onclick', 'javascript:deleteAnswerLineInAddWindow({0})'.format(i + 2));
+    }
+}
+
+/* 添加答案(更新窗体) */
+function insertAnswerLineInUpdateWindow() {
+
+    var html = '<div class="answer-line">' +
+                   '<span>答案</span><span class="answer-index">{0}</span>名称： <input type="text" class="answer-name blueinput" /><span class="emptyspan10"></span>' +
+                   '<span>答案： </span><input type="text" class="answer-text blueinput" /><span class="emptyspan10"></span>' +
+                   '<span>注解： </span><input type="text" class="answer-annotation blueinput" /><span class="emptyspan10"></span>' +
+                   '<span><a href="#" onclick="javascript:insertAnswerLineInUpdateWindow();" title="添加答案" class="answer-add"><i class="fa fa-plus add-ico"></i></a></span><span class="emptyspan10"></span>' +
+                   '<span><a href="#" onclick="javascript:deleteAnswerLineInUpdateWindow({1});" title="删除答案" class="answer-delete"><i class="fa fa-minus delete-ico"></i></a></span>' +
+                '</div>';
+
+    var index = $('#update_modal div.answer-line').length + 1;
+    $('#update_modal div.answer-line:last').after(html.format(index, index));
+}
+
+/* 删除答案(更新窗体) */
+function deleteAnswerLineInUpdateWindow(index) {
+
+    // 删除当前答案节点
+    var xpath = '#update_modal div.answer-line:eq({0})'.format(index - 1);
+    $(xpath).remove();
+
+    // 更新答案序号
+    var answers = $('#update_modal span.answer-index');
+    for (var i = 0; i < answers.length; i++) {
+        $('#update_modal span.answer-index:eq({0})'.format(i)).text(i + 1);
+    }
+
+    // 更新删除索引参数
+    var deleteBtns = $('#update_modal a.answer-delete');
+    for (var i = 0; i < deleteBtns.length; i++) {
+        $('#update_modal a.answer-delete:eq({0})'.format(i)).attr('onclick', 'javascript:deleteAnswerLineInUpdateWindow({0})'.format(i + 2));
+    }
+}
+
+/* 开始查询 */
+function startQuery() {
+    var isVipItem = $("input[name='is_vip_item_query']:checked").val();
+    var chapterID = $('#chapter_id_query option:selected').val();
+    var title = $.trim($('#title_query').val());
+    var addperson = $.trim($('#add_person_query').val());
+
+    $('#table').bootstrapTable('refreshOptions', {
+        url: '/Item/QueryNumberBlank?chapter_id=' + chapterID + '&is_vip_item=' + isVipItem + '&title=' + title + '&add_person=' + addperson
+    });
+
+    $('#query_modal').modal('hide');
+}
+
+/* 开始添加 */
+function startAdd() {
+    $('#tip_add').text('');
+
+    var isVipItem = $("input[name='is_vip_item_add']:checked").val();
+    if (!isVipItem) {
+        $('#tip_add').text('请选择题库类型');
+        return;
+    }
+
+    var chapterID = $('#chapter_id_add option:selected').val();
+    if (!chapterID) {
+        $('#tip_add').text('请选择所属章节');
+        return;
+    }
+
+    var title = $.trim($('#title_add').val());
+    if (!title) {
+        $('#tip_add').text('请输入题目标题');
+        $('#title_add').focus();
+        return;
+    }
+
+    var image1 = $('#image1_add').fileinput('getFileStack');
+    var image1SubText = $.trim($('#image1_subtext_add').val());
+    var image2 = $('#image2_add').fileinput('getFileStack');
+    var image2SubText = $.trim($('#image2_subtext_add').val());
+
+    var difficulty = $('#difficulty_add').val();
+    if (difficulty === '0') {
+        $('#tip_add').text('请点击输入试题难易度');
+        return;
+    }
+
+    var answerNodes = $('#add_modal div.answer-line');
+    for (var i = 0; i < answerNodes.length; i++) {
+        var text = $('#add_modal input.answer-text:eq({0})'.format(i)).val();
+        if (!text) {
+            $('#tip_add').text('答案不能为空');
+            return;
+        }
+    }
+
+    var answerList = new Array();
+    for (var i = 0; i < answerNodes.length; i++) {
+        var name = $('#add_modal input.answer-name:eq({0})'.format(i)).val();
+        var answer = $('#add_modal input.answer-text:eq({0})'.format(i)).val();
+        var annotation = $('#add_modal input.answer-annotation:eq({0})'.format(i)).val();
+        var answerObj = { answer_name: name, answer: answer, annotation: annotation };
+        answerList.push(answerObj);
+    }
+    var answerListJson = JSON.stringify(answerList);
+
+    var formdata = new FormData();
+    formdata.append("is_vip_item", isVipItem);
+    formdata.append("chapter_id", chapterID);
+    formdata.append("title", title);
+    if (image1 && image1.length > 0) {
+        formdata.append("image1", image1[0]);
+    }
+    formdata.append("image1_subtext", image1SubText);
+    if (image2 && image2.length > 0) {
+        formdata.append("image2", image2[0]);
+    }
+    formdata.append("image2_subtext", image2SubText);
+    formdata.append("difficulty", difficulty);
+    formdata.append("answers", answerListJson);
+
+    $.ajax({
+        type: "POST",
+        url: "/Item/AddNumberBlank?random=" + Math.random(),
+        data: formdata,
+        processData: false,
+        contentType: false,
+        success: function (json) {
+            if (json.code == 1) {
+                $('#add_modal').modal('hide');
+                refreshTable();
+            }
+            else {
+                $('#tip_add').text('添加失败: ' + json.msg);
+            }
+        },
+        error: function (xhr, testStatus, error) {
+            alert('开始发送ajax请求失败： ' + error);
+        }
+    });
+}
+
+/* 开始更新 */
+function startUpdate() {
+    $('#tip_update').text('');
+
+    var isVipItem = $("input[name='is_vip_item_update']:checked").val();
+    if (!isVipItem) {
+        $('#tip_update').text('请选择题库类型');
+        return;
+    }
+
+    var chapterID = $('#chapter_id_update option:selected').val();
+    if (!chapterID) {
+        $('#tip_update').text('请选择所属章节');
+        return;
+    }
+
+    var title = $.trim($('#title_update').val());
+    if (!title) {
+        $('#tip_update').text('请输入题目标题');
+        $('#title_update').focus();
+        return;
+    }
+
+    // 获取图片1
+    var image1;
+    var image1Node = $('#image1_warpper .file-preview-image');
+    if (image1Node && image1Node.length > 0) {
+        var imageSrc = image1Node[0].src;
+        if (imageSrc.indexOf('base64') > -1) {
+            image1 = dataURItoBlob(imageSrc);
+        }
+        else if (imageSrc.indexOf('blob') > -1) {
+            image1 = $('#image1_update').fileinput('getFileStack')[0];
+        }
+    }
+
+    // 获取图片2
+    var image2;
+    var image2Node = $('#image2_warpper .file-preview-image');
+    if (image2Node && image2Node.length > 0) {
+        var imageSrc = image2Node[0].src;
+        if (imageSrc.indexOf('base64') > -1) {
+            image2 = dataURItoBlob(imageSrc);
+        }
+        else if (imageSrc.indexOf('blob') > -1) {
+            image2 = $('#image2_update').fileinput('getFileStack')[0];
+        }
+    }
+
+    var image1SubText = $.trim($('#image1_subtext_update').val());
+    var image2SubText = $.trim($('#image2_subtext_update').val());
+
+    var difficulty = $('#difficulty_update').val();
+    if (difficulty === '0') {
+        $('#tip_update').text('请点击输入试题难易度');
+        return;
+    }
+
+    var answerNodes = $('#update_modal div.answer-line');
+    for (var i = 0; i < answerNodes.length; i++) {
+        var text = $('#update_modal input.answer-text:eq({0})'.format(i)).val();
+        if (!text) {
+            $('#tip_update').text('答案不能为空');
+            return;
+        }
+    }
+
+    var answerList = new Array();
+    for (var i = 0; i < answerNodes.length; i++) {
+        var name = $('#update_modal input.answer-name:eq({0})'.format(i)).val();
+        var answer = $('#update_modal input.answer-text:eq({0})'.format(i)).val();
+        var annotation = $('#update_modal input.answer-annotation:eq({0})'.format(i)).val();
+        var answerObj = { answer_name: name, answer: answer, annotation: annotation };
+        answerList.push(answerObj);
+    }
+    var answerListJson = JSON.stringify(answerList);
+
+    var id = $('#id_update').val()
+
+    var formdata = new FormData();
+    formdata.append("id", id);
+    formdata.append("is_vip_item", isVipItem);
+    formdata.append("chapter_id", chapterID);
+    formdata.append("title", title);
+    formdata.append("image1", image1);
+    formdata.append("image1_subtext", image1SubText);
+    formdata.append("image2", image2);
+    formdata.append("image2_subtext", image2SubText);
+    formdata.append("difficulty", difficulty);
+    formdata.append("answers", answerListJson);
+
+    $.ajax({
+        type: "POST",
+        url: "/Item/UpdateNumberBlank?random=" + Math.random(),
+        data: formdata,
+        processData: false,
+        contentType: false,
+        success: function (json) {
+            if (json.code == 1) {
+                $('#update_modal').modal('hide');
+                refreshTable();
+            }
+            else {
+                $('#tip_update').text('更新失败: ' + json.msg);
+            }
+        },
+        error: function (xhr, testStatus, error) {
+            alert('开始发送ajax请求失败： ' + error);
+        }
+    });
+}
+
+/* 开始删除 */
+function startDelete() {
+
+    // 隐藏删除确认窗体
+    $('#delete_confirm_modal').modal('hide');
+
+    var id = $('#id_delete').val();
+    $.ajax({
+        type: "POST",
+        url: "/Item/DeleteNumberBlank?random=" + Math.random(),
+        data: { id: id },
+        success: function (json) {
+            if (json.code == 1) {
+                refreshTable();
+            }
+            else {
+                showAlertModal('删除失败: ' + json.msg);
+            }
+        },
+        error: function (xhr, testStatus, error) {
+            alert('开始发送ajax请求失败： ' + error);
+        }
+    });
+}
+
+/* 开始批量删除 */
+function startDeleteInBatch() {
+
+    var selections = $('#table').bootstrapTable('getSelections');
+    if (selections && selections.length > 0) {
+
+        var idList = $.map(selections, function (row) { return row.id; });
+
+        // 隐藏确认窗体并提示等待
+        $('#batch_delete_confirm_modal').modal('hide');
+        showAlertModal('正在删除,请耐心等待......');
+
+        $.ajax({
+            type: "POST",
+            url: "/Item/DeleteNumberBlankInBatch?random=" + Math.random(),
+            data: { id_list: JSON.stringify(idList) },
+            success: function (json) {
+                if (json.code == 1) {
+                    showAlertModal('删除成功');
+                    refreshTable();
+                }
+                else {
+                    showAlertModal('删除失败: ' + json.msg);
+                }
+            },
+            error: function (xhr, testStatus, error) {
+                alert('开始发送ajax请求失败： ' + error);
+            }
+        });
+    }
+    else {
+        showAlertModal("没有记录被选中");
+    }
+}
+
+</script>
+
+</body>
+</html>

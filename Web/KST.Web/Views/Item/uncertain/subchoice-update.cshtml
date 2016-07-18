@@ -1,0 +1,167 @@
+﻿@using KST.Util
+@using KST.Model
+@using KST.DTO
+@using KST.Service
+@{
+    // 详情
+    string titile = string.Empty;
+    string imageBase64 = string.Empty;
+    string a = string.Empty;
+    string b = string.Empty;
+    string c = string.Empty;
+    string d = string.Empty;
+    string answer = string.Empty;
+    string annotation = string.Empty;
+ 
+    int id = Convert.ToInt32(ApiQueryUtil.QueryArgByGet("id"));
+
+    ServiceInvokeDTO<UncertainSubChoice> result = ServiceFactory.Instance.ItemDataService.GetUncertainSubChoiceByID(id);
+    if (result != null && result.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+    {
+        UncertainSubChoice subchoice = result.Data;
+        if (subchoice != null)
+        {
+
+            titile = subchoice.Title == null ? string.Empty : subchoice.Title;
+            imageBase64 = subchoice.Image == null ? string.Empty : Convert.ToBase64String(subchoice.Image);
+            a = subchoice.A == null ? string.Empty : subchoice.A;
+            b = subchoice.B == null ? string.Empty : subchoice.B;
+            c = subchoice.C == null ? string.Empty : subchoice.C;
+            d = subchoice.D == null ? string.Empty : subchoice.D;
+
+            answer = subchoice.Answer == null ? string.Empty : subchoice.Answer;
+            annotation = subchoice.Annotation == null ? string.Empty : subchoice.Annotation;
+        }
+    }
+}
+
+
+<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">修改</span>
+    <span class="red inlineblock aligncenter width600" id="tip_update"></span>
+</div>
+<div class="modal-body itemcontent">
+
+    <input type="hidden" id="id_update" value="@id"/>
+   
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70"><span class="redstar">*</span>题库标题:</span></span>
+            <textarea class="form-control" id="title_update" rows="4" >@titile</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="foretip width70"><a href="#" id="image_tip_update" rel="popover" data-content="图片将会在标题下方显示" data-original-title="提示"><i class="fa fa-info-circle greenico"></i></a>&nbsp;题库图片:</span>
+                <script type="text/javascript">
+                    $("#image_tip_update").popover({
+                        placement: 'right',
+                        trigger: 'hover'
+                    });
+                </script>
+            </span>
+            <input id="image_update" type="file" name="image"/>
+            @{
+                if (imageBase64.Length > 0)
+                {
+                    <script type="text/javascript">
+                        $("#image_update").fileinput({
+                            showUpload: false,
+                            allowedFileExtensions: ['jpg', 'png', 'gif'],
+                            maxFileSize: 2048,
+                            maxFileCount: 1,
+                            language: 'zh',
+                            initialPreview: ["<img src='data:image/png;base64,@imageBase64' class='file-preview-image'>"]
+                        });
+                    </script>
+                }
+                else
+                {
+                    <script type="text/javascript">
+                        $("#image_update").fileinput({
+                            showUpload: false,
+                            allowedFileExtensions: ['jpg', 'png', 'gif'],
+                            maxFileSize: 2048,
+                            maxFileCount: 1,
+                            language: 'zh'
+                        });
+                    </script>
+                }
+            }   
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width70"><span class="redstar">*</span>选项A:</span></span>
+            <input type="text" class="form-control" id="a_update" value="@a"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width70"><span class="redstar">*</span>选项B:</span></span>
+            <input type="text" class="form-control" id="b_update" value="@b"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width70"><span class="redstar">*</span>选项C:</span></span>
+            <input type="text" class="form-control" id="c_update" value="@c"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width70"><span class="redstar">*</span>选项D:</span></span>
+            <input type="text" class="form-control" id="d_update" value="@d"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width70"><span class="redstar">*</span>正确答案:</span></span>
+             <span class="form-control">
+
+                @if (answer.ToUpper().Contains("A"))
+                { <label class="inputlable"><input type="checkbox" name="answer_update" value="A" checked="checked"/>&nbsp;A</label> }
+                else
+                { <label class="inputlable"><input type="checkbox" name="answer_update" value="A"/>&nbsp;A</label> }
+
+                <span class="emptyspan30"></span>
+
+                @if (answer.ToUpper().Contains("B"))
+                { <label class="inputlable"><input type="checkbox" name="answer_update" value="B" checked="checked"/>&nbsp;B</label> }
+                else
+                { <label class="inputlable"><input type="checkbox" name="answer_update" value="B"/>&nbsp;B</label> }
+
+                <span class="emptyspan30"></span>
+
+                @if (answer.ToUpper().Contains("C"))
+                { <label class="inputlable"><input type="checkbox" name="answer_update" value="C" checked="checked"/>&nbsp;C</label> }
+                else
+                { <label class="inputlable"><input type="checkbox" name="answer_update" value="C"/>&nbsp;C</label> }
+
+                <span class="emptyspan30"></span>
+
+                @if (answer.ToUpper().Contains("D"))
+                { <label class="inputlable"><input type="checkbox" name="answer_update" value="D" checked="checked"/>&nbsp;D</label> }
+                else
+                { <label class="inputlable"><input type="checkbox" name="answer_update" value="D"/>&nbsp;D</label> }
+
+                <span class="emptyspan30"></span>
+            
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon" ><span class="foretip width70">答案解析:</span></span>
+            <input type="text" class="form-control" id="annotation_update" value="@annotation"/>
+        </div>
+    </div>
+
+    <div id="add_btn" class="btn btn-block btn-green" onclick="startUpdate()">修改</div>
+
+</div>
+<div class="modal-footer"></div>
+
+

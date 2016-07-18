@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{48F95FED-7075-4B00-A8A9-1B4AB71B3F00}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KST.Service</RootNamespace>
+    <AssemblyName>KST.Service</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\library\FluentValidation\NET35\FluentValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\library\Log4net\NET35\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\library\Json.net\Net35\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\library\RestSharp\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="Constant.cs" />
+    <Compile Include="ServiceFactory.cs" />
+    <Compile Include="Service\CommonDataService.cs" />
+    <Compile Include="Service\ItemDataService.cs" />
+    <Compile Include="Service\PaperDataService.cs" />
+    <Compile Include="Service\PermissionService.cs" />
+    <Compile Include="Service\RecordDataService.cs" />
+    <Compile Include="Service\UserDataService.cs" />
+    <Compile Include="Service\SecurityService.cs" />
+    <Compile Include="Service\AgencyDataService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KST.Core\KST.Core.csproj">
+      <Project>{F491D9F6-B6CD-4337-BAB7-D563FCE4FFE9}</Project>
+      <Name>KST.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KST.DAL\KST.DAL.csproj">
+      <Project>{9DEB56CB-18CA-401A-9AB9-0526DEB05762}</Project>
+      <Name>KST.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KST.DTO\KST.DTO.csproj">
+      <Project>{6C23A03E-4369-471D-8568-70B42A4C4F62}</Project>
+      <Name>KST.DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KST.Model\KST.Model.csproj">
+      <Project>{9F326BBD-7B89-4EC4-9E67-6022DE4ABCCD}</Project>
+      <Name>KST.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KST.Util\KST.Util.csproj">
+      <Project>{EB1A3145-7F0D-4AB0-AEBB-8D73E92B83BA}</Project>
+      <Name>KST.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
