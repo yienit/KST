@@ -45,7 +45,7 @@ CONSTRAINT fk_agencycreator_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) O
 CREATE TABLE AgencyConfig(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 AgencyID INT,							-- 机构主键ID
-IsLockDevice INT DEFAULT 0,				-- 是否开启设备所 (0：不开启  1：开启)
+IsLockDevice INT DEFAULT 1,				-- 是否开启设备锁 (0：不开启  1：开启)
 Notice VARCHAR(200),					-- 机构公告
 Contact VARCHAR(50),					-- 联系方式
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间

@@ -27,22 +27,16 @@ namespace KST.Model
         public string ChineseName { get; set; }
 
         /// <summary>
-        /// 用户名(默认为电话)
+        /// 电话号码
         /// </summary>
-        [JsonProperty("user_name")]
-        public string UserName { get; set; }
+        [JsonProperty("phone")]
+        public string Phone { get; set; }
 
         /// <summary>
         /// 密码(默认为电话)
         /// </summary>
         [JsonProperty("password")]
         public string Password { get; set; }
-
-        /// <summary>
-        /// 电话号码
-        /// </summary>
-        [JsonProperty("phone")]
-        public string Phone { get; set; }
 
         /// <summary>
         /// 邮箱

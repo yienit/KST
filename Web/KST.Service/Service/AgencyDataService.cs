@@ -28,7 +28,7 @@ namespace KST.Service
         /// <summary>
         /// 注册培训机构
         /// </summary>
-        public ServiceInvokeDTO AgencyReg(string phone, string captcha, string agencyName, string chineseName, string password)
+        public ServiceInvokeDTO AgencyReg(string phone, string captcha, string agencyName, string password)
         {
             log.Debug(Constant.DEBUG_START);
             ServiceInvokeDTO result = null;
@@ -51,11 +51,9 @@ namespace KST.Service
                             agency.RegTime = DateTime.Now;
 
                             AgencyAdmin admin = new AgencyAdmin();
-                            admin.ChineseName = chineseName;
-                            admin.UserName = phone;
-                            admin.Password = SecurityUtil.MD5(password + Constant.ADMIN_SALT_KEY);
+                            admin.ChineseName = agencyName;
                             admin.Phone = phone;
-                            admin.Email = string.Empty;
+                            admin.Password = SecurityUtil.MD5(password + Constant.ADMIN_SALT_KEY);
                             admin.Level = AdminLevel.AgencyCreatorAdmin;
 
                             // 验证参数
@@ -499,7 +497,6 @@ namespace KST.Service
                     else
                     {
                         admin.AgencyID = dbAdmin.AgencyID;
-                        admin.UserName = dbAdmin.UserName;
                         admin.Password = dbAdmin.Password;
                         admin.Email = dbAdmin.Email;
                         admin.Level = dbAdmin.Level;

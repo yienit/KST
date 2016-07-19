@@ -337,7 +337,6 @@ namespace KST.Web.Controllers
                 AgencyAdmin admin = new AgencyAdmin();
                 admin.AgencyID = (Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO).Agency.ID;
                 admin.ChineseName = chineseName;
-                admin.UserName = phone;
                 admin.Phone = phone;
                 admin.Level = AdminLevel.AgencyItemAdmin;
 

@@ -102,6 +102,10 @@ namespace KST.Service
             return result;
         }
 
+        #region AgencyData
+
+        #region Admin
+
         /// <summary>
         /// 检测管理员资源操作权限
         /// </summary>
@@ -125,6 +129,14 @@ namespace KST.Service
             return result;
         }
 
+        #endregion
+
+        #endregion
+
+        #region ItemData
+
+        #region Chapter
+
         /// <summary>
         /// 检测章节资源操作权限
         /// </summary>
@@ -144,6 +156,10 @@ namespace KST.Service
 
             return result;
         }
+
+        #endregion
+
+        #region Single
 
         /// <summary>
         /// 检测单选题资源操作权限
@@ -168,6 +184,10 @@ namespace KST.Service
             return result;
         }
 
+        #endregion
+
+        #region Multiple
+
         /// <summary>
         /// 检测多选题资源操作权限
         /// </summary>
@@ -191,6 +211,10 @@ namespace KST.Service
             return result;
         }
 
+        #endregion
+
+        #region Judge
+
         /// <summary>
         /// 检测判断题资源操作权限
         /// </summary>
@@ -213,6 +237,10 @@ namespace KST.Service
 
             return result;
         }
+
+        #endregion
+
+        #region Uncertain
 
         /// <summary>
         /// 检测不定项选择题资源操作权限
@@ -257,6 +285,10 @@ namespace KST.Service
             return result;
         }
 
+        #endregion
+
+        #region Fenlu
+
         /// <summary>
         /// 检测分录题资源操作权限
         /// </summary>
@@ -279,6 +311,10 @@ namespace KST.Service
 
             return result;
         }
+
+        #endregion
+
+        #region NumberBlank
 
         /// <summary>
         /// 检测数字填空题资源操作权限
@@ -303,5 +339,8 @@ namespace KST.Service
             return result;
         }
 
+        #endregion
+
+        #endregion
     }
 }

@@ -50,43 +50,60 @@ namespace KST.Core
         SYS_ARG_ERROR = 7,
 
         /// <summary>
-        /// 无效的或未知的Cmd
-        /// </summary>
-        [Description("无效的或未知的Cmd")]
-        SYS_UNKNOW_CMD = 8,
-
-        /// <summary>
         /// 验证码错误或过期
         /// </summary>
         [Description("验证码错误或过期")]
-        SYS_CAPTCHA_ERROR = 9,
+        SYS_CAPTCHA_ERROR = 8,
 
         /// <summary>
         /// Session过期
         /// </summary>
         [Description("Session过期,需重新登录")]
-        SYS_SESSION_TIME_OUT_ERROR = 10,
+        SYS_SESSION_TIME_OUT_ERROR = 9,
 
         /// <summary>
         /// 操作的对象不存在
         /// </summary>
         [Description("操作的对象不存在")]
-        SYS_OBJECT_NOT_EXIST_ERROR = 11,
+        SYS_OBJECT_NOT_EXIST_ERROR = 10,
 
-
-        //====================================== 权限Service模块代码(1xx)  ==============================
-
-        /// <summary>
-        /// 因权限检测失败而无法进行此操作
-        /// </summary>
-        [Description("因权限检测失败而无法进行此操作")]
-        PERMISSION_CHECK_FAILD_ERROR = 101,
+        //================================ 账号数据Service模块代码(1xx)  ==============================
 
         /// <summary>
-        /// 非法操作不属于自己的数据
+        /// 机构管理员登录失败
         /// </summary>
-        [Description("非法操作不属于自己的数据")]
-        PERMISSION_NOT_MINE_DATA_ERROR = 102,
+        [Description("账号与密码不匹配")]
+        ACCOUNT_AGENCY_ADMIN_LOGIN_ERROR = 101,
+
+        /// <summary>
+        /// 账号不存在
+        /// </summary>
+        [Description("账号不存在")]
+        ACCOUNT_NOT_EIXST_ERROR = 102,
+
+        /// <summary>
+        /// 该账号所属的培训机构状态已被冻结
+        /// </summary>
+        [Description("该账号所属的培训机构状态已被冻结")]
+        ACCOUNT_AGENCY_STATE_ERROR = 103,
+
+        /// <summary>
+        /// 修改管理员账号密码时原密码错误
+        /// </summary>
+        [Description("原密码错误")]
+        ACCOUNT_OLD_PWD_ERROR = 104,
+
+        /// <summary>
+        /// 机构管理员账号不允许删除
+        /// </summary>
+        [Description("机构管理员账号不允许删除")]
+        ACCOUNT_ADMIN_CREATOR_NOT_DELETE_ERROR = 105,
+
+        /// <summary>
+        /// 机构管理员电话号码已存在
+        /// </summary>
+        [Description("电话号码已存在")]
+        ACCOUNT_ADMIN_PHONE_EXIST_ERROR = 106,
 
         //======================================  短信模块代码(2xx)  ==============================
 
@@ -120,53 +137,27 @@ namespace KST.Core
         [Description("未知的短信验证码类型")]
         SMS_UNKNOW_CODE_TYPE_ERROR = 205,
 
+        //====================================== 权限Service模块代码(3xx)  ==============================
 
-        //================================ 培训机构数据Service模块代码(3xx)  ==============================
+        /// <summary>
+        /// 因权限检测失败而无法进行此操作
+        /// </summary>
+        [Description("因权限检测失败而无法进行此操作")]
+        PERMISSION_CHECK_FAILD_ERROR = 301,
+
+        /// <summary>
+        /// 非法操作不属于自己的数据
+        /// </summary>
+        [Description("非法操作不属于自己的数据")]
+        PERMISSION_NOT_MINE_DATA_ERROR = 302,
+
+        //================================ 培训机构数据Service模块代码(4xx)  ==============================
 
         /// <summary>
         /// 注册的培训机构名称已存在
         /// </summary>
         [Description("机构名称已存在")]
-        AGENCY_NAME_EXIST_ERROR = 301,
-
-
-        //================================ 账号数据Service模块代码(4xx)  ==============================
-
-        /// <summary>
-        /// 机构管理员登录失败
-        /// </summary>
-        [Description("账号与密码不匹配")]
-        ACCOUNT_AGENCY_ADMIN_LOGIN_ERROR = 401,
-
-        /// <summary>
-        /// 账号不存在
-        /// </summary>
-        [Description("账号不存在")]
-        ACCOUNT_NOT_EIXST_ERROR = 402,
-
-        /// <summary>
-        /// 该账号所属的培训机构状态已被冻结
-        /// </summary>
-        [Description("该账号所属的培训机构状态已被冻结")]
-        ACCOUNT_AGENCY_STATE_ERROR = 403,
-
-        /// <summary>
-        /// 修改管理员账号密码时原密码错误
-        /// </summary>
-        [Description("原密码错误")]
-        ACCOUNT_OLD_PWD_ERROR = 404,
-
-        /// <summary>
-        /// 机构管理员账号不允许删除
-        /// </summary>
-        [Description("机构管理员账号不允许删除")]
-        ACCOUNT_ADMIN_CREATOR_NOT_DELETE_ERROR = 405,
-
-        /// <summary>
-        /// 机构管理员电话号码已存在
-        /// </summary>
-        [Description("电话号码已存在")]
-        ACCOUNT_ADMIN_PHONE_EXIST_ERROR = 406,
+        AGENCY_NAME_EXIST_ERROR = 401,
 
 
         //================================ 题库数据Service模块代码(5xx)  ==============================
@@ -191,27 +182,12 @@ namespace KST.Core
 
         //================================ 试卷数据Service模块代码(6xx)  ==============================
 
-        /// <summary>
-        /// 操作的对象不存在
-        /// </summary>
-        [Description("操作的对象不存在")]
-        PAPER_OBJECT_NOT_EXIST_ERROR = 601,
 
         //================================ 用户数据Service模块代码(7xx)  ==============================
 
-        /// <summary>
-        /// 操作的对象不存在
-        /// </summary>
-        [Description("操作的对象不存在")]
-        USER_OBJECT_NOT_EXIST_ERROR = 701,
+
 
         //================================ 记录数据Service模块代码(8xx)  ==============================
-
-        /// <summary>
-        /// 操作的对象不存在
-        /// </summary>
-        [Description("操作的对象不存在")]
-        RECORD_OBJECT_NOT_EXIST_ERROR = 801,
 
     }
 }

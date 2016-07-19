@@ -108,7 +108,7 @@ namespace KST.Web.Controllers
                     {
                         case CaptchaCodeType.RegCode: result = securityService.SendRegCaptcha(phone, ip); break;
                         case CaptchaCodeType.GetPwdCode: result = securityService.SendGetPasswordCaptcha(phone, ip); break;
-                        default: result = result = new ServiceInvokeDTO(InvokeCode.SMS_UNKNOW_CODE_TYPE_ERROR); break;
+                        default: result = new ServiceInvokeDTO(InvokeCode.SMS_UNKNOW_CODE_TYPE_ERROR); break;
                     }
                 }
                 else
@@ -139,13 +139,12 @@ namespace KST.Web.Controllers
             string phone = ApiQueryUtil.QueryArgByPost("phone");
             string captcha = ApiQueryUtil.QueryArgByPost("captcha");
             string agencyName = ApiQueryUtil.QueryArgByPost("agency_name");
-            string chineseName = ApiQueryUtil.QueryArgByPost("chinese_name");
             string password = ApiQueryUtil.QueryArgByPost("pwd");
 
             ServiceInvokeDTO result = null;
             try
             {
-                result = agencyDataService.AgencyReg(phone, captcha, agencyName, chineseName, password);
+                result = agencyDataService.AgencyReg(phone, captcha, agencyName, password);
             }
             catch (Exception ex)
             {

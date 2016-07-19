@@ -25,12 +25,6 @@ namespace KST.DTO
         public string ChineseName { get; set; }
 
         /// <summary>
-        /// 用户名(默认为电话)
-        /// </summary>
-        [JsonProperty("user_name")]
-        public string UserName { get; set; }
-
-        /// <summary>
         /// 电话号码
         /// </summary>
         [JsonProperty("phone")]
@@ -69,7 +63,6 @@ namespace KST.DTO
         {
             this.ID = admin.ID;
             this.ChineseName = admin.ChineseName;
-            this.UserName = admin.UserName;
             this.Phone = admin.Phone;
             this.Email = admin.Email;
             this.Level = admin.Level;

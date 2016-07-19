@@ -63,13 +63,13 @@ namespace KST.DAL
 
             const string insert_agency_sql = @"INSERT INTO Agency(Name, RegTime) VALUES (@Name, @RegTime);SELECT LAST_INSERT_ID();";
 
-            const string insert_agency_admin_sql = @"INSERT INTO AgencyAdmin(AgencyID, ChineseName, UserName, Password, Phone, Level) 
-                                                   VALUES (@AgencyID, @ChineseName, @UserName, @Password, @Phone, @Level);
+            const string insert_agency_admin_sql = @"INSERT INTO AgencyAdmin(AgencyID, ChineseName, Phone, Password,  Level) 
+                                                   VALUES (@AgencyID, @ChineseName, @Phone, @Password, @Level);
                                                    SELECT LAST_INSERT_ID();";
 
             const string insert_agency_creator_sql = @"INSERT INTO AgencyCreator(AgencyID, AdminID) VALUES (@AgencyID, @AdminID);";
 
-            const string insert_agency_config_sql = @"INSERT INTO AgencyConfig(AgencyID, IsLockDevice) VALUES (@AgencyID, @IsLockDevice);";
+            const string insert_agency_config_sql = @"INSERT INTO AgencyConfig(AgencyID) VALUES (@AgencyID);";
 
             const string insert_agency_course_sql = @"INSERT INTO Course(AgencyID, Name, Code, Duration, Description) 
                                                     VALUES (@AgencyID, @Name, @Code, @Duration, @Description);
@@ -91,7 +91,7 @@ namespace KST.DAL
                     connection.Execute(insert_agency_creator_sql, new { AgencyID = agencyID, AdminID = adminID }, transaction);
 
                     // 初始化机构默认配置选项
-                    connection.Execute(insert_agency_config_sql, new { AgencyID = agencyID, IsLockDevice = 1 }, transaction);
+                    connection.Execute(insert_agency_config_sql, new { AgencyID = agencyID }, transaction);
 
                     // 初始化课程及章节信息
                     List<SysCourse> sysCourses = sysCourseDAL.GetAll();

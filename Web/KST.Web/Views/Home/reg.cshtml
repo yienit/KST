@@ -13,7 +13,7 @@
    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>我要考试通</title>
-    <meta name="keywords" content="我要考试通" />
+    <meta name="keywords" content="考试通、我要考试通、考试通软件、会计软件、考试软件" />
     <meta name="description" content="我要考试通是一款会计类在线考试APP" />
     <link rel="stylesheet" href="@Url.Content("~/static/css/animate.min.css")" />
 	<link rel="stylesheet" href="@Url.Content("~/static/css/font-awesome/css/font-awesome.min.css")" />
@@ -63,7 +63,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon" ><i class="fa fa-user"></i></span>
-                                <input type="text" id="login_user_name" name="user_name" value="@userName" maxlength="50" class="form-control" placeholder="手机/邮箱/用户名"/>
+                                <input type="text" id="login_user_name" name="user_name" value="@userName" maxlength="50" class="form-control" placeholder="手机/邮箱"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -107,19 +107,19 @@
 						<div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="fixwidth20 font16"><i class="fa fa-bank"></i></span></span>
-                                <input type="text" id="reg_agency_name" name="agency_name" maxlength="40" class="form-control" placeholder="公司机构名称(4-40位字符)" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <span class="input-group-addon"><span class="fixwidth20 font18"><i class="fa fa-user"></i></span></span>
-                                <input type="text" id="reg_chinese_name" name="chinese_name" maxlength="20" class="form-control" placeholder="昵称(1-20位字符)" />
+                                <input type="text" id="reg_agency_name" name="agency_name" maxlength="40" class="form-control" placeholder="公司/机构/学校名称" />
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="input-group">
                                 <span class="input-group-addon"><span class="fixwidth20 font18"><i class="fa fa-lock"></i></span></span>
-                                <input type="password" id="reg_pwd" name="pwd" maxlength="25" class="form-control" placeholder="密码(6-25位字符)" />
+                                 <input type="password" id="reg_pwd" name="pwd" maxlength="25" class="form-control" placeholder="密码(6-25位)" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="fixwidth20 font18"><i class="fa fa-lock"></i></span></span>
+                                <input type="password" id="reg_pwd_confirm" name="pwd_confirm" maxlength="25" class="form-control" placeholder="确认密码(6-25位)" />
                             </div>
                         </div>
                         <div class="clearfix m-b-10">
@@ -190,7 +190,7 @@
 				    <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><span class="fixwidth20 font18"><i class="fa fa-lock"></i></span></span>
-                            <input type="password" id="getpwd_newpwd" name="newpwd" maxlength="25" class="form-control" placeholder="新密码(6-25位字符)" />
+                            <input type="password" id="getpwd_newpwd" name="newpwd" maxlength="25" class="form-control" placeholder="新密码(6-25位)" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -260,327 +260,326 @@
 <script type="text/javascript" src="@Url.Content("~/static/js/util.js")"></script>
 <script type="text/javascript">
 
-    var TOTAL_TIME = 120;
+var TOTAL_TIME = 120;
 
-    // 注册Timer
-    var hasRunTime = 0;
-    var intervalID;
+// 注册Timer
+var hasRunTime = 0;
+var intervalID;
 
-    // 找回密码Timer
-    var hasRunTimePwd = 0;
-    var intervalIDPwd;
+// 找回密码Timer
+var hasRunTimePwd = 0;
+var intervalIDPwd;
 
-    $(document).ready(function () {
+$(document).ready(function () {
 
-        // 初始化placeholder
-        $('input,textarea').placeholder();
+    // 初始化placeholder
+    $('input,textarea').placeholder();
 
-        // 注册事件
-        $('.switch_btn').click(function () { $('.card').toggleClass('active'); $('.login-reg-tip').text(''); });
-        $('#login_btn').click(function () { login(); });
-        $('#login_pwd').keydown(function (e) { enterHandler(e); });
-        $('#reg_btn').click(function () { reg(); });
-        $('#reg_phone').formatter({ 'pattern': '{{999}}-{{9999}}-{{9999}}' });
-        $('#getpwd_btn').click(function () { getPwd(); });
-        $('#getpwd_phone').formatter({ 'pattern': '{{999}}-{{9999}}-{{9999}}' });
-    })
+    // 注册事件
+    $('.switch_btn').click(function () { $('.card').toggleClass('active'); $('.login-reg-tip').text(''); });
+    $('#login_btn').click(function () { login(); });
+    $('#login_pwd').keydown(function (e) { enterHandler(e); });
+    $('#reg_btn').click(function () { reg(); });
+    $('#reg_phone').formatter({ 'pattern': '{{999}}-{{9999}}-{{9999}}' });
+    $('#getpwd_btn').click(function () { getPwd(); });
+    $('#getpwd_phone').formatter({ 'pattern': '{{999}}-{{9999}}-{{9999}}' });
+})
 
-    /* 登录 */
-    function login() {
-        $('#login_tip').text('');
+/* 登录 */
+function login() {
+    $('#login_tip').text('');
 
-        var userName = $.trim($('#login_user_name').val());
-        if (!userName) {
-            $('#login_tip').text('请输入用户名');
-            return;
-        }
-
-        var password = $.trim($('#login_pwd').val());
-        if (!password) {
-
-            $('#login_tip').text('请输入密码');
-            return;
-        }
-
-        $('#login_pwd_hidden').val($.md5(password));
-        $('#login_pwd').val('');
-
-        $('#login_btn').text('正在登录');  
-
-        $('#login_form').submit();
+    var userName = $.trim($('#login_user_name').val());
+    if (!userName) {
+        $('#login_tip').text('请输入用户名');
+        return;
     }
 
+    var password = $.trim($('#login_pwd').val());
+    if (!password) {
 
-    /* 登录密码框输入Enter事件 */
-    function enterHandler(event) {
-        var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
-        if (keyCode == 13) {
-            login();
-        }
+        $('#login_tip').text('请输入密码');
+        return;
     }
 
-    /* 注册 */
-    function reg() {
-        $('#reg_tip').text('');
+    $('#login_pwd_hidden').val($.md5(password));
+    $('#login_pwd').val('');
 
-        var phoneFormat = $.trim($('#reg_phone').val());
-        if (!phoneFormat) {
-            $('#reg_tip').css('color', 'red');
-            $('#reg_tip').text('请输入手机号');
-            return;
-        }
+    $('#login_btn').text('正在登录');  
 
-        var phone = phoneFormat.replace(/-/g, "");
-        if (!isMobile(phone)) {
-            $('#reg_tip').css('color', 'red');
-            $('#reg_tip').text('请输入正确的电话号码');
-            return;
-        }
+    $('#login_form').submit();
+}
 
-        var captcha = $.trim($('#reg_captcha').val());
-        if (!captcha) {
-            $('#reg_tip').css('color', 'red');
-            $('#reg_tip').text('请输入验证码');
-            return;
-        }
+/* 登录密码框输入Enter事件 */
+function enterHandler(event) {
+    var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+    if (keyCode == 13) {
+        login();
+    }
+}
 
-        var agencyName = $.trim($('#reg_agency_name').val());
-        if (!agencyName) {
-            $('#reg_tip').css('color', 'red');
-            $('#reg_tip').text('请输入公司名称');
-            return;
-        }
-        if (agencyName.length < 4) {
-            $('#reg_tip').css('color', 'red');
-            $('#reg_tip').text('公司名称至少为4个字符');
-            return;
-        }
+/* 注册 */
+function reg() {
+    $('#reg_tip').text('');
 
-        var chineseName = $.trim($('#reg_chinese_name').val());
-        if (!chineseName) {
-            $('#reg_tip').css('color', 'red');
-            $('#reg_tip').text('请输入昵称');
-            return;
-        }
+    var phoneFormat = $.trim($('#reg_phone').val());
+    if (!phoneFormat) {
+        $('#reg_tip').css('color', 'red');
+        $('#reg_tip').text('请输入手机号');
+        return;
+    }
 
-        var password = $.trim($('#reg_pwd').val());
-        if (!password) {
-            $('#reg_tip').css('color', 'red');
-            $('#reg_tip').text('请输入密码');
-            return;
-        }
-        if (password.length < 6) {
-            $('#reg_tip').css('color', 'red');
-            $('#reg_tip').text('密码至少为6个字符');
-            return;
-        }
+    var phone = phoneFormat.replace(/-/g, "");
+    if (!isMobile(phone)) {
+        $('#reg_tip').css('color', 'red');
+        $('#reg_tip').text('请输入正确的电话号码');
+        return;
+    }
 
-        $('#reg_pwd').val('');
+    var captcha = $.trim($('#reg_captcha').val());
+    if (!captcha) {
+        $('#reg_tip').css('color', 'red');
+        $('#reg_tip').text('请输入验证码');
+        return;
+    }
 
-        $.ajax({
-            type: "POST",
-            url: "/home/regex?random=" + Math.random(),
-            data: { phone: phone, captcha: captcha, agency_name: agencyName, chinese_name: chineseName, pwd: $.md5(password) },
-            success: function (json) {
-                if (json.code == 1) {
-                    $('#reg_tip').css('color', '#15c288');
-                    $('#reg_tip').text('注册成功,您可以使用手机号和密码登录系统');
-                }
-                else {
-                    $('#reg_tip').css('color', 'red');
-                    $('#reg_tip').text('注册失败: ' + json.msg);
-                }
-            },
-            error: function (xhr, testStatus, error) {
-                alert("发送ajax请求失败： " + error);
+    var agencyName = $.trim($('#reg_agency_name').val());
+    if (!agencyName) {
+        $('#reg_tip').css('color', 'red');
+        $('#reg_tip').text('请输入公司名称');
+        return;
+    }
+    if (agencyName.length < 4) {
+        $('#reg_tip').css('color', 'red');
+        $('#reg_tip').text('公司名称至少为4个字符');
+        return;
+    }
+
+    var password = $.trim($('#reg_pwd').val());
+    if (!password) {
+        $('#reg_tip').css('color', 'red');
+        $('#reg_tip').text('请输入密码');
+        return;
+    }
+    if (password.length < 6) {
+        $('#reg_tip').css('color', 'red');
+        $('#reg_tip').text('密码至少为6个字符');
+        return;
+    }
+    var passwordConfirm = $.trim($('#reg_pwd_confirm').val());
+    if (passwordConfirm != password) {
+        $('#reg_tip').css('color', 'red');
+        $('#reg_tip').text('两次输入的密码不一致');
+        return;
+    }
+
+    $('#reg_pwd').val('');
+    $('#reg_pwd_confirm').val('');
+
+    $.ajax({
+        type: "POST",
+        url: "/home/regex?random=" + Math.random(),
+        data: { phone: phone, captcha: captcha, agency_name: agencyName, pwd: $.md5(password) },
+        success: function (json) {
+            if (json.code == 1) {
+                $('#reg_tip').css('color', '#15c288');
+                $('#reg_tip').text('注册成功,您可以使用手机号和密码登录系统');
             }
-        });
-    }
-
-    /* 获取注册验证码 */
-    function getRegCaptcha() {
-
-        $('#reg_tip').text('');
-
-        var phoneFormat = $.trim($('#reg_phone').val());
-        if (!phoneFormat) {
-            $('#reg_tip').css('color', 'red');
-            $('#reg_tip').text('请输入手机号');
-            return;
-        }
-
-        var phone = phoneFormat.replace(/-/g, "");
-        if (!isMobile(phone)) {
-            $('#reg_tip').css('color', 'red');
-            $('#reg_tip').text('请输入正确的电话号码');
-            return;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "/Home/GetCaptcha?random=" + Math.random(),
-            data: { code_type: 0, phone: phone },
-            success: function (json) {
-                if (json.code == 1) {
-                    $('#reg_get_captcha_btn').css('cursor', 'default');
-                    $('#reg_get_captcha_btn').css("color", '#afafaf');
-                    $('#reg_get_captcha_btn').attr('href', 'javascript:void(0)');
-
-                    intervalID = setInterval('getRegCaptchaTimerHandler()', 1000);
-                }
-                else {
-                    $('#reg_tip').css('color', 'red');
-                    $('#reg_tip').text('获取验证码失败: ' + json.msg);
-                }
-            },
-            error: function (xhr, testStatus, error) {
-                alert('开始发送ajax请求失败： ' + error);
+            else {
+                $('#reg_tip').css('color', 'red');
+                $('#reg_tip').text('注册失败: ' + json.msg);
             }
-        });
+        },
+        error: function (xhr, testStatus, error) {
+            alert("发送ajax请求失败： " + error);
+        }
+    });
+}
+
+/* 获取注册验证码 */
+function getRegCaptcha() {
+
+    $('#reg_tip').text('');
+
+    var phoneFormat = $.trim($('#reg_phone').val());
+    if (!phoneFormat) {
+        $('#reg_tip').css('color', 'red');
+        $('#reg_tip').text('请输入手机号');
+        return;
     }
 
-    /* 获取注册验证码周期函数 */
-    function getRegCaptchaTimerHandler() {
-
-        $('#reg_get_captcha_btn').text('{0}秒后重新获取'.format(TOTAL_TIME - hasRunTime))
-        hasRunTime++;
-
-        if (hasRunTime == TOTAL_TIME) {
-            clearInterval(intervalID);
-
-            hasRunTime = 0;
-            $('#reg_get_captcha_btn').text('获取验证码');
-            $('#reg_get_captcha_btn').removeAttr('style');
-            $('#reg_get_captcha_btn').css('cursor", "pointer');
-            $('#reg_get_captcha_btn').attr('href', 'javascript:getRegCaptcha()');
-        }
+    var phone = phoneFormat.replace(/-/g, "");
+    if (!isMobile(phone)) {
+        $('#reg_tip').css('color', 'red');
+        $('#reg_tip').text('请输入正确的电话号码');
+        return;
     }
 
-    /* 找回密码 */
-    function getPwd() {
-        $('#getpwd_tip').text('');
+    $.ajax({
+        type: "POST",
+        url: "/Home/GetCaptcha?random=" + Math.random(),
+        data: { code_type: 0, phone: phone },
+        success: function (json) {
+            if (json.code == 1) {
+                $('#reg_get_captcha_btn').css('cursor', 'default');
+                $('#reg_get_captcha_btn').css("color", '#afafaf');
+                $('#reg_get_captcha_btn').attr('href', 'javascript:void(0)');
 
-        var phoneFormat = $.trim($('#getpwd_phone').val());
-        if (!phoneFormat) {
-            $('#getpwd_tip').css('color', 'red');
-            $('#getpwd_tip').text('请输入手机号');
-            return;
-        }
-
-        var phone = phoneFormat.replace(/-/g, "");
-        if (!isMobile(phone)) {
-            $('#getpwd_tip').css('color', 'red');
-            $('#getpwd_tip').text('请输入正确的电话号码');
-            return;
-        }
-
-        var captcha = $.trim($('#getpwd_captcha').val());
-        if (!captcha) {
-            $('#getpwd_tip').css('color', 'red');
-            $('#getpwd_tip').text('请输入验证码');
-            return;
-        }
-
-        var password = $.trim($('#getpwd_newpwd').val());
-        if (!password) {
-            $('#getpwd_tip').css('color', 'red');
-            $('#getpwd_tip').text('请输入新密码');
-            return;
-        }
-        if (password.length < 6) {
-            $('#getpwd_tip').css('color', 'red');
-            $('#getpwd_tip').text('密码至少为6个字符');
-            return;
-        }
-
-        var pwdConfirm = $.trim($('#getpwd_newpwd_confirm').val());
-        if (pwdConfirm != password) {
-            $('#getpwd_tip').css('color', 'red');
-            $('#getpwd_tip').text('两次输入的密码不一致');
-            return;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "/Home/SetNewPwd?random=" + Math.random(),
-            data: { phone: phone, captcha: captcha, pwd: $.md5(password) },
-            success: function (json) {
-                if (json.code == 1) {
-                    $('#getpwd_newpwd').val('');
-                    $('#getpwd_newpwd_confirm').val('');
-
-                    $('#getpwd_tip').css('color', '#15c288');
-                    $('#getpwd_tip').text('重置密码成功,您可以新密码登录系统');
-                }
-                else {
-                    $('#getpwd_tip').css('color', 'red');
-                    $('#getpwd_tip').text('重置密码失败: ' + json.msg);
-                }
-            },
-            error: function (xhr, testStatus, error) {
-                alert("发送ajax请求失败： " + error);
+                intervalID = setInterval('getRegCaptchaTimerHandler()', 1000);
             }
-        });
-    }
-
-    /* 获取找回密码验证码 */
-    function getGetPwdCaptcha() {
-
-        $('#getpwd_tip').text('');
-
-        var phoneFormat = $.trim($('#getpwd_phone').val());
-        if (!phoneFormat) {
-            $('#getpwd_tip').css('color', 'red');
-            $('#getpwd_tip').text('请输入手机号');
-            return;
-        }
-
-        var phone = phoneFormat.replace(/-/g, "");
-        if (!isMobile(phone)) {
-            $('#getpwd_tip').css('color', 'red');
-            $('#getpwd_tip').text('请输入正确的电话号码');
-            return;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "/home/getcaptcha?random=" + Math.random(),
-            data: { code_type: 1, phone: phone },
-            success: function (json) {
-                if (json.code == 1) {
-                    $('#getpwd_get_captcha_btn').css('cursor', 'default');
-                    $('#getpwd_get_captcha_btn').css("color", '#afafaf');
-                    $('#getpwd_get_captcha_btn').attr('href', 'javascript:void(0)');
-
-                    intervalIDPwd = setInterval('getGetPwdCaptchaTimerHandler()', 1000);
-                }
-                else {
-                    $('#getpwd_tip').css('color', 'red');
-                    $('#getpwd_tip').text('获取验证码失败: ' + json.msg);
-                }
-            },
-            error: function (xhr, testStatus, error) {
-                alert('开始发送ajax请求失败： ' + error);
+            else {
+                $('#reg_tip').css('color', 'red');
+                $('#reg_tip').text('获取验证码失败: ' + json.msg);
             }
-        });
-    }
-
-    /* 获取找回密码验证码周期函数 */
-    function getGetPwdCaptchaTimerHandler() {
-
-        $('#getpwd_get_captcha_btn').text('{0}秒后重新获取'.format(TOTAL_TIME - hasRunTimePwd))
-        hasRunTimePwd++;
-
-        if (hasRunTimePwd == TOTAL_TIME) {
-            clearInterval(intervalIDPwd);
-
-            hasRunTimePwd = 0;
-            $('#getpwd_get_captcha_btn').text('获取验证码');
-            $('#getpwd_get_captcha_btn').removeAttr('style');
-            $('#getpwd_get_captcha_btn').css('cursor", "pointer');
-            $('#getpwd_get_captcha_btn').attr('href', 'javascript:getGetPwdCaptcha()');
+        },
+        error: function (xhr, testStatus, error) {
+            alert('开始发送ajax请求失败： ' + error);
         }
+    });
+}
+
+/* 获取注册验证码周期函数 */
+function getRegCaptchaTimerHandler() {
+
+    $('#reg_get_captcha_btn').text('{0}秒后重新获取'.format(TOTAL_TIME - hasRunTime))
+    hasRunTime++;
+
+    if (hasRunTime == TOTAL_TIME) {
+        clearInterval(intervalID);
+
+        hasRunTime = 0;
+        $('#reg_get_captcha_btn').text('获取验证码');
+        $('#reg_get_captcha_btn').removeAttr('style');
+        $('#reg_get_captcha_btn').css('cursor", "pointer');
+        $('#reg_get_captcha_btn').attr('href', 'javascript:getRegCaptcha()');
     }
+}
+
+/* 找回密码 */
+function getPwd() {
+    $('#getpwd_tip').text('');
+
+    var phoneFormat = $.trim($('#getpwd_phone').val());
+    if (!phoneFormat) {
+        $('#getpwd_tip').css('color', 'red');
+        $('#getpwd_tip').text('请输入手机号');
+        return;
+    }
+
+    var phone = phoneFormat.replace(/-/g, "");
+    if (!isMobile(phone)) {
+        $('#getpwd_tip').css('color', 'red');
+        $('#getpwd_tip').text('请输入正确的电话号码');
+        return;
+    }
+
+    var captcha = $.trim($('#getpwd_captcha').val());
+    if (!captcha) {
+        $('#getpwd_tip').css('color', 'red');
+        $('#getpwd_tip').text('请输入验证码');
+        return;
+    }
+
+    var password = $.trim($('#getpwd_newpwd').val());
+    if (!password) {
+        $('#getpwd_tip').css('color', 'red');
+        $('#getpwd_tip').text('请输入新密码');
+        return;
+    }
+    if (password.length < 6) {
+        $('#getpwd_tip').css('color', 'red');
+        $('#getpwd_tip').text('密码至少为6个字符');
+        return;
+    }
+
+    var pwdConfirm = $.trim($('#getpwd_newpwd_confirm').val());
+    if (pwdConfirm != password) {
+        $('#getpwd_tip').css('color', 'red');
+        $('#getpwd_tip').text('两次输入的密码不一致');
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/Home/SetNewPwd?random=" + Math.random(),
+        data: { phone: phone, captcha: captcha, pwd: $.md5(password) },
+        success: function (json) {
+            if (json.code == 1) {
+                $('#getpwd_newpwd').val('');
+                $('#getpwd_newpwd_confirm').val('');
+
+                $('#getpwd_tip').css('color', '#15c288');
+                $('#getpwd_tip').text('重置密码成功,您可以新密码登录系统');
+            }
+            else {
+                $('#getpwd_tip').css('color', 'red');
+                $('#getpwd_tip').text('重置密码失败: ' + json.msg);
+            }
+        },
+        error: function (xhr, testStatus, error) {
+            alert("发送ajax请求失败： " + error);
+        }
+    });
+}
+
+/* 获取找回密码验证码 */
+function getGetPwdCaptcha() {
+
+    $('#getpwd_tip').text('');
+
+    var phoneFormat = $.trim($('#getpwd_phone').val());
+    if (!phoneFormat) {
+        $('#getpwd_tip').css('color', 'red');
+        $('#getpwd_tip').text('请输入手机号');
+        return;
+    }
+
+    var phone = phoneFormat.replace(/-/g, "");
+    if (!isMobile(phone)) {
+        $('#getpwd_tip').css('color', 'red');
+        $('#getpwd_tip').text('请输入正确的电话号码');
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/home/getcaptcha?random=" + Math.random(),
+        data: { code_type: 1, phone: phone },
+        success: function (json) {
+            if (json.code == 1) {
+                $('#getpwd_get_captcha_btn').css('cursor', 'default');
+                $('#getpwd_get_captcha_btn').css("color", '#afafaf');
+                $('#getpwd_get_captcha_btn').attr('href', 'javascript:void(0)');
+
+                intervalIDPwd = setInterval('getGetPwdCaptchaTimerHandler()', 1000);
+            }
+            else {
+                $('#getpwd_tip').css('color', 'red');
+                $('#getpwd_tip').text('获取验证码失败: ' + json.msg);
+            }
+        },
+        error: function (xhr, testStatus, error) {
+            alert('开始发送ajax请求失败： ' + error);
+        }
+    });
+}
+
+/* 获取找回密码验证码周期函数 */
+function getGetPwdCaptchaTimerHandler() {
+
+    $('#getpwd_get_captcha_btn').text('{0}秒后重新获取'.format(TOTAL_TIME - hasRunTimePwd))
+    hasRunTimePwd++;
+
+    if (hasRunTimePwd == TOTAL_TIME) {
+        clearInterval(intervalIDPwd);
+
+        hasRunTimePwd = 0;
+        $('#getpwd_get_captcha_btn').text('获取验证码');
+        $('#getpwd_get_captcha_btn').removeAttr('style');
+        $('#getpwd_get_captcha_btn').css('cursor", "pointer');
+        $('#getpwd_get_captcha_btn').attr('href', 'javascript:getGetPwdCaptcha()');
+    }
+}
 
 </script>
 	

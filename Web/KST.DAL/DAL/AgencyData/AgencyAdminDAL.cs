@@ -38,11 +38,6 @@ namespace KST.DAL
                     sqlWhereBuilder.Append("AND ChineseName LIKE CONCAT('%',@ChineseName,'%') ");
                     parameterDictionary.Add("ChineseName", queryDTO.Model.ChineseName);
                 }
-                if (!string.IsNullOrEmpty(queryDTO.Model.UserName))
-                {
-                    sqlWhereBuilder.Append("AND UserName LIKE CONCAT('%',@UserName,'%') ");
-                    parameterDictionary.Add("UserName", queryDTO.Model.UserName);
-                }
                 if (!string.IsNullOrEmpty(queryDTO.Model.Phone))
                 {
                     sqlWhereBuilder.Append("AND Phone LIKE CONCAT('%',@Phone,'%') ");
@@ -115,17 +110,16 @@ namespace KST.DAL
         }
 
         /// <summary>
-        /// 根据用户名或手机号或邮箱获取实体信息
+        /// 根据手机号或邮箱获取实体信息
         /// </summary>
-        public AgencyAdmin GetByAccount(string userNameOrPhoneOrEmail)
+        public AgencyAdmin GetByAccount(string phoneOrEmail)
         {
             AgencyAdmin admin = null;
 
-            const string sql = @"SELECT * FROM AgencyAdmin WHERE IsDeleted = 0 
-                                 AND (UserName = @UserNameOrPhoneOrEmail OR Phone = @UserNameOrPhoneOrEmail OR Email = @UserNameOrPhoneOrEmail) LIMIT 1";
+            const string sql = @"SELECT * FROM AgencyAdmin WHERE IsDeleted = 0 AND (Phone = @PhoneOrEmail OR Email = @PhoneOrEmail) LIMIT 1";
             using (DbConnection connection = ConnectionManager.OpenConnection)
             {
-                admin = connection.Query<AgencyAdmin>(sql, new { UserNameOrPhoneOrEmail = userNameOrPhoneOrEmail }).SingleOrDefault<AgencyAdmin>();
+                admin = connection.Query<AgencyAdmin>(sql, new { PhoneOrEmail = phoneOrEmail }).SingleOrDefault<AgencyAdmin>();
             }
             return admin;
         }
@@ -137,9 +131,9 @@ namespace KST.DAL
         {
             int agencyID = 0;
 
-            const string sql = @"INSERT INTO AgencyAdmin(AgencyID, ChineseName, UserName, Password, Phone, Email, Level) 
-                               VALUES (@AgencyID, @ChineseName, @UserName, @Password, @Phone, @Email, @Level);
-                               SELECT LAST_INSERT_ID();";
+            const string sql = @"INSERT INTO AgencyAdmin(AgencyID, ChineseName, Phone, Password, Level) 
+                                 VALUES (@AgencyID, @ChineseName, @Phone, @Password, @Level);
+                                 SELECT LAST_INSERT_ID();";
             using (DbConnection connection = ConnectionManager.OpenConnection)
             {
                 agencyID = connection.Query<int>(sql, admin).SingleOrDefault<int>();
@@ -153,8 +147,8 @@ namespace KST.DAL
         public void Update(AgencyAdmin admin)
         {
             const string sql = @"UPDATE AgencyAdmin SET AgencyID = @AgencyID, ChineseName = @ChineseName, 
-                               UserName= @UserName, Password = @Password, Phone= @Phone, Email = @Email 
-                               WHERE IsDeleted = 0 AND ID = @ID";
+                                 Phone= @Phone, Password = @Password,  Email = @Email 
+                                 WHERE IsDeleted = 0 AND ID = @ID";
             using (DbConnection connection = ConnectionManager.OpenConnection)
             {
                 connection.Execute(sql, admin);
