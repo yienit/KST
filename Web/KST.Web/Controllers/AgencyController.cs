@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using KST.Core;
 using KST.Service;
 using KST.Web.Filters;
+using System.IO;
 
 namespace KST.Web.Controllers
 {
@@ -28,11 +29,21 @@ namespace KST.Web.Controllers
         private const string VIEW_ADMIN_UPDATE = @"admin\admin-update";
         private const string VIEW_ADMIN_DETAIL = @"admin\admin-detail";
 
-        private const string VIEW_USER_LIST = "user-list";
+        private const string VIEW_USER_LIST = @"user\user-list";
+        private const string VIEW_USER_ADD = @"user\user-add";
+        private const string VIEW_USER_UPDATE = @"user\user-update";
+        private const string VIEW_USER_DETAIL = @"user\user-detail";
+        private const string VIEW_USER_QUERY = @"user\user-query";
+        private const string VIEW_USER_IMPORT = @"user\user-import";
+
+        private const string VIEW_ADMIN_DORECORD_LIST = @"dorecord\dorecord-list";
+        private const string VIEW_ADMIN_DORECORD_QUERY = @"dorecord\dorecord-query";
+        private const string VIEW_ADMIN_DORECORD_DETAIL = @"dorecord\dorecord-detail";
 
         private AgencyDataService agencyDataService = ServiceFactory.Instance.AgencyDataService;
         private SecurityService securityService = ServiceFactory.Instance.SecurityService;
         private PermissionService permissionService = ServiceFactory.Instance.PermissionService;
+        private RecordDataService recordDataService = ServiceFactory.Instance.RecordDataService;
         private log4net.ILog log = log4net.LogManager.GetLogger(typeof(AgencyController));
 
         #region View
@@ -99,6 +110,74 @@ namespace KST.Web.Controllers
             return View(VIEW_USER_LIST);
         }
 
+        /// <summary>
+        /// 学生账号添加页面
+        /// </summary>
+        public ActionResult UserAddTemplate()
+        {
+            return View(VIEW_USER_ADD);
+        }
+
+        /// <summary>
+        /// 学生账号修改页面
+        /// </summary>
+        public ActionResult UserUpdateTemplate()
+        {
+            return View(VIEW_USER_UPDATE);
+        }
+
+        /// <summary>
+        /// 学生账号详情页面
+        /// </summary>
+        public ActionResult UserDetailTemplate()
+        {
+            return View(VIEW_USER_DETAIL);
+        }
+
+        /// <summary>
+        /// 学生账号查询页面
+        /// </summary>
+        public ActionResult UserQueryTemplate()
+        {
+            return View(VIEW_USER_QUERY);
+        }
+
+        /// <summary>
+        /// 学生账号导入页面
+        /// </summary>
+        public ActionResult UserImportTemplate()
+        {
+            return View(VIEW_USER_IMPORT);
+        }
+
+        #endregion
+
+        #region AdminDoRecord
+
+        /// <summary>
+        /// 管理员操作记录列表管理页面
+        /// </summary>
+        public ActionResult DoRecordList()
+        {
+            return View(VIEW_ADMIN_DORECORD_LIST);
+        }
+
+        /// <summary>
+        /// 管理员操作记录查询页面
+        /// </summary>
+        public ActionResult DoRecordQueryTemplate()
+        {
+            return View(VIEW_ADMIN_DORECORD_QUERY);
+        }
+
+        /// <summary>
+        /// 管理员操作记录详情页面
+        /// </summary>
+        public ActionResult DoRecordDetailTemplate()
+        {
+            return View(VIEW_ADMIN_DORECORD_DETAIL);
+        }
+
         #endregion
 
         #endregion
@@ -148,8 +227,22 @@ namespace KST.Web.Controllers
             ServiceInvokeDTO result = null;
             try
             {
-                int agencyID = (Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO).Agency.ID;
+                AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                int agencyID = currentAdmin.Agency.ID;
                 result = agencyDataService.UpdateAgencyName(agencyID, name);
+
+                // Write admin do record.
+                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    AdminDoRecord doRecord = new AdminDoRecord();
+                    doRecord.AdminID = currentAdmin.ID;
+                    doRecord.AdminName = currentAdmin.ChineseName;
+                    doRecord.DoTime = DateTime.Now;
+                    doRecord.DoName = DoActionType.UpdateAgency.GetDescription();
+                    doRecord.DoContent = string.Format("修改机构/学校/公司名称为:{0}", name);
+                    doRecord.Remark = string.Empty;
+                    recordDataService.AddAdminDoRecord(doRecord);
+                }
             }
             catch (Exception ex)
             {
@@ -176,9 +269,23 @@ namespace KST.Web.Controllers
             ServiceInvokeDTO result = null;
             try
             {
-                int agencyID = (Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO).Agency.ID;
+                AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                int agencyID = currentAdmin.Agency.ID;
                 int isLockDevice = Convert.ToInt32(isLockDeviceString);
                 result = agencyDataService.SetIsLockDeviceConfig(agencyID, isLockDevice);
+
+                // Write admin do record.
+                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    AdminDoRecord doRecord = new AdminDoRecord();
+                    doRecord.AdminID = currentAdmin.ID;
+                    doRecord.AdminName = currentAdmin.ChineseName;
+                    doRecord.DoTime = DateTime.Now;
+                    doRecord.DoName = DoActionType.UpdageAgencyConfig.GetDescription();
+                    doRecord.DoContent = isLockDevice == 1 ? "打开设备锁" : "关闭设备锁";
+                    doRecord.Remark = string.Empty;
+                    recordDataService.AddAdminDoRecord(doRecord);
+                }
             }
             catch (Exception ex)
             {
@@ -205,8 +312,22 @@ namespace KST.Web.Controllers
             ServiceInvokeDTO result = null;
             try
             {
-                int agencyID = (Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO).Agency.ID;
+                AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                int agencyID = currentAdmin.Agency.ID;
                 result = agencyDataService.UpdateAgencyContactConfig(agencyID, contact);
+
+                // Write admin do record.
+                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    AdminDoRecord doRecord = new AdminDoRecord();
+                    doRecord.AdminID = currentAdmin.ID;
+                    doRecord.AdminName = currentAdmin.ChineseName;
+                    doRecord.DoTime = DateTime.Now;
+                    doRecord.DoName = DoActionType.UpdageAgencyConfig.GetDescription();
+                    doRecord.DoContent = string.Format("修改联系方式为:{0}", contact);
+                    doRecord.Remark = string.Empty;
+                    recordDataService.AddAdminDoRecord(doRecord);
+                }
             }
             catch (Exception ex)
             {
@@ -233,8 +354,22 @@ namespace KST.Web.Controllers
             ServiceInvokeDTO result = null;
             try
             {
-                int agencyID = (Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO).Agency.ID;
+                AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                int agencyID = currentAdmin.Agency.ID;
                 result = agencyDataService.UpdateAgencyNoticeConfig(agencyID, notice);
+
+                // Write admin do record.
+                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    AdminDoRecord doRecord = new AdminDoRecord();
+                    doRecord.AdminID = currentAdmin.ID;
+                    doRecord.AdminName = currentAdmin.ChineseName;
+                    doRecord.DoTime = DateTime.Now;
+                    doRecord.DoName = DoActionType.UpdageAgencyConfig.GetDescription();
+                    doRecord.DoContent = string.Format("修改通知公告为:{0}", notice);
+                    doRecord.Remark = string.Empty;
+                    recordDataService.AddAdminDoRecord(doRecord);
+                }
             }
             catch (Exception ex)
             {
@@ -266,8 +401,22 @@ namespace KST.Web.Controllers
             ServiceInvokeDTO result = null;
             try
             {
-                int adminID = (Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO).ID;
+                AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                int adminID = currentAdmin.ID;
                 result = agencyDataService.UpdateAdminPassword(adminID, oldPwd, newPwd);
+
+                // Write admin do record.
+                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    AdminDoRecord doRecord = new AdminDoRecord();
+                    doRecord.AdminID = currentAdmin.ID;
+                    doRecord.AdminName = currentAdmin.ChineseName;
+                    doRecord.DoTime = DateTime.Now;
+                    doRecord.DoName = DoActionType.UpdatePassword.GetDescription();
+                    doRecord.DoContent = string.Empty;
+                    doRecord.Remark = string.Empty;
+                    recordDataService.AddAdminDoRecord(doRecord);
+                }
             }
             catch (Exception ex)
             {
@@ -341,6 +490,20 @@ namespace KST.Web.Controllers
                 admin.Level = AdminLevel.AgencyItemAdmin;
 
                 result = agencyDataService.AddAdmin(admin);
+
+                // Write admin do record.
+                AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    AdminDoRecord doRecord = new AdminDoRecord();
+                    doRecord.AdminID = currentAdmin.ID;
+                    doRecord.AdminName = currentAdmin.ChineseName;
+                    doRecord.DoTime = DateTime.Now;
+                    doRecord.DoName = DoActionType.AddAdmin.GetDescription();
+                    doRecord.DoContent = string.Format("新管理员姓名：{0}", chineseName);
+                    doRecord.Remark = string.Empty;
+                    recordDataService.AddAdminDoRecord(doRecord);
+                }
             }
             catch (Exception ex)
             {
@@ -380,6 +543,19 @@ namespace KST.Web.Controllers
                     admin.ChineseName = chineseName;
                     admin.Phone = phone;
                     result = agencyDataService.UpdateAdmin(admin);
+
+                    // Write admin do record.
+                    if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.UpdateAdmin.GetDescription();
+                        doRecord.DoContent = string.Format("被更新的管理员ID：{0}", idString);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -418,6 +594,19 @@ namespace KST.Web.Controllers
                 if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     result = agencyDataService.DeleteAdmin(adminID);
+
+                    // Write admin do record.
+                    if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.DeleteAdmin.GetDescription();
+                        doRecord.DoContent = string.Format("被删除的管理员ID：{0}", adminIDString);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -469,6 +658,19 @@ namespace KST.Web.Controllers
                 if (isRightPermission)
                 {
                     result = agencyDataService.DeleteAdmin(adminIDList);
+
+                    // Write admin do record.
+                    if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.DeleteAdminInBatch.GetDescription();
+                        doRecord.DoContent = string.Empty;
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -482,6 +684,460 @@ namespace KST.Web.Controllers
             }
 
             string json = JsonConvert.SerializeObject(result, Formatting.Indented, Constant.TIME_CONVERTER);
+            log.Debug(Constant.DEBUG_END);
+
+            return Content(json, Constant.JSON_MIME_TYPE);
+        }
+
+        #endregion
+
+        #region User
+
+        /// <summary>
+        /// 分页查询学生账号
+        /// </summary>
+        [HttpGet]
+        public ActionResult QueryUser()
+        {
+            log.Debug(Constant.DEBUG_START);
+
+            string pageSizeString = ApiQueryUtil.QueryArgByGet("limit");
+            string offsetString = ApiQueryUtil.QueryArgByGet("offset");
+
+            string chapterIDString = ApiQueryUtil.QueryArgByGet("chapter_id");
+            string isVipItemString = ApiQueryUtil.QueryArgByGet("is_vip_item");
+            string title = ApiQueryUtil.QueryArgByGet("title");
+            string difficultyString = ApiQueryUtil.QueryArgByGet("difficulty");
+            string addPerson = ApiQueryUtil.QueryArgByGet("add_person");
+
+            QueryResultDTO<SingleItemDTO> queryData = null;
+            try
+            {
+                QueryArgsDTO<SingleItem> queryDTO = new QueryArgsDTO<SingleItem>();
+                queryDTO.PageSize = Convert.ToInt32(pageSizeString);
+                queryDTO.PageIndex = Convert.ToInt32(offsetString) / Convert.ToInt32(pageSizeString) + 1;
+
+                queryDTO.Model.AgencyID = (Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO).Agency.ID;
+                queryDTO.Model.ChapterID = Convert.ToInt32(chapterIDString);
+                queryDTO.Model.IsVipItem = Convert.ToInt32(isVipItemString);
+                queryDTO.Model.Title = title;
+                queryDTO.Model.Difficulty = string.IsNullOrEmpty(difficultyString) ? -1 : Convert.ToInt32(difficultyString);
+                queryDTO.Model.AddPerson = addPerson;
+
+                int courseID = (Session[Constant.SESSION_KEY_COURSE] as Course).ID;
+
+                //queryData = itemDataService.QuerySingle(queryDTO, courseID).Data;
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+
+            string json = JsonConvert.SerializeObject(queryData, Formatting.Indented, Constant.TIME_CONVERTER);
+            log.Debug(Constant.DEBUG_END);
+
+            return Content(json, Constant.JSON_MIME_TYPE);
+        }
+
+        /// <summary>
+        /// 添加学生账号
+        /// </summary>
+        [HttpPost]
+        public ActionResult AddUser()
+        {
+            log.Debug(Constant.DEBUG_START);
+
+            string isVipItemString = ApiQueryUtil.QueryArgByPost("is_vip_item");
+            string chapterIDString = ApiQueryUtil.QueryArgByPost("chapter_id");
+
+            string title = ApiQueryUtil.QueryArgByPost("title");
+            HttpPostedFileBase imageFile = Request.Files["image"];
+            string a = ApiQueryUtil.QueryArgByPost("a");
+            string b = ApiQueryUtil.QueryArgByPost("b");
+            string c = ApiQueryUtil.QueryArgByPost("c");
+            string d = ApiQueryUtil.QueryArgByPost("d");
+            string answer = ApiQueryUtil.QueryArgByPost("answer");
+            string annotation = ApiQueryUtil.QueryArgByPost("annotation");
+            string difficultyString = ApiQueryUtil.QueryArgByPost("difficulty");
+
+            ServiceInvokeDTO result = null;
+            try
+            {
+                SingleItem single = new SingleItem();
+                single.AgencyID = (Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO).Agency.ID;
+                single.IsVipItem = Convert.ToInt32(isVipItemString);
+                single.ChapterID = Convert.ToInt32(chapterIDString);
+
+                single.Title = title;
+                single.A = a;
+                single.B = b;
+                single.C = c;
+                single.D = d;
+                single.Answer = answer;
+                single.Annotation = annotation;
+                single.Difficulty = Convert.ToInt32(difficultyString);
+                single.AddPerson = (Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO).ChineseName;
+
+                if (imageFile != null)
+                {
+                    byte[] imageBytes = null;
+                    using (Stream inputStream = imageFile.InputStream)
+                    {
+                        MemoryStream memoryStream = inputStream as MemoryStream;
+                        if (memoryStream == null)
+                        {
+                            memoryStream = new MemoryStream();
+                            inputStream.CopyTo(memoryStream);
+                        }
+                        imageBytes = memoryStream.ToArray();
+                    }
+                    single.Image = imageBytes;
+                }
+
+                //result = itemDataService.AddSingle(single);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result = new ServiceInvokeDTO(InvokeCode.SYS_INNER_ERROR);
+            }
+
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented, Constant.TIME_CONVERTER);
+            log.Debug(Constant.DEBUG_END);
+
+            return Content(json, Constant.JSON_MIME_TYPE);
+        }
+
+        /// <summary>
+        /// 更新学生账号
+        /// </summary>
+        [HttpPost]
+        public ActionResult UpdateUser()
+        {
+            log.Debug(Constant.DEBUG_START);
+
+            string idString = ApiQueryUtil.QueryArgByPost("id");
+            string isVipItemString = ApiQueryUtil.QueryArgByPost("is_vip_item");
+            string chapterIDString = ApiQueryUtil.QueryArgByPost("chapter_id");
+
+            string title = ApiQueryUtil.QueryArgByPost("title");
+            HttpPostedFileBase imageFile = Request.Files["image"];
+            string a = ApiQueryUtil.QueryArgByPost("a");
+            string b = ApiQueryUtil.QueryArgByPost("b");
+            string c = ApiQueryUtil.QueryArgByPost("c");
+            string d = ApiQueryUtil.QueryArgByPost("d");
+            string answer = ApiQueryUtil.QueryArgByPost("answer");
+            string annotation = ApiQueryUtil.QueryArgByPost("annotation");
+            string difficultyString = ApiQueryUtil.QueryArgByPost("difficulty");
+
+            ServiceInvokeDTO result = null;
+            try
+            {
+                SingleItem single = new SingleItem();
+                single.ID = Convert.ToInt32(idString);
+                single.IsVipItem = Convert.ToInt32(isVipItemString);
+                single.ChapterID = Convert.ToInt32(chapterIDString);
+
+                single.Title = title;
+                single.A = a;
+                single.B = b;
+                single.C = c;
+                single.D = d;
+                single.Answer = answer;
+                single.Annotation = annotation;
+                single.Difficulty = Convert.ToInt32(difficultyString);
+
+                if (imageFile != null)
+                {
+                    byte[] imageBytes = null;
+                    using (Stream inputStream = imageFile.InputStream)
+                    {
+                        MemoryStream memoryStream = inputStream as MemoryStream;
+                        if (memoryStream == null)
+                        {
+                            memoryStream = new MemoryStream();
+                            inputStream.CopyTo(memoryStream);
+                        }
+                        imageBytes = memoryStream.ToArray();
+                    }
+                    single.Image = imageBytes;
+                }
+
+                AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                ServiceInvokeDTO checkResult = permissionService.CheckPermission(DoActionType.UpdateSingle, currentAdmin.Agency.ID, single.ID);
+                if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    //result = itemDataService.UpdateSingle(single);
+                }
+                else
+                {
+                    result = checkResult;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result = new ServiceInvokeDTO(InvokeCode.SYS_INNER_ERROR);
+            }
+
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented, Constant.TIME_CONVERTER);
+            log.Debug(Constant.DEBUG_END);
+
+            return Content(json, Constant.JSON_MIME_TYPE);
+        }
+
+        /// <summary>
+        /// 删除学生账号
+        /// </summary>
+        [HttpPost]
+        public ActionResult DeleteUser()
+        {
+            log.Debug(Constant.DEBUG_START);
+
+            string idString = ApiQueryUtil.QueryArgByPost("id");
+
+            ServiceInvokeDTO result = null;
+            try
+            {
+                int id = Convert.ToInt32(idString);
+
+                AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                ServiceInvokeDTO checkResult = permissionService.CheckPermission(DoActionType.DeleteSingle, currentAdmin.Agency.ID, id);
+                if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    //result = itemDataService.DeleteSingle(id);
+                }
+                else
+                {
+                    result = checkResult;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result = new ServiceInvokeDTO(InvokeCode.SYS_INNER_ERROR);
+            }
+
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented, Constant.TIME_CONVERTER);
+            log.Debug(Constant.DEBUG_END);
+
+            return Content(json, Constant.JSON_MIME_TYPE);
+        }
+
+        /// <summary>
+        /// 删除学生账号(批量)
+        /// </summary>
+        [HttpPost]
+        public ActionResult DeleteUserInBatch()
+        {
+            log.Debug(Constant.DEBUG_START);
+
+            string idListJson = ApiQueryUtil.QueryArgByPost("id_list");
+
+            ServiceInvokeDTO result = null;
+            try
+            {
+                List<int> idList = JsonConvert.DeserializeObject<List<int>>(idListJson);
+
+                bool isRightPermission = false;
+                AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                foreach (var id in idList)
+                {
+                    ServiceInvokeDTO checkResult = permissionService.CheckPermission(DoActionType.DeleteSingleInBatch, currentAdmin.Agency.ID, id);
+                    if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        isRightPermission = true;
+                    }
+                    else
+                    {
+                        isRightPermission = false;
+                        break;
+                    }
+                }
+                if (isRightPermission)
+                {
+                    //result = itemDataService.DeleteSingle(idList);
+                }
+                else
+                {
+                    result = new ServiceInvokeDTO(InvokeCode.PERMISSION_NOT_MINE_DATA_ERROR);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result = new ServiceInvokeDTO(InvokeCode.SYS_INNER_ERROR);
+            }
+
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented, Constant.TIME_CONVERTER);
+            log.Debug(Constant.DEBUG_END);
+
+            return Content(json, Constant.JSON_MIME_TYPE);
+        }
+
+        /// <summary>
+        /// 下载学生账号模板文件
+        /// </summary>
+        [HttpGet]
+        public ActionResult DownloadUserTemplateFile()
+        {
+            string templatePath = Server.MapPath("/") + @"Files\Template\template_item_single.xls";
+            return DownloadUtil.Download("single_template.xls", templatePath);
+        }
+
+        /// <summary>
+        /// 上传学生账号Excel文件至服务器
+        /// </summary>
+        [HttpPost]
+        public ActionResult UploadUserExcelFile()
+        {
+            log.Debug(Constant.DEBUG_START);
+
+            // 接收上传后的文件
+            HttpPostedFileBase file = Request.Files["Filedata"];
+
+            ServiceInvokeDTO<string> result = null;
+            try
+            {
+                if (file != null)
+                {
+                    // 判断临时文件夹是否存在，不存在则创建
+                    string tempFolder = Server.MapPath("/") + @"Files\TempData";
+                    if (!System.IO.Directory.Exists(tempFolder))
+                    {
+                        System.IO.Directory.CreateDirectory(tempFolder);
+                    }
+
+                    // 保存文件
+                    string ext = System.IO.Path.GetExtension(file.FileName).ToLower();
+                    if (ext.Equals(".xls") || ext.Equals(".xlsx"))
+                    {
+                        string tempFileName = string.Format("{0}{1}", Guid.NewGuid(), ext);
+                        file.SaveAs(tempFolder + @"\" + tempFileName);
+                        result = new ServiceInvokeDTO<string>(InvokeCode.SYS_INVOKE_SUCCESS, tempFileName);
+                    }
+                    else
+                    {
+                        result = new ServiceInvokeDTO<string>(InvokeCode.ITEM_FILE_FORMAT_ERROR, null);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result = new ServiceInvokeDTO<string>(InvokeCode.SYS_INNER_ERROR, null);
+            }
+
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented, Constant.TIME_CONVERTER);
+            log.Debug(Constant.DEBUG_END);
+
+            return Content(json, Constant.JSON_MIME_TYPE);
+        }
+
+        /// <summary>
+        /// 开始导入学生账号
+        /// </summary>
+        [HttpPost]
+        public ActionResult StartLoadUserExcelFile()
+        {
+            log.Debug(Constant.DEBUG_START);
+
+            // 题库Excel文件
+            string fileName = Request["file_name"];
+
+            ServiceInvokeDTO result = null;
+            try
+            {
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    string tempFilePath = Server.MapPath("/") + @"Files\TempData\" + fileName;
+
+                    if (System.IO.File.Exists(tempFilePath))
+                    {
+                        // 1.处理数据并校验
+                        Course currentCourse = (Course)Session[Constant.SESSION_KEY_COURSE];
+                        AgencyAdminDTO currentUser = (AgencyAdminDTO)Session[Constant.SESSION_KEY_ADMIN];
+                        List<SingleItem> singles = TemplateUtil.ReadSingleTemplate(currentUser, currentCourse.ID, tempFilePath, true);
+
+                        // 2.批量添加
+                        //result = itemDataService.AddSingle(singles);
+
+                        // 3.删除文件
+                        System.IO.File.Delete(tempFilePath);
+
+                        result = new ServiceInvokeDTO(InvokeCode.SYS_INVOKE_SUCCESS);
+                    }
+                    else
+                    {
+                        result = new ServiceInvokeDTO(InvokeCode.ITEM_FILE_NOT_EXIST_ERROR);
+                    }
+                }
+                else
+                {
+                    result = new ServiceInvokeDTO(InvokeCode.ITEM_FILE_FORMAT_ERROR);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result = new ServiceInvokeDTO(InvokeCode.SYS_INNER_ERROR, ex.Message);
+
+                // 删除文件
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    string tempFilePath = Server.MapPath("/") + @"Files\TempData\" + fileName;
+                    System.IO.File.Delete(tempFilePath);
+                }
+            }
+
+            string json = JsonConvert.SerializeObject(result, Formatting.Indented, Constant.TIME_CONVERTER);
+            log.Debug(Constant.DEBUG_END);
+
+            return Content(json, Constant.JSON_MIME_TYPE);
+        }
+
+        #endregion
+
+        #region AdminDoRecord
+
+        /// <summary>
+        /// 分页查询培训机构管理员操作记录信息
+        /// </summary>
+        [HttpGet]
+        public ActionResult QueryDoRecord()
+        {
+            log.Debug(Constant.DEBUG_START);
+
+            string pageSizeString = ApiQueryUtil.QueryArgByGet("limit");
+            string offsetString = ApiQueryUtil.QueryArgByGet("offset");
+
+            string chineseName = ApiQueryUtil.QueryArgByGet("chinese_name");
+            string doName = ApiQueryUtil.QueryArgByGet("do_name");
+            string startDateString = ApiQueryUtil.QueryArgByGet("start_date");
+            string endDateString = ApiQueryUtil.QueryArgByGet("end_date");
+
+            QueryResultDTO<AdminDoRecord> queryData = null;
+            try
+            {
+                QueryArgsDTO<AdminDoRecord> queryDTO = new QueryArgsDTO<AdminDoRecord>();
+                queryDTO.PageSize = Convert.ToInt32(pageSizeString);
+                queryDTO.PageIndex = Convert.ToInt32(offsetString) / Convert.ToInt32(pageSizeString) + 1;
+
+                queryDTO.Model.AdminName = chineseName;
+                queryDTO.Model.DoName = doName;
+
+                int agencyID = (Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO).Agency.ID;
+                DateTime startDate = string.IsNullOrEmpty(startDateString) ? DateTime.MinValue : Convert.ToDateTime(startDateString);
+                DateTime endDate = string.IsNullOrEmpty(endDateString) ? DateTime.MinValue : Convert.ToDateTime(endDateString);
+
+                queryData = recordDataService.QueryAdminDoRecord(queryDTO, agencyID, startDate, endDate).Data;
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+
+            string json = JsonConvert.SerializeObject(queryData, Formatting.Indented, Constant.TIME_CONVERTER);
             log.Debug(Constant.DEBUG_END);
 
             return Content(json, Constant.JSON_MIME_TYPE);

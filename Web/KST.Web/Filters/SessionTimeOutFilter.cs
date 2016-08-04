@@ -14,7 +14,7 @@ namespace KST.Web.Filters
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             if (filterContext.HttpContext.Session[Constant.SESSION_KEY_ADMIN] == null ||
-                filterContext.HttpContext.Session[Constant.SESSION_KEY_ADMIN] == null)
+                filterContext.HttpContext.Session[Constant.SESSION_KEY_COURSE] == null)
             {
                 if (filterContext.HttpContext.Request.IsAjaxRequest())
                 {

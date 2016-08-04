@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+<html >
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>考试通</title>
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/font-awesome/css/font-awesome.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap/css/bootstrap.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap-table/bootstrap-table.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/js/bootstrap-datepicker/css/bootstrap-datepicker.min.css")" />
+    <link type="text/css" rel="stylesheet" href="@Url.Content("~/static/css/style.css")" />
+</head>
+<body>
+@Html.Partial("_header-partial",KST.Web.HeaderTabMenu.AgencyHome)
+
+<!-- detail modal -->
+<div id="detail_modal" class="modal fade">
+    <div class="modal-dialog width700">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<!-- query modal -->
+<div id="query_modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<!-- alert modal -->
+<div id="alert_modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+                <span class="modal-title">提示</span>
+            </div>
+            <div class="modal-body"><p></p></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+
+	<div class="content_left">@Html.Partial("_left-menu-agency-partial")</div>
+	<div class="content_right">
+	  <div class="right_container_list">
+		 <div class="row" >
+			<div class="col-lg-12">
+
+            <div class="table-name"><i class="fa fa-th gray"></i>&nbsp;机构主页·操作日志</div>
+
+            <div class="btn-toolbar" role="toolbar" id="toolbar">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" style="outline:none;" onclick="refreshTable()"><i class="fa fa-refresh toolico"></i><span class="tooltext">刷新</span></button>
+                    <button type="button" class="btn btn-default" style="outline:none;" onclick="showQueryModal();"><i class="fa fa-search toolico"></i><span class="tooltext">查询</span></button>
+                </div>
+            </div>
+
+            <table id="table"
+                data-toggle="table"
+                data-url="/Agency/QueryDoRecord?chinese_name=&do_name="
+                data-height="536"
+                data-side-pagination="server"
+                data-pagination="true"
+                data-cache="false"
+                data-toolbar="#toolbar"
+                data-row-style="rowStyle"
+                data-striped="true"
+                data-page-list="[10, 20, 50, 100, 200, 500]">
+            <thead>
+            <tr>
+                <th data-field="admin_name" data-align="center" data-valign="middle" >账号名称</th>
+                <th data-field="do_time" data-align="center" data-valign="middle" >操作时间</th>
+                <th data-field="do_name" data-align="center" data-valign="middle" >操作名称</th>
+                <th data-field="do_content" data-align="center" data-valign="middle" data-formatter="contentFormatter">操作内容</th>
+                <th data-field="operate" data-align="center" data-valign="middle" data-formatter="operateFormatter">操作</th>
+            </tr>
+            </thead>
+            </table>
+		 
+			</div>
+		</div>
+	  </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap/js/bootstrap.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-table/bootstrap-table.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-table/locale/bootstrap-table-zh-CN.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/jquery.placeholder.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/header.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/md5.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/util.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-datepicker/js/bootstrap-datepicker.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/static/js/bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN.min.js")"></script>
+
+<script type="text/javascript">
+
+/* 设置表格数据行样式 */
+function rowStyle(row, index) {
+    return { classes: 'rowheight' };
+}
+
+/* 操作内容Formatter*/
+function contentFormatter(value, row) {
+    if (!value) {
+        return '-';
+    }
+    return value;
+}
+
+/* 操作Formatter*/
+function operateFormatter(value, row) {
+    var html = '<i class="fa fa-info-circle operateico"></i><a href="javascript:showDetailModal({0});" class="tablelink">详情</a>'.format(row.id);
+    return html;
+}
+
+/* 显示详情窗体 */
+function showDetailModal(id) {
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+    });
+
+    $("#detail_modal").modal({
+        remote: "/Agency/DoRecordDetailTemplate?id=" + id
+    });
+    $('#detail_modal').modal('show');
+}
+
+/* 显示查询窗体 */
+function showQueryModal() {
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+    });
+
+    $("#query_modal").modal({
+        remote: "/Agency/DoRecordQueryTemplate"
+    });
+    $('#query_modal').modal('show');
+}
+
+/* 显示操作提示窗体 */
+function showAlertModal(msg) {
+    $('#alert_modal .modal-body p').text(msg);
+    $('#alert_modal').modal('show');
+}
+
+/* 刷新表格 */
+function refreshTable() {
+    $('#table').bootstrapTable('refresh');
+}
+
+/* 开始查询 */
+function startQuery() {
+    
+    var chineseName = $.trim($('#chinese_name_query').val());
+    var doName = $.trim($('#do_name_query').val());
+    var startDate = $.trim($('#start_date_query').val());
+    var endDate = $.trim($('#end_date_query').val());
+
+    $('#table').bootstrapTable('refreshOptions', {
+        url: '/Agency/QueryDoRecord?chinese_name=' + chineseName + '&do_name=' + doName + '&start_date=' + startDate + '&end_date=' + endDate
+    });
+
+    $('#query_modal').modal('hide');
+}
+
+</script>
+
+</body>
+</html>

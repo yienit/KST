@@ -61,7 +61,7 @@
     <Compile Include="DAL\RecordData\CaptchaRecordDAL.cs" />
     <Compile Include="DAL\ItemData\ChapterDAL.cs" />
     <Compile Include="DAL\ItemData\CourseDAL.cs" />
-    <Compile Include="DAL\RecordData\FeedbackDAL.cs" />
+    <Compile Include="DAL\RecordData\FeedbackRecordDAL.cs" />
     <Compile Include="DAL\UserData\MyCommentDAL.cs" />
     <Compile Include="DAL\UserData\MyPostErrorItemDAL.cs" />
     <Compile Include="DAL\ItemData\JudgeItemDAL.cs" />

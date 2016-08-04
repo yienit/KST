@@ -21,16 +21,6 @@ namespace KST.Web
         private const string XPATH_SMS_TEMPLATE_REG = "/Config/Sms/Template/RegTemplate";
         private const string XPATH_SMS_TEMPLATE_GET_PASSWORD = "/Config/Sms/Template/GetPasswordTemplate";
 
-        private const string XPATH_APP_PC_VERSION = "/Config/AppVersion/PC/Version";
-        private const string XPATH_APP_PC_URL = "/Config/AppVersion/PC/DownloadUrl";
-        private const string XPATH_APP_PC_CHANGE_LOG = "/Config/AppVersion/PC/ChangeLog";
-        private const string XPATH_APP_ANDROID_VERSION = "/Config/AppVersion/Android/Version";
-        private const string XPATH_APP_ANDROID_URL = "/Config/AppVersion/Android/DownloadUrl";
-        private const string XPATH_APP_ANDROID_CHANGE_LOG = "/Config/AppVersion/Android/ChangeLog";
-        private const string XPATH_APP_IOS_VERSION = "/Config/AppVersion/IOS/Version";
-        private const string XPATH_APP_IOS_URL = "/Config/AppVersion/IOS/DownloadUrl";
-        private const string XPATH_APP_IOS_CHANGE_LOG = "/Config/AppVersion/IOS/ChangeLog";
-
         #endregion
 
         #region Field
@@ -44,10 +34,6 @@ namespace KST.Web
         private static string smsApiKey;
         private static string smsRegTemplate;
         private static string smsGetPasswordTemplate;
-
-        private static AppVersionDTO pcVersionDTO;
-        private static AppVersionDTO androidVersionDTO;
-        private static AppVersionDTO iosVersionDTO;
 
         private static log4net.ILog log = log4net.LogManager.GetLogger(typeof(Config));
 
@@ -79,22 +65,6 @@ namespace KST.Web
 
                 smsRegTemplate = XmlUtil.ReadValue(configFilePath, XPATH_SMS_TEMPLATE_REG);
                 smsGetPasswordTemplate = XmlUtil.ReadValue(configFilePath, XPATH_SMS_TEMPLATE_GET_PASSWORD);
-
-                // AppVersion
-                string pcVersion = XmlUtil.ReadValue(configFilePath, XPATH_APP_PC_VERSION);
-                string pcDownloadUrl = XmlUtil.ReadValue(configFilePath, XPATH_APP_PC_URL);
-                string pcChangeLog = XmlUtil.ReadValue(configFilePath, XPATH_APP_PC_CHANGE_LOG);
-                pcVersionDTO = new AppVersionDTO(pcVersion, pcDownloadUrl, pcChangeLog);
-
-                string androidVersion = XmlUtil.ReadValue(configFilePath, XPATH_APP_ANDROID_VERSION);
-                string androidDownloadUrl = XmlUtil.ReadValue(configFilePath, XPATH_APP_ANDROID_URL);
-                string androidChangeLog = XmlUtil.ReadValue(configFilePath, XPATH_APP_ANDROID_CHANGE_LOG);
-                androidVersionDTO = new AppVersionDTO(androidVersion, androidDownloadUrl, androidChangeLog);
-
-                string iosVersion = XmlUtil.ReadValue(configFilePath, XPATH_APP_IOS_VERSION);
-                string iosDownloadUrl = XmlUtil.ReadValue(configFilePath, XPATH_APP_IOS_URL);
-                string iosChangeLog = XmlUtil.ReadValue(configFilePath, XPATH_APP_IOS_CHANGE_LOG);
-                iosVersionDTO = new AppVersionDTO(iosVersion, iosDownloadUrl, iosChangeLog);
 
                 log.Debug(Constant.DEBUG_END);
             }
@@ -172,25 +142,6 @@ namespace KST.Web
         {
             get { return smsGetPasswordTemplate; }
         }
-
-        #endregion
-
-        #region AppVersion
-
-        /// <summary>
-        /// PC客户端最新版本
-        /// </summary>
-        public static AppVersionDTO PCVersion { get { return pcVersionDTO; } }
-
-        /// <summary>
-        /// Android客户端最新版本
-        /// </summary>
-        public static AppVersionDTO AndroidVersion { get { return androidVersionDTO; } }
-
-        /// <summary>
-        /// IOS客户端最新版本
-        /// </summary>
-        public static AppVersionDTO IOSVersion { get { return iosVersionDTO; } }
 
         #endregion
     }

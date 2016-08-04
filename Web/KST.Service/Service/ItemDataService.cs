@@ -331,7 +331,7 @@ namespace KST.Service
         #region Single
 
         /// <summary>
-        /// 以分页的形式单选题
+        /// 以分页的形式查询单选题
         /// </summary>
         public ServiceInvokeDTO<QueryResultDTO<SingleItemDTO>> QuerySingle(QueryArgsDTO<SingleItem> queryDTO, int courseID)
         {
@@ -537,7 +537,7 @@ namespace KST.Service
         #region Multiple
 
         /// <summary>
-        /// 以分页的形式多选题
+        /// 以分页的形式查询多选题
         /// </summary>
         public ServiceInvokeDTO<QueryResultDTO<MultipleItemDTO>> QueryMultiple(QueryArgsDTO<MultipleItem> queryDTO, int courseID)
         {
@@ -743,7 +743,7 @@ namespace KST.Service
         #region Judge
 
         /// <summary>
-        /// 以分页的形式判断题
+        /// 以分页的形式查询判断题
         /// </summary>
         public ServiceInvokeDTO<QueryResultDTO<JudgeItemDTO>> QueryJudge(QueryArgsDTO<JudgeItem> queryDTO, int courseID)
         {

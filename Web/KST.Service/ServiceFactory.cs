@@ -14,7 +14,6 @@ namespace KST.Service
         private UserDataService userDataService;
         private RecordDataService recordDataService;
 
-        private CommonDataService commonDataService;
         private SecurityService securityService;
         private PermissionService permissionService;
 
@@ -24,7 +23,6 @@ namespace KST.Service
         private static readonly object paperDataServiceLocker = new object();
         private static readonly object userDataServiceLocker = new object();
         private static readonly object recordDataServiceLocker = new object();
-        private static readonly object commonDataServiceLocker = new object();
         private static readonly object securityServiceLocker = new object();
         private static readonly object permissionServiceLocker = new object();
 
@@ -153,27 +151,6 @@ namespace KST.Service
                     }
                 }
                 return recordDataService;
-            }
-        }
-
-        /// <summary>
-        /// Gets instance of CommonDataService.
-        /// </summary>
-        public CommonDataService CommonDataService
-        {
-            get
-            {
-                if (commonDataService == null)
-                {
-                    lock (commonDataServiceLocker)
-                    {
-                        if (commonDataService == null)
-                        {
-                            commonDataService = new CommonDataService();
-                        }
-                    }
-                }
-                return commonDataService;
             }
         }
 

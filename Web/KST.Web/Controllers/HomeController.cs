@@ -27,6 +27,7 @@ namespace KST.Web.Controllers
         private AgencyDataService agencyDataService = ServiceFactory.Instance.AgencyDataService;
         private ItemDataService itemDataService = ServiceFactory.Instance.ItemDataService;
         private SecurityService securityService = ServiceFactory.Instance.SecurityService;
+        private RecordDataService recordDataService = ServiceFactory.Instance.RecordDataService;
         private log4net.ILog log = log4net.LogManager.GetLogger(typeof(HomeController));
 
         #region View
@@ -199,6 +200,20 @@ namespace KST.Web.Controllers
                     }
                     Session[Constant.SESSION_KEY_COURSE] = itemDataService.GetCourseByID(courseID).Data;
 
+                    // Write admin do record.
+                    AgencyAdminDTO currentAdmin = loginResult.Data;
+                    if (currentAdmin != null)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.Login.GetDescription();
+                        doRecord.DoContent = string.Empty;
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
+
                     // To dashboard
                     if (loginResult.Data.Level == AdminLevel.AgencyCreatorAdmin)
                     {
@@ -236,6 +251,20 @@ namespace KST.Web.Controllers
                 // Remove session
                 if (Session[Constant.SESSION_KEY_ADMIN] != null)
                 {
+                    // Write admin do record.
+                    AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                    if (currentAdmin != null)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.Logout.GetDescription();
+                        doRecord.DoContent = string.Empty;
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
+
                     Session[Constant.SESSION_KEY_ADMIN] = null;
                 }
                 if (Session[Constant.SESSION_KEY_COURSE] != null)

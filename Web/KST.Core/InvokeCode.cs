@@ -84,7 +84,7 @@ namespace KST.Core
         /// <summary>
         /// 该账号所属的培训机构状态已被冻结
         /// </summary>
-        [Description("该账号所属的培训机构状态已被冻结")]
+        [Description("该账号所属的公司/机构/学校的状态已被冻结")]
         ACCOUNT_AGENCY_STATE_ERROR = 103,
 
         /// <summary>
@@ -185,7 +185,11 @@ namespace KST.Core
 
         //================================ 用户数据Service模块代码(7xx)  ==============================
 
-
+        /// <summary>
+        /// 学生用户电话号码已存在
+        /// </summary>
+        [Description("学生用户电话号码已存在")]
+        ACCOUNT_USER_PHONE_EXIST_ERROR = 701,
 
         //================================ 记录数据Service模块代码(8xx)  ==============================
 

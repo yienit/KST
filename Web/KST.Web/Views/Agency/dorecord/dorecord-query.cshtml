@@ -1,0 +1,59 @@
+﻿<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">查询</span>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70">账号名称:</span></span>
+            <input type="text" class="form-control" id="chinese_name_query"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon"><span class="foretip width70">操作名称:</span></span>
+            <input type="text" class="form-control" id="do_name_query"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group date">
+            <span class="input-group-addon"><span class="foretip width70">开始时间:</span></span>
+            <input type="text" class="form-control" id="start_date_query" readonly="readonly"/>
+            <span class="input-group-addon fa fa-calendar"></span>
+        </div>
+    </div>
+    <script>
+        $('#start_date_query').datepicker({
+            format: 'yyyy-mm-dd',
+            todayBtn: "linked",
+            language: "zh-CN",
+            autoclose: true,
+            clearBtn: true,
+            todayHighlight: true
+        });
+    </script>
+
+    <div class="form-group">
+        <div class="input-group date">
+            <span class="input-group-addon"><span class="foretip width70">结束时间:</span></span>
+            <input type="text" class="form-control" id="end_date_query" readonly="readonly"/>
+            <span class="input-group-addon fa fa-calendar"></span>
+        </div>
+    </div>
+    <script>
+         $('#end_date_query').datepicker({
+             format: 'yyyy-mm-dd',
+             todayBtn: "linked",
+             language: "zh-CN",
+             autoclose: true,
+             clearBtn: true,
+             todayHighlight: true
+         });
+    </script>
+
+    <div id="query_btn" class="btn btn-block btn-green" onclick="startQuery()">查询</div>
+
+</div>
+<div class="modal-footer"></div>
+
+

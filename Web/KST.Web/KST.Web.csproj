@@ -180,6 +180,9 @@
     <Content Include="Static\images\index\function_person.jpg" />
     <Content Include="Static\images\index\login_bg.jpg" />
     <Content Include="Static\images\index\logo.png" />
+    <Content Include="Static\js\bootstrap-datepicker\css\bootstrap-datepicker.min.css" />
+    <Content Include="Static\js\bootstrap-datepicker\js\bootstrap-datepicker.min.js" />
+    <Content Include="Static\js\bootstrap-datepicker\locales\bootstrap-datepicker.zh-CN.min.js" />
     <Content Include="Static\js\bootstrap-fileinput\css\fileinput.min.css" />
     <Content Include="Static\js\bootstrap-fileinput\img\loading-sm.gif" />
     <Content Include="Static\js\bootstrap-fileinput\img\loading.gif" />
@@ -274,7 +277,6 @@
     <Content Include="Views\Agency\index.cshtml" />
     <Content Include="Views\Shared\_header-partial.cshtml" />
     <Content Include="Views\Shared\_left-menu-agency-partial.cshtml" />
-    <Content Include="Views\Agency\user\user-list.cshtml" />
     <Content Include="Views\Item\index.cshtml" />
     <Content Include="Views\Paper\index.cshtml" />
     <Content Include="Views\Shared\_left-menu-item-partial.cshtml" />
@@ -328,6 +330,15 @@
     <Content Include="Views\Item\numberblank\numberblank-list.cshtml" />
     <Content Include="Views\Item\numberblank\numberblank-query.cshtml" />
     <Content Include="Views\Item\numberblank\numberblank-update.cshtml" />
+    <Content Include="Views\Agency\dorecord\dorecord-detail.cshtml" />
+    <Content Include="Views\Agency\dorecord\dorecord-list.cshtml" />
+    <Content Include="Views\Agency\dorecord\dorecord-query.cshtml" />
+    <Content Include="Views\Agency\user\user-add.cshtml" />
+    <Content Include="Views\Agency\user\user-detail.cshtml" />
+    <Content Include="Views\Agency\user\user-import.cshtml" />
+    <Content Include="Views\Agency\user\user-list.cshtml" />
+    <Content Include="Views\Agency\user\user-query.cshtml" />
+    <Content Include="Views\Agency\user\user-update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KST.Core\KST.Core.csproj">

@@ -7,9 +7,9 @@ using Newtonsoft.Json;
 namespace KST.Model
 {
     /// <summary>
-    /// 意见反馈信息实体类
+    /// 意见反馈记录信息实体类
     /// </summary>
-    public class Feedback
+    public class FeedbackRecord
     {
         /// <summary>
         /// 主键ID

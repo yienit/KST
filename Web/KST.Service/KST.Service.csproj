@@ -56,7 +56,6 @@
     <Compile Include="Config.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="ServiceFactory.cs" />
-    <Compile Include="Service\CommonDataService.cs" />
     <Compile Include="Service\ItemDataService.cs" />
     <Compile Include="Service\PaperDataService.cs" />
     <Compile Include="Service\PermissionService.cs" />

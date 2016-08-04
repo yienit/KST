@@ -45,7 +45,7 @@ CONSTRAINT fk_agencycreator_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) O
 CREATE TABLE AgencyConfig(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 AgencyID INT,							-- 机构主键ID
-IsLockDevice INT DEFAULT 1,				-- 是否开启设备锁 (0：不开启  1：开启)
+IsLockDevice INT DEFAULT 0,				-- 是否开启设备锁 (0：不开启  1：开启)
 Notice VARCHAR(200),					-- 机构公告
 Contact VARCHAR(50),					-- 联系方式
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
@@ -85,7 +85,8 @@ Code  VARCHAR(50),						-- 课程代码
 Duration INT,							-- 考试时长 (单位:分钟)
 Description VARCHAR(200),				-- 课程描述
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
-IsDeleted INT DEFAULT 0  				-- 是否已删除 (0：未删除  1：已删除)
+IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
+CONSTRAINT fk_course_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) ON DELETE CASCADE
 );
 
 -- 章节信息表
@@ -509,17 +510,15 @@ AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0  				-- 是否已删除 (0：未删除  1：已删除)
 );
 
---------------------------------------- 系统辅助  -----------------------------------------------
-
 --意见反馈信息表
-CREATE TABLE Feedback(
+CREATE TABLE FeedbackRecord(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 Content VARCHAR(500),					-- 反馈内容
 Contact VARCHAR(50),					-- 联系方式
 TerminalType INT,						-- 反馈终端途径 (0：PC  1：Android  2：IOS  3：Web)
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0  				-- 是否已删除 (0：未删除  1：已删除)
-);
+); 
 
 
 

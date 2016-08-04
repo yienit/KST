@@ -41,29 +41,4 @@
 
   </Sms>
 
-  <AppVersion>
-
-    <!-- PC客户端最新版本、下载链接及更新日志 -->
-    <PC>
-      <Version></Version>
-      <DownloadUrl></DownloadUrl>
-      <ChangeLog></ChangeLog>
-    </PC>
-
-    <!-- Android客户端最新版本、下载链接及更新日志 -->
-    <Android>
-      <Version></Version>
-      <DownloadUrl></DownloadUrl>
-      <ChangeLog></ChangeLog>
-    </Android>
-
-    <!-- IOS客户端最新版本、下载链接及更新日志 -->
-    <IOS>
-      <Version></Version>
-      <DownloadUrl></DownloadUrl>
-      <ChangeLog></ChangeLog>
-    </IOS>
-
-  </AppVersion>
-
 </Config>

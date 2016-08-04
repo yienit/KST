@@ -59,7 +59,7 @@
     <Compile Include="Model\AgencyData\Agency.cs" />
     <Compile Include="Model\ItemData\Chapter.cs" />
     <Compile Include="Model\ItemData\Course.cs" />
-    <Compile Include="Model\CommonData\Feedback.cs" />
+    <Compile Include="Model\RecordData\FeedbackRecord.cs" />
     <Compile Include="Model\UserDate\MyComment.cs" />
     <Compile Include="Model\UserDate\MyPostErrorItem.cs" />
     <Compile Include="Model\ItemData\JudgeItem.cs" />

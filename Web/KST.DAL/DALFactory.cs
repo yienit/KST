@@ -45,7 +45,7 @@ namespace KST.DAL
         private CaptchaRecordDAL captchaDAL;
         private ClientLoginRecordDAL clientLoginRecordDAL;
         private AdminDoRecordDAL adminDoRecordDAL;
-        private FeedbackDAL feedbackDAL;
+        private FeedbackRecordDAL feedbackRecordDAL;
 
         //========================= Locker  ===================================
 
@@ -88,7 +88,7 @@ namespace KST.DAL
         private static readonly object captchaDALLocker = new object();
         private static readonly object clientLoginRecordDALLocker = new object();
         private static readonly object adminDoRecordDALLocker = new object();
-        private static readonly object feedbackDALLocker = new object();
+        private static readonly object feedbackRecordDALLocker = new object();
 
         #region Constructor
 
@@ -726,23 +726,23 @@ namespace KST.DAL
         }
 
         /// <summary>
-        /// Gets FeedbackDAL instance object.
+        /// Gets FeedbackRecordDAL instance object.
         /// </summary>
-        public FeedbackDAL FeedbackDAL
+        public FeedbackRecordDAL FeedbackRecordDAL
         {
             get
             {
-                if (feedbackDAL == null)
+                if (feedbackRecordDAL == null)
                 {
-                    lock (feedbackDALLocker)
+                    lock (feedbackRecordDALLocker)
                     {
-                        if (feedbackDAL == null)
+                        if (feedbackRecordDAL == null)
                         {
-                            feedbackDAL = new FeedbackDAL();
+                            feedbackRecordDAL = new FeedbackRecordDAL();
                         }
                     }
                 }
-                return feedbackDAL;
+                return feedbackRecordDAL;
             }
         }
 

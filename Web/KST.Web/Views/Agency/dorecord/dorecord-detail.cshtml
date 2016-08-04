@@ -1,0 +1,51 @@
+﻿@using KST.Util
+@using KST.Model
+@using KST.DTO
+@using KST.Service
+
+@{
+    string adminChineseName = string.Empty;
+    string doTime = string.Empty;
+    string doName = string.Empty;
+    string doContent = string.Empty;
+    string remark = string.Empty;
+    
+    int id = Convert.ToInt32( ApiQueryUtil.QueryArgByGet("id"));
+
+    ServiceInvokeDTO<AdminDoRecord> result = ServiceFactory.Instance.RecordDataService.GetAdminDoRecordByID(id);
+    if(result!= null && result.Code == KST.Core.InvokeCode.SYS_INVOKE_SUCCESS)
+    {
+        AdminDoRecord doRecord = result.Data;
+        if (doRecord != null)
+        {
+            adminChineseName = doRecord.AdminName == null ? string.Empty : doRecord.AdminName;
+            doTime = doRecord.DoTime.ToString("yyyy-MM-dd HH:mm:ss");
+            doName = doRecord.DoName == null ? string.Empty : doRecord.DoName;
+            doContent = doRecord.DoContent == null ? string.Empty : doRecord.DoContent;
+            remark = doRecord.Remark == null ? string.Empty : doRecord.Remark;
+        }
+    }
+}
+
+<div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></a>
+    <span class="modal-title">详情</span>
+</div>
+<div class="modal-body">
+    <table class="inputs-table" >
+	    <tbody>
+		    <tr><td class="text">账号名称：</td><td class="input">@adminChineseName</td></tr>
+            <tr><td class="text">操作时间：</td><td class="input">@doTime</td></tr>
+		    <tr><td class="text">操作名称：</td><td class="input">@doName</td></tr>
+            <tr><td class="text">操作内容：</td><td class="input">@doContent</td></tr>
+            <tr><td class="text">备注：</td><td class="input">@remark</td></tr>
+	    </tbody>
+    </table>
+</div>
+<div class="modal-footer"></div>
+
+
+
+
+
+

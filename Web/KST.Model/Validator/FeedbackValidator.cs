@@ -9,7 +9,7 @@ namespace KST.Model.Validator
     /// <summary>
     /// Feedback实体数据验证类
     /// </summary>
-    public class FeedbackValidator : AbstractValidator<Feedback>
+    public class FeedbackValidator : AbstractValidator<FeedbackRecord>
     {
         public FeedbackValidator()
         {
