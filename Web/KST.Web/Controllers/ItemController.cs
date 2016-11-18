@@ -74,6 +74,7 @@ namespace KST.Web.Controllers
 
         private ItemDataService itemDataService = ServiceFactory.Instance.ItemDataService;
         private PermissionService permissionService = ServiceFactory.Instance.PermissionService;
+        private RecordDataService recordDataService = ServiceFactory.Instance.RecordDataService;
         private log4net.ILog log = log4net.LogManager.GetLogger(typeof(ItemController));
 
         #region View
@@ -549,6 +550,21 @@ namespace KST.Web.Controllers
                 chapter.Name = name;
 
                 result = itemDataService.AddChapter(chapter);
+
+                // Write admin do record.
+                if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+
+                    AdminDoRecord doRecord = new AdminDoRecord();
+                    doRecord.AdminID = currentAdmin.ID;
+                    doRecord.AdminName = currentAdmin.ChineseName;
+                    doRecord.DoTime = DateTime.Now;
+                    doRecord.DoName = DoActionType.AddChapter.GetDescription();
+                    doRecord.DoContent = string.Format("新章节名称：{0}", name);
+                    doRecord.Remark = string.Empty;
+                    recordDataService.AddAdminDoRecord(doRecord);
+                }
             }
             catch (Exception ex)
             {
@@ -585,6 +601,19 @@ namespace KST.Web.Controllers
                 if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     result = itemDataService.UpdateChapter(chapter);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.UpdateChapter.GetDescription();
+                        doRecord.DoContent = string.Format("新更新的章节名称：{0}", name);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -623,6 +652,19 @@ namespace KST.Web.Controllers
                 if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     result = itemDataService.UpChapter(id);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.UpChapter.GetDescription();
+                        doRecord.DoContent = string.Format("章节主键ID：{0}", id);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -661,6 +703,19 @@ namespace KST.Web.Controllers
                 if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     result = itemDataService.DownChapter(id);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.DownChapter.GetDescription();
+                        doRecord.DoContent = string.Format("章节主键ID：{0}", id);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -699,6 +754,19 @@ namespace KST.Web.Controllers
                 if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     result = itemDataService.DeleteChapter(id);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.DeleteChapter.GetDescription();
+                        doRecord.DoContent = string.Format("章节主键ID：{0}", id);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -750,6 +818,19 @@ namespace KST.Web.Controllers
                 if (isRightPermission)
                 {
                     result = itemDataService.DeleteChapter(idList);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.DeleteChapterInBatch.GetDescription();
+                        doRecord.DoContent = string.Format("章节主键ID：{0}", idListJson);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -874,6 +955,20 @@ namespace KST.Web.Controllers
                 }
 
                 result = itemDataService.AddSingle(single);
+
+                // Write admin do record.
+                if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                    AdminDoRecord doRecord = new AdminDoRecord();
+                    doRecord.AdminID = currentAdmin.ID;
+                    doRecord.AdminName = currentAdmin.ChineseName;
+                    doRecord.DoTime = DateTime.Now;
+                    doRecord.DoName = DoActionType.AddSingle.GetDescription();
+                    doRecord.DoContent = string.Format("新单选题标题：{0}", title);
+                    doRecord.Remark = string.Empty;
+                    recordDataService.AddAdminDoRecord(doRecord);
+                }
             }
             catch (Exception ex)
             {
@@ -947,6 +1042,19 @@ namespace KST.Web.Controllers
                 if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     result = itemDataService.UpdateSingle(single);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.UpdateSingle.GetDescription();
+                        doRecord.DoContent = string.Format("被更新的主键ID：{0}", idString);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -985,6 +1093,19 @@ namespace KST.Web.Controllers
                 if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     result = itemDataService.DeleteSingle(id);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.DeleteSingle.GetDescription();
+                        doRecord.DoContent = string.Format("被删除的主键ID：{0}", idString);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -1036,6 +1157,19 @@ namespace KST.Web.Controllers
                 if (isRightPermission)
                 {
                     result = itemDataService.DeleteSingle(idList);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.DeleteSingleInBatch.GetDescription();
+                        doRecord.DoContent = string.Format("被删除的主键ID：{0}", idListJson);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -1145,6 +1279,20 @@ namespace KST.Web.Controllers
                         System.IO.File.Delete(tempFilePath);
 
                         result = new ServiceInvokeDTO(InvokeCode.SYS_INVOKE_SUCCESS);
+
+                        // Write admin do record.
+                        if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                        {
+                            AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                            AdminDoRecord doRecord = new AdminDoRecord();
+                            doRecord.AdminID = currentAdmin.ID;
+                            doRecord.AdminName = currentAdmin.ChineseName;
+                            doRecord.DoTime = DateTime.Now;
+                            doRecord.DoName = DoActionType.AddSingleInBatch.GetDescription();
+                            doRecord.DoContent = string.Empty;
+                            doRecord.Remark = string.Empty;
+                            recordDataService.AddAdminDoRecord(doRecord);
+                        }
                     }
                     else
                     {
@@ -1281,6 +1429,20 @@ namespace KST.Web.Controllers
                 }
 
                 result = itemDataService.AddMultiple(multiple);
+
+                // Write admin do record.
+                if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                    AdminDoRecord doRecord = new AdminDoRecord();
+                    doRecord.AdminID = currentAdmin.ID;
+                    doRecord.AdminName = currentAdmin.ChineseName;
+                    doRecord.DoTime = DateTime.Now;
+                    doRecord.DoName = DoActionType.AddMultiple.GetDescription();
+                    doRecord.DoContent = string.Format("新添加的多选题标题：{0}", title);
+                    doRecord.Remark = string.Empty;
+                    recordDataService.AddAdminDoRecord(doRecord);
+                }
             }
             catch (Exception ex)
             {
@@ -1354,6 +1516,19 @@ namespace KST.Web.Controllers
                 if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     result = itemDataService.UpdateMultiple(multiple);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.UpdateMultiple.GetDescription();
+                        doRecord.DoContent = string.Format("被更新的主键ID：{0}", idString);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -1392,6 +1567,19 @@ namespace KST.Web.Controllers
                 if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     result = itemDataService.DeleteMultiple(id);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.DeleteMultiple.GetDescription();
+                        doRecord.DoContent = string.Format("被删除的主键ID：{0}", idString);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -1443,6 +1631,19 @@ namespace KST.Web.Controllers
                 if (isRightPermission)
                 {
                     result = itemDataService.DeleteMultiple(idList);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.DeleteMultipleInBatch.GetDescription();
+                        doRecord.DoContent = string.Format("被删除的主键ID：{0}", idListJson);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -1552,6 +1753,20 @@ namespace KST.Web.Controllers
                         System.IO.File.Delete(tempFilePath);
 
                         result = new ServiceInvokeDTO(InvokeCode.SYS_INVOKE_SUCCESS);
+
+                        // Write admin do record.
+                        if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                        {
+                            AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                            AdminDoRecord doRecord = new AdminDoRecord();
+                            doRecord.AdminID = currentAdmin.ID;
+                            doRecord.AdminName = currentAdmin.ChineseName;
+                            doRecord.DoTime = DateTime.Now;
+                            doRecord.DoName = DoActionType.AddMultipleInBatch.GetDescription();
+                            doRecord.DoContent = string.Empty;
+                            doRecord.Remark = string.Empty;
+                            recordDataService.AddAdminDoRecord(doRecord);
+                        }
                     }
                     else
                     {
@@ -1680,6 +1895,20 @@ namespace KST.Web.Controllers
                 }
 
                 result = itemDataService.AddJudge(judge);
+
+                // Write admin do record.
+                if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                {
+                    AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                    AdminDoRecord doRecord = new AdminDoRecord();
+                    doRecord.AdminID = currentAdmin.ID;
+                    doRecord.AdminName = currentAdmin.ChineseName;
+                    doRecord.DoTime = DateTime.Now;
+                    doRecord.DoName = DoActionType.AddJudge.GetDescription();
+                    doRecord.DoContent = string.Format("新添加的判断题标题：{0}", title);
+                    doRecord.Remark = string.Empty;
+                    recordDataService.AddAdminDoRecord(doRecord);
+                }
             }
             catch (Exception ex)
             {
@@ -1745,6 +1974,19 @@ namespace KST.Web.Controllers
                 if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     result = itemDataService.UpdateJudge(judge);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.UpdateJudge.GetDescription();
+                        doRecord.DoContent = string.Format("被更新的主键ID：{0}", idString);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -1783,6 +2025,19 @@ namespace KST.Web.Controllers
                 if (checkResult.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     result = itemDataService.DeleteJudge(id);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.DeleteJudge.GetDescription();
+                        doRecord.DoContent = string.Format("被删除的主键ID：{0}", idString);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -1834,6 +2089,19 @@ namespace KST.Web.Controllers
                 if (isRightPermission)
                 {
                     result = itemDataService.DeleteJudge(idList);
+
+                    // Write admin do record.
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    {
+                        AdminDoRecord doRecord = new AdminDoRecord();
+                        doRecord.AdminID = currentAdmin.ID;
+                        doRecord.AdminName = currentAdmin.ChineseName;
+                        doRecord.DoTime = DateTime.Now;
+                        doRecord.DoName = DoActionType.DeleteJudgeInBatch.GetDescription();
+                        doRecord.DoContent = string.Format("被删除的主键ID：{0}", idListJson);
+                        doRecord.Remark = string.Empty;
+                        recordDataService.AddAdminDoRecord(doRecord);
+                    }
                 }
                 else
                 {
@@ -1943,6 +2211,20 @@ namespace KST.Web.Controllers
                         System.IO.File.Delete(tempFilePath);
 
                         result = new ServiceInvokeDTO(InvokeCode.SYS_INVOKE_SUCCESS);
+
+                        // Write admin do record.
+                        if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                        {
+                            AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
+                            AdminDoRecord doRecord = new AdminDoRecord();
+                            doRecord.AdminID = currentAdmin.ID;
+                            doRecord.AdminName = currentAdmin.ChineseName;
+                            doRecord.DoTime = DateTime.Now;
+                            doRecord.DoName = DoActionType.AddJudgeInBatch.GetDescription();
+                            doRecord.DoContent = string.Empty;
+                            doRecord.Remark = string.Empty;
+                            recordDataService.AddAdminDoRecord(doRecord);
+                        }
                     }
                     else
                     {

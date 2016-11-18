@@ -307,7 +307,7 @@ ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 ParperID INT,							-- 试卷主键ID
 ItemIndex INT,							-- 试题序号
 
-Title VARCHAR(500),						-- 标题文字
+Title VARCHAR(1000),					-- 标题文字
 Image MEDIUMBLOB,						-- 题目图片(可空)
 A VARCHAR(500),							-- 选项A
 B VARCHAR(500),							-- 选项B
@@ -328,7 +328,7 @@ ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 ParperID INT,							-- 试卷主键ID
 ItemIndex INT,							-- 试题序号
 
-Title VARCHAR(500),						-- 标题文字
+Title VARCHAR(1000),					-- 标题文字
 Image MEDIUMBLOB,						-- 题目图片(可空)
 A VARCHAR(500),							-- 选项A
 B VARCHAR(500),							-- 选项B
@@ -349,7 +349,7 @@ ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 ParperID INT,							-- 试卷主键ID
 ItemIndex INT,							-- 试题序号
 
-Title VARCHAR(500),						-- 标题文字
+Title VARCHAR(1000),					-- 标题文字
 Image MEDIUMBLOB,						-- 题目图片(可空)
 Answer INT,								-- 答案 (0: 错误  1: 正确)
 Annotation VARCHAR(500),				-- 注解
@@ -360,7 +360,7 @@ IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_paperjudge_paper FOREIGN KEY (ParperID)REFERENCES Paper(ID) ON DELETE CASCADE
 );
 
------------------------------------------- 用户信息 ------------------------------------------
+------------------------------------------ 用户数据 ------------------------------------------
 
 -- 机构用户信息表
 CREATE TABLE User(
@@ -384,10 +384,6 @@ AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_user_agency FOREIGN KEY (AgencyID)REFERENCES Agency(ID) ON DELETE CASCADE
 );
-
------------------------------------------ 用户数据 -----------------------------------------
-
-
 
 -- 用户试题评论信息表
 CREATE TABLE MyComment(
@@ -422,8 +418,6 @@ IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
 CONSTRAINT fk_myposterroritem_course FOREIGN KEY (CourseID)REFERENCES Course(ID) ON DELETE CASCADE,
 CONSTRAINT fk_myposterroritem_user FOREIGN KEY (UserID)REFERENCES User(ID) ON DELETE CASCADE
 );
-
-------------------------------------------  ------------------------------------------
 
 -- 用户错题信息表
 CREATE TABLE MyError(
@@ -504,13 +498,13 @@ AdminID INT,							-- 管理员主键ID
 AdminName VARCHAR(50),					-- 管理员姓名
 DoTime DATETIME,						-- 操作时间
 DoName VARCHAR(100),					-- 操作名称
-DoContent VARCHAR(100),					-- 操作内容
+DoContent VARCHAR(1000),				-- 操作内容
 Remark VARCHAR(100),					-- 备注
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0  				-- 是否已删除 (0：未删除  1：已删除)
 );
 
---意见反馈信息表
+-- 意见反馈信息表
 CREATE TABLE FeedbackRecord(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 Content VARCHAR(500),					-- 反馈内容

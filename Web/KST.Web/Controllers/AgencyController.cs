@@ -232,7 +232,7 @@ namespace KST.Web.Controllers
                 result = agencyDataService.UpdateAgencyName(agencyID, name);
 
                 // Write admin do record.
-                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     AdminDoRecord doRecord = new AdminDoRecord();
                     doRecord.AdminID = currentAdmin.ID;
@@ -275,7 +275,7 @@ namespace KST.Web.Controllers
                 result = agencyDataService.SetIsLockDeviceConfig(agencyID, isLockDevice);
 
                 // Write admin do record.
-                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     AdminDoRecord doRecord = new AdminDoRecord();
                     doRecord.AdminID = currentAdmin.ID;
@@ -317,7 +317,7 @@ namespace KST.Web.Controllers
                 result = agencyDataService.UpdateAgencyContactConfig(agencyID, contact);
 
                 // Write admin do record.
-                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     AdminDoRecord doRecord = new AdminDoRecord();
                     doRecord.AdminID = currentAdmin.ID;
@@ -359,7 +359,7 @@ namespace KST.Web.Controllers
                 result = agencyDataService.UpdateAgencyNoticeConfig(agencyID, notice);
 
                 // Write admin do record.
-                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     AdminDoRecord doRecord = new AdminDoRecord();
                     doRecord.AdminID = currentAdmin.ID;
@@ -406,7 +406,7 @@ namespace KST.Web.Controllers
                 result = agencyDataService.UpdateAdminPassword(adminID, oldPwd, newPwd);
 
                 // Write admin do record.
-                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     AdminDoRecord doRecord = new AdminDoRecord();
                     doRecord.AdminID = currentAdmin.ID;
@@ -493,7 +493,7 @@ namespace KST.Web.Controllers
 
                 // Write admin do record.
                 AgencyAdminDTO currentAdmin = Session[Constant.SESSION_KEY_ADMIN] as AgencyAdminDTO;
-                if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                 {
                     AdminDoRecord doRecord = new AdminDoRecord();
                     doRecord.AdminID = currentAdmin.ID;
@@ -545,7 +545,7 @@ namespace KST.Web.Controllers
                     result = agencyDataService.UpdateAdmin(admin);
 
                     // Write admin do record.
-                    if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                     {
                         AdminDoRecord doRecord = new AdminDoRecord();
                         doRecord.AdminID = currentAdmin.ID;
@@ -596,7 +596,7 @@ namespace KST.Web.Controllers
                     result = agencyDataService.DeleteAdmin(adminID);
 
                     // Write admin do record.
-                    if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                     {
                         AdminDoRecord doRecord = new AdminDoRecord();
                         doRecord.AdminID = currentAdmin.ID;
@@ -660,7 +660,7 @@ namespace KST.Web.Controllers
                     result = agencyDataService.DeleteAdmin(adminIDList);
 
                     // Write admin do record.
-                    if (currentAdmin != null && result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
+                    if (result != null && result.Code == InvokeCode.SYS_INVOKE_SUCCESS)
                     {
                         AdminDoRecord doRecord = new AdminDoRecord();
                         doRecord.AdminID = currentAdmin.ID;

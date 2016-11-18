@@ -126,6 +126,12 @@ namespace KST.Core
         AddSingle,
 
         /// <summary>
+        /// 添加单选题(批量)
+        /// </summary>
+        [Description("添加单选题(批量)")]
+        AddSingleInBatch,
+
+        /// <summary>
         /// 更新单选题
         /// </summary>
         [Description("更新单选题")]
@@ -154,6 +160,12 @@ namespace KST.Core
         AddMultiple,
 
         /// <summary>
+        /// 添加多选题(批量)
+        /// </summary>
+        [Description("添加多选题(批量)")]
+        AddMultipleInBatch,
+
+        /// <summary>
         /// 更新多选题
         /// </summary>
         [Description("更新多选题")]
@@ -180,6 +192,12 @@ namespace KST.Core
         /// </summary>
         [Description("添加判断题")]
         AddJudge,
+
+        /// <summary>
+        /// 添加判断题(批量)
+        /// </summary>
+        [Description("添加判断题(批量)")]
+        AddJudgeInBatch,
 
         /// <summary>
         /// 更新判断题
