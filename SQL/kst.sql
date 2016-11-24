@@ -243,7 +243,11 @@ CONSTRAINT fk_fenluitem_chapter FOREIGN KEY (ChapterID)REFERENCES Chapter(ID) ON
 CREATE TABLE FenLuAnswer(
 ID INT PRIMARY KEY AUTO_INCREMENT,		-- 主键ID
 FenLuItemID INT,						-- 分录题主键ID
-Answer VARCHAR(500),					-- 答案
+AnswerIndex INT,						-- 答案序号
+AnswerType INT,							-- 答案类型  (1：分录答案  2：填空答案(只有一个金额填空输入框))
+Direction VARCHAR(10),					-- 借贷方向(借或贷)
+SubjectName VARCHAR(100),				-- 会计科目
+Money VARCHAR(50),						-- 金额(当答案类型为填空答案时，借贷方向及会计科目无效，只有金额有效)
 Annotation VARCHAR(500),				-- 注解
 AddTime DATETIME DEFAULT NOW(),			-- 添加时间
 IsDeleted INT DEFAULT 0,  				-- 是否已删除 (0：未删除  1：已删除)
